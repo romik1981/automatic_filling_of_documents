@@ -2,9 +2,10 @@
 Программа для тестирования приложения для генерации документов
 '''
 import random
-from datetime import datetime
-from datetime import date
+#from datetime import datetime
+#from datetime import date
 import time
+import datetime
 
 cap_let = [chr(let) for let in range(ord('A'), ord('Z') + 1)]  # Заглавные буквы латиницы
 low_let = [chr(let) for let in range(ord('a'), ord('z') + 1)]  # Строчные буквы латиницы
@@ -89,35 +90,68 @@ def write_file_password(password, type_f=None):
 
 
 
-current_time = datetime.now().strftime('Date - %d/%m/%Y Time - %H:%M')
-write_file_password(current_time, 'test')
+# current_time = datetime.now().strftime('Date - %d/%m/%Y Time - %H:%M')
+# write_file_password(current_time, 'test')
 
 
 
-a = date(2002, 12, 4).isoformat()
-b = date(2002, 12, 4).ctime()
-c = date.today()
-d = datetime(2023, 12, 16, 20, 59, 31)
-e = datetime.now()
-e1 = datetime.now().time()
-e2 = datetime.now().isoformat(sep=' ', timespec='minutes')
-e3 = datetime.now().time().isoformat(timespec='minutes')
-f = date.fromordinal(730920)
-d.strftime("%A %d. %B %Y")
-print(a)
-print(b)
-print(c)
-print(d)
-print()
-print('Работаю с этим:')
-print(e)
-print(e1)
-print(e2)
-print(e3)
-print(e.strftime('Дата - %d/%m/%Y Время - %H:%M'))
-print(e.strftime('%d-%m-%Y'))
-print(e.strftime('%H:%M'))
-print()
-# print(e - d)
-print(time.time())
-print(f.strftime("%A %d. %B %Y Time %h %m"))
+# a = date(2002, 12, 4).isoformat()
+# b = date(2002, 12, 4).ctime()
+# c = date.today()
+# d = datetime(2023, 12, 16, 20, 59, 31)
+# e = datetime.now()
+# e1 = datetime.now().time()
+# e2 = datetime.now().isoformat(sep=' ', timespec='minutes')
+# e3 = datetime.now().time().isoformat(timespec='minutes')
+# f = date.fromordinal(730920)
+# d.strftime("%A %d. %B %Y")
+# print(a)
+# print(b)
+# print(c)
+# print(d)
+date_now = datetime.datetime.now()
+duration_10_minutes = datetime.timedelta(minutes=10)
+result_10_min = (date_now + duration_10_minutes).strftime('Date - %d.%m.%Y Time - %H:%M')
+
+
+if __name__ == '__main__':
+    print()
+    print('Работаю с этим:')
+    # получение и форматирование даты и времени
+    # print(e)
+    # print(e1)
+    # print(e2)
+    # print(e3)
+    # print(e.strftime('Дата - %d/%m/%Y Время - %H:%M'))
+    # print(e.strftime('%d-%m-%Y'))
+    # print(e.strftime('%H:%M'))
+
+    # операции с датой и временем
+    date_now = datetime.datetime.now()
+    duration_10_minutes = datetime.timedelta(minutes=10)
+    duration_minutes = datetime.timedelta(days=1, minutes=10)
+    duration_minutes_1 = datetime.timedelta(days=1, minutes=10, seconds=10)
+    duration_minutes_2 = datetime.timedelta(days=1, minutes=10, seconds=10, milliseconds=10)
+    duration_minutes_3 = datetime.timedelta(days=1, minutes=10, seconds=10, milliseconds=10, microseconds=10)
+    print(duration_minutes)
+    result_10_min = (date_now + duration_10_minutes).strftime('Date - %d.%m.%Y Time - %H:%M')
+    result = date_now + duration_minutes
+    result_1 = date_now + duration_minutes_1
+    result_2 = date_now + duration_minutes_2
+    result_3 = date_now + duration_minutes_3
+    print(result_10_min, type(result_10_min))
+    print(result, type(result))
+    print(result_1, type(result))
+    print(result_2, type(result))
+    print(result_3, type(result))
+    print(date_now.timestamp())
+    print()
+
+
+
+
+    # print(e - d)
+    # print(time.time())
+    # print(f.strftime("%A %d. %B %Y Time %h %m"))
+
+    write_file_password(result_10_min, 'test')
