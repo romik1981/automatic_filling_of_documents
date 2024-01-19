@@ -6,6 +6,7 @@ import random
 #from datetime import date
 import time
 import datetime
+from read_write_file import read_file_dek
 
 cap_let = [chr(let) for let in range(ord('A'), ord('Z') + 1)]  # Заглавные буквы латиницы
 low_let = [chr(let) for let in range(ord('a'), ord('z') + 1)]  # Строчные буквы латиницы
@@ -133,19 +134,19 @@ if __name__ == '__main__':
     duration_minutes_1 = datetime.timedelta(days=1, minutes=10, seconds=10)
     duration_minutes_2 = datetime.timedelta(days=1, minutes=10, seconds=10, milliseconds=10)
     duration_minutes_3 = datetime.timedelta(days=1, minutes=10, seconds=10, milliseconds=10, microseconds=10)
-    print(duration_minutes)
+    # print(duration_minutes)
     result_10_min = (date_now + duration_10_minutes).strftime('Date - %d.%m.%Y Time - %H:%M')
     result = date_now + duration_minutes
     result_1 = date_now + duration_minutes_1
     result_2 = date_now + duration_minutes_2
     result_3 = date_now + duration_minutes_3
-    print(result_10_min, type(result_10_min))
-    print(result, type(result))
-    print(result_1, type(result))
-    print(result_2, type(result))
-    print(result_3, type(result))
-    print(date_now.timestamp())
-    print()
+    # print(result_10_min, type(result_10_min))
+    # print(result, type(result))
+    # print(result_1, type(result))
+    # print(result_2, type(result))
+    # print(result_3, type(result))
+    # print(date_now.timestamp())
+    # print()
 
 
 
@@ -154,4 +155,51 @@ if __name__ == '__main__':
     # print(time.time())
     # print(f.strftime("%A %d. %B %Y Time %h %m"))
 
-    write_file_password(result_10_min, 'test')
+    # write_file_password(result_10_min, 'test')
+
+    list_out_dek = [['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']]
+    print(list_out_dek[1][2])
+    list_out_dek[1][2] = '2a'
+    list_out_dek[1][1] = '1a'
+    list_out_dek[1][3] = '3a'
+    print(list_out_dek)
+
+    # Кодирование декодирование данных
+
+    data_dek = read_file_dek()
+    print('Изменение кодировки:')
+    print(data_dek[1][2])
+    print(data_dek[0][0])
+    # d[0][0] = d[0][0].decode('cp1251').encode('utf8')
+    print(data_dek[0][0])
+
+    text = "pitón"
+
+    data_dek[0][0] = data_dek[0][0].encode()
+    print(type(data_dek[0][0]))
+    data_dek[0][0] = data_dek[0][0].decode()
+    print(data_dek[0][0], type(data_dek[0][0]), '1')
+
+    text = "pitón"
+    text = text.encode()
+    print(text)
+    text = text.decode('utf-8')
+    print(text, type(text), '2')
+
+    text = "pitón"
+    text = text.encode()
+    print(text)
+    text = text.decode('utf-16')
+    print(text, type(text), '3')
+
+    data_dek = read_file_dek()
+    data_dek[0][0] = data_dek[0][0].encode('cp1251')
+    print(data_dek[0][0])
+    data_dek[0][0] = data_dek[0][0].decode('cp1251')
+    print(data_dek[0][0], type(data_dek[0][0]), '4')
+
+    data_dek = read_file_dek()
+    data_dek[0][0] = data_dek[0][0].encode('utf-8')
+    print(data_dek[0][0])
+    data_dek[0][0] = data_dek[0][0].decode('utf-8')
+    print(data_dek[0][0], type(data_dek[0][0]), '5')
