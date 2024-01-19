@@ -1,5 +1,5 @@
 # from Test import result_10_min
-from data_jornal import last_device_input_dek
+from data_jornal import last_device_input_dek, date_now
 
 # Глобальные переменные файла
 list_out_dek = []
@@ -38,27 +38,39 @@ def read_file_dek():
 
     with open('jornal_M567M(dek).csv', 'r', encoding='cp1251') as fr:
         for str_ in fr:
+            print(str_, type(str_), 'чтение DEK')
             str = str_.strip().split(";")
+            print(str, 'чтение DEK после разделения')
             for _ in  str:
                 _ = _.encode('utf-8')
-            print(str, type(str), 'промежуточные данные')
+            # print(str, type(str), 'промежуточные данные декодирования')
             list_out_dek.append(str)
             # for i, _ in enumerate(a):
             #     if _ == 'data':
             #         a[i] = data
             # a.append('\n')
             # list_out.append(';'.join(a))
-        print(list_out_dek)
+        # print(list_out_dek)
     return list_out_dek
     # with open(f'jornal_out_{type_f}.csv', 'w+', encoding='cp1252') as fw:
     #     for _ in list_out:
     #         fw.writelines(_)
     # return print(f'Данные записаны в файл jornal_out_{type_f}.csv')
 
-def write_file_dek(list_out_dek, type_f=None):
+def write_file_dek(list_data_in, date, type_f=None):
 
+    list_out_new = []
+    for row in list_data_in:
+        for i, cell in enumerate(row):
+            if cell == 'date':
+                row[i] = date
+        row.append('\n')
+        print(row)
+
+        list_out_new.append(';'.join(row))
     with open(f'jornal_out_{type_f}.csv', 'w+', encoding='cp1251') as fw:
-        for _ in list_out_dek:
+
+        for _ in list_out_new:
             fw.writelines(_)
     return print(f'Данные записаны в файл jornal_out_{type_f}.csv')
 
@@ -69,10 +81,11 @@ if __name__ == '__main__':
     # write_file_password(result_10_min, 'rdt')
     read_file_dek()
 
-    print(list_out_dek[1][2])
+    # print(list_out_dek[1][2])
     # last_device_input_dek.index(1, 2, last_device_input_dek)
     list_out_dek[1][2] = last_device_input_dek
-    print(list_out_dek[1][2])
-    print(list_out_dek)
+    # print(list_out_dek[1][2])
+    # print(list_out_dek)
 
-    write_file_dek(list_out_dek, 'dek')
+    # Разобрался можно спать, УРА!!!
+    write_file_dek(list_out_dek, date_now, 'dek')

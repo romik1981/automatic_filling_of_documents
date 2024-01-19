@@ -116,6 +116,8 @@ result_10_min = (date_now + duration_10_minutes).strftime('Date - %d.%m.%Y Time 
 
 
 if __name__ == '__main__':
+
+    # Операции с датой и временем
     print()
     print('Работаю с этим:')
     # получение и форматирование даты и времени
@@ -127,7 +129,6 @@ if __name__ == '__main__':
     # print(e.strftime('%d-%m-%Y'))
     # print(e.strftime('%H:%M'))
 
-    # операции с датой и временем
     date_now = datetime.datetime.now()
     duration_10_minutes = datetime.timedelta(minutes=10)
     duration_minutes = datetime.timedelta(days=1, minutes=10)
