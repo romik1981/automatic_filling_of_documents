@@ -1,5 +1,6 @@
 # from Test import result_10_min
-from data_jornal import last_device_input_dek, date_now
+from data_jornal import last_device_input_dek, date_now, time_now, number_device, stamp_numer_common, stamp_numer_one_r, \
+    stamp_numer_two_r
 
 # Глобальные переменные файла
 list_out_dek = []
@@ -68,7 +69,7 @@ def write_file_dek(list_data_in, date, type_f=None):
         # print(row)
 
         list_out_new.append(';'.join(row))
-    with open(f'jornal_out_{type_f}.csv', 'w+', encoding='cp1251') as fw:
+    with open(f'jornal_out_{type_f}.csv', 'a+', encoding='cp1251') as fw:
 
         for _ in list_out_new:
             fw.writelines(_)
@@ -90,6 +91,8 @@ if __name__ == '__main__':
     # Разобрался можно спать, УРА!!!
     # Собираем журнал DEK
     # print(list_out_dek)
+
+    # Цикл для формирования записи вскрытия в последний раз опечатанного DEK
     for i, row in enumerate(list_out_dek):
         # print(row)
         for j, cell in enumerate(row):
@@ -103,6 +106,53 @@ if __name__ == '__main__':
             elif i == 0:
                 pass
             elif i != 0 and j != 0:
+                list_out_dek[i][j] = ''
+
+    print(list_out_dek)
+    write_file_dek(list_out_dek, date_now, 'dek')
+
+    # Цикл для формирования записи первого ввода DEK
+
+    read_file_dek()
+    for i, row in enumerate(list_out_dek):
+        # print(row)
+        for j, cell in enumerate(row):
+            # print(cell)
+            if i == 1 and j == 2:
+                list_out_dek[i][j] = number_device
+            elif i == 1 and j == 3:
+                list_out_dek[i][j] = date_now
+            elif i == 2 and j == 3:
+                list_out_dek[i][j] = time_now
+            elif i == 3 and j == 3:
+                list_out_dek[i][j] = stamp_numer_common
+            elif i == 5 and j == 6:
+                list_out_dek[i][j] = date_now
+            elif i == 6 and j == 6:
+                list_out_dek[i][j] = time_now
+            elif i == 7 and j == 6:
+                list_out_dek[i][j] = stamp_numer_common
+            elif i == 2 and j == 10:
+                list_out_dek[i][j] = date_now
+            elif i == 3 and j == 10:
+                list_out_dek[i][j] = time_now
+            elif i == 6 and j == 10:
+                list_out_dek[i][j] = date_now
+            elif i == 7 and j == 10:
+                list_out_dek[i][j] = time_now
+            elif i == 1 and j == 11:
+                list_out_dek[i][j] = date_now
+            elif i == 2 and j == 11:
+                list_out_dek[i][j] = time_now
+            elif i == 3 and j == 11:
+                list_out_dek[i][j] = stamp_numer_one_r
+            elif i == 8 and j == 11:
+                list_out_dek[i][j] = stamp_numer_two_r
+            elif i == 0:
+                pass
+            elif i != 0 and j != 0 or i != 1 and j != 2 or i != 1 and j != 3 or i != 1 and j != 4 or i != 4 and j != 3\
+                    or i != 8 and j != 6 or i != 1 and j != 10 or i != 4 and j != 10 or i != 5 and j != 10 or i != 8 and j != 10\
+                    or i != 4 and j != 11 or i != 8 and j != 11:
                 list_out_dek[i][j] = ''
 
     print(list_out_dek)
