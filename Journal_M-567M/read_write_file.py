@@ -1,7 +1,7 @@
 # from Test import result_10_min
 from data_jornal import last_device_input_dek, date_now, time_now, number_device, stamp_numer_common, stamp_numer_one_r, \
     stamp_numer_two_r
-
+import pprint
 # Глобальные переменные файла
 list_out_dek = []
 
@@ -35,7 +35,7 @@ def write_file_password(data, type_f=None):
 def read_file_dek():
     ''' Функция записи данных в файл журнала DEK'''
 
-    n = 1
+    list_out_dek = []
 
     with open('jornal_M567M(dek).csv', 'r', encoding='cp1251') as fr:
         for str_ in fr:
@@ -62,9 +62,9 @@ def write_file_dek(list_data_in, date, type_f=None):
 
     list_out_new = []
     for row in list_data_in:
-        for i, cell in enumerate(row):
-            if cell == 'date':
-                row[i] = date
+        # for i, cell in enumerate(row):
+        #     if cell == 'date':
+        #         row[i] = date
         row.append('\n')
         # print(row)
 
@@ -75,23 +75,7 @@ def write_file_dek(list_data_in, date, type_f=None):
             fw.writelines(_)
     return print(f'Данные записаны в файл jornal_out_{type_f}.csv')
 
-
-
-if __name__ == '__main__':
-
-    # write_file_password(result_10_min, 'rdt')
-    read_file_dek()
-
-    # print(list_out_dek[1][2])
-    # last_device_input_dek.index(1, 2, last_device_input_dek)
-    # list_out_dek[1][2] = last_device_input_dek
-    # print(list_out_dek[1][2])
-    # print(list_out_dek)
-
-    # Разобрался можно спать, УРА!!!
-    # Собираем журнал DEK
-    # print(list_out_dek)
-
+def create_write_dek_1(list_out_dek):
     # Цикл для формирования записи вскрытия в последний раз опечатанного DEK
     for i, row in enumerate(list_out_dek):
         # print(row)
@@ -101,19 +85,21 @@ if __name__ == '__main__':
                 list_out_dek[i][j] = last_device_input_dek
             elif i == 1 and j == 8:
                 list_out_dek[i][j] = date_now
+            elif i == 2 and j == 8:
+                list_out_dek[i][j] = time_now
             elif i == 5 and j == 8:
                 list_out_dek[i][j] = date_now
+            elif i == 6 and j == 8:
+                list_out_dek[i][j] = time_now
             elif i == 0:
                 pass
             elif i != 0 and j != 0:
                 list_out_dek[i][j] = ''
 
-    print(list_out_dek)
-    write_file_dek(list_out_dek, date_now, 'dek')
+    return list_out_dek
 
-    # Цикл для формирования записи первого ввода DEK
-
-    read_file_dek()
+def create_write_dek_2(list_out_dek):
+    # Цикл для формирования записи стирания старого DEK
     for i, row in enumerate(list_out_dek):
         # print(row)
         for j, cell in enumerate(row):
@@ -146,14 +132,51 @@ if __name__ == '__main__':
                 list_out_dek[i][j] = time_now
             elif i == 3 and j == 11:
                 list_out_dek[i][j] = stamp_numer_one_r
-            elif i == 8 and j == 11:
+            elif i == 5 and j == 11:
+                list_out_dek[i][j] = date_now
+            elif i == 6 and j == 11:
+                list_out_dek[i][j] = time_now
+            elif i == 7 and j == 11:
                 list_out_dek[i][j] = stamp_numer_two_r
             elif i == 0:
                 pass
-            elif i != 0 and j != 0 or i != 1 and j != 2 or i != 1 and j != 3 or i != 1 and j != 4 or i != 4 and j != 3\
-                    or i != 8 and j != 6 or i != 1 and j != 10 or i != 4 and j != 10 or i != 5 and j != 10 or i != 8 and j != 10\
-                    or i != 4 and j != 11 or i != 8 and j != 11:
-                list_out_dek[i][j] = ''
+            elif i in [1, 2, 3, 4, 5, 6, 7, 8] and j in [1, 4, 5, 7, 8, 9]:
+                list_out_dek[i][j] = str(i) + ',' + str(j) # ''
+
+    del list_out_dek[0]
+
+    return list_out_dek
+
+if __name__ == '__main__':
+
+    # write_file_password(result_10_min, 'rdt')
+    # read_file_dek()
+
+    # print(list_out_dek[1][2])
+    # last_device_input_dek.index(1, 2, last_device_input_dek)
+    # list_out_dek[1][2] = last_device_input_dek
+    # print(list_out_dek[1][2])
+    # print(list_out_dek)
+
+    # Разобрался можно спать, УРА!!!
+    # Собираем журнал DEK
+    # print(list_out_dek)
+
+
+
+    # print(list_out_dek)
+    # write_file_dek(list_out_dek, date_now, 'dek')
+
+
+
+    # read_file_dek()
+
+    list_out_dek = create_write_dek_1(read_file_dek())
+    write_file_dek(list_out_dek, date_now, 'dek')
+    list_out_dek = create_write_dek_2(read_file_dek())
+
+    # pprint.pprint(list_out_dek)
 
     print(list_out_dek)
     write_file_dek(list_out_dek, date_now, 'dek')
+
