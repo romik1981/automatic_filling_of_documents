@@ -6,7 +6,7 @@ import random
 #from datetime import date
 import time
 import datetime
-from read_write_file import read_file_dek
+from read_write_file import read_file_jornal
 
 cap_let = [chr(let) for let in range(ord('A'), ord('Z') + 1)]  # Заглавные буквы латиницы
 low_let = [chr(let) for let in range(ord('a'), ord('z') + 1)]  # Строчные буквы латиницы
@@ -167,7 +167,7 @@ if __name__ == '__main__':
 
     # Кодирование декодирование данных
 
-    data_dek = read_file_dek()
+    data_dek = read_file_jornal()
     print('Изменение кодировки:')
     print(data_dek[1][2])
     print(data_dek[0][0])
@@ -193,13 +193,13 @@ if __name__ == '__main__':
     text = text.decode('utf-16')
     print(text, type(text), '3')
 
-    data_dek = read_file_dek()
+    data_dek = read_file_jornal()
     data_dek[0][0] = data_dek[0][0].encode('cp1251')
     print(data_dek[0][0])
     data_dek[0][0] = data_dek[0][0].decode('cp1251')
     print(data_dek[0][0], type(data_dek[0][0]), '4')
 
-    data_dek = read_file_dek()
+    data_dek = read_file_jornal()
     data_dek[0][0] = data_dek[0][0].encode('utf-8')
     print(data_dek[0][0])
     data_dek[0][0] = data_dek[0][0].decode('utf-8')
