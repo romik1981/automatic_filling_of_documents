@@ -3,19 +3,26 @@
 # импорт номеров аппаратов
 from data_jornal import last_device_input_dek, number_device, number_device_last_in_spo
 
-# импорт ноиеров и серий ключей
-from data_jornal import number_tape_ckt_old, ser_number_ckt_old, ser_number_dek_new_1, number_com_dek_new_1, fac_number_dek_new_1,\
-    ser_number_dek_new_2, number_com_dek_new_2, fac_number_dek_new_2, ser_number_comp_spo1, ser_number_comp_spo2, fac_number_spo1,\
-    fac_number_spo2
+# импорт номеров и серий ключей
+from data_jornal import number_tape_ckt_old, ser_number_ckt_old, ser_number_ckt_new, number_tape_ckt_new,\
+    ser_number_dek_new_1, number_com_dek_new_1, fac_number_dek_new_1, \
+    ser_number_dek_new_2, number_com_dek_new_2, fac_number_dek_new_2, ser_number_comp_spo1, ser_number_comp_spo2, \
+    fac_number_spo1, \
+    fac_number_spo2, ser_number_nsd, fac_number_nsd, ser_number_nsd_new, fac_number_nsd_new
 
 # импорт печатей
-from data_jornal import stamp_numer_common, stamp_numer_one_r, stamp_numer_two_r, stamp_numer_one_r_ckt_old, stamp_numer_common_old,\
+from data_jornal import stamp_numer_common, stamp_numer_one_r, stamp_numer_two_r, stamp_numer_one_r_ckt_old, \
+    stamp_numer_common_old, \
     stamp_numer_one_spo_last, stamp_numer_two_spo_last
 
 # импорт переменных даты и времени
-from data_jornal import date_now, time_now, date_time_ckt, date_ckt, time_ckt, extract_date_time_ckt, input_date_time_ckt,\
-    seal_date_time_ckt, del_date_time, date_time_op_dek1_new, date_time_op_dek2_new, date_time_begin, date_time_in_dek2_new,\
-    date_time_cl_cap_input, date_time_erase_dek1_new, date_time_op_spo1, date_time_op_spo2
+from data_jornal import date_now, time_now, date_time_ckt, extract_date_time_ckt, \
+    input_date_time_ckt, date_time_ckt_new, extract_date_time_ckt_new, input_date_time_ckt_new, seal_date_time_ckt_new,\
+    seal_date_time_ckt, del_date_time, date_time_op_dek1_new, date_time_op_dek2_new, date_time_begin, \
+    date_time_in_dek2_new, \
+    date_time_cl_cap_input, date_time_erase_dek1_new, date_time_op_spo1, date_time_op_spo2, date_time_del_spo12, \
+    date_time_op_nsd_new, \
+    date_time_in_nsd_new, date_time_erase_nsd_new, date_time_cl_nsd_new
 
 import pprint
 import datetime
@@ -26,31 +33,6 @@ list_out_rdt = []
 list_out_ckt = []
 list_out_nsd_spo = []
 
-
-
-# def write_file_password(data, type_f=None):
-#     ''' Функция записи паролей в файл'''
-#
-#     # if type_f == None:
-#     #     with open('password.xml', 'a+', encoding='utf-8') as fa:
-#     #         fa.writelines(f'{password}\n')  # Записывает в файл сгенерированный пароль.
-#     #     return print(f'Пароли сгенерированны в файл password.xml')
-#
-#     # if type_f == 'sed':
-#     list_out = []
-#     with open('jornal_M567M(rdt).csv', 'r', encoding='cp1252') as fr:
-#         for str_ in fr:
-#             a = str_.strip().split(";")
-#             print(a)
-#             for i, _ in enumerate(a):
-#                 if _ == 'data':
-#                     a[i] = data
-#             a.append('\n')
-#             list_out.append(';'.join(a))
-#     with open(f'jornal_out_{type_f}.csv', 'w+', encoding='cp1252') as fw:
-#         for _ in list_out:
-#             fw.writelines(_)
-#     return print(f'Данные записаны в файл jornal_out_{type_f}.csv')
 
 
 def read_file_jornal(type_f=''):
@@ -112,34 +94,9 @@ def read_file_jornal(type_f=''):
     if type_f == '':
         print('Не указан тип файла жрнала!')
 
-# def read_file_rdt():
-#     ''' Функция записи данных в файл журнала RDT '''
-#
-#     list_out_rdt = []
-#
-#     with open('jornal_M567M(rdt).csv', 'r', encoding='cp1251') as fr:
-#         for str_ in fr:
-#             # print(str_, type(str_), 'чтение DEK')
-#             str = str_.strip().split(";")
-#             # print(str, 'чтение DEK после разделения')
-#             for _ in str:
-#                 _ = _.encode('utf-8')
-#             # print(str, type(str), 'промежуточные данные декодирования')
-#             list_out_rdt.append(str)
-#             # for i, _ in enumerate(a):
-#             #     if _ == 'data':
-#             #         a[i] = data
-#             # a.append('\n')
-#             # list_out.append(';'.join(a))
-#         # pprint.pprint(list_out_rdt, depth=12, width=144)
-#     return list_out_rdt
-#     # with open(f'jornal_out_{type_f}.csv', 'w+', encoding='cp1252') as fw:
-#     #     for _ in list_out:
-#     #         fw.writelines(_)
-#     # return print(f'Данные записаны в файл jornal_out_{type_f}.csv')
 
-def write_file_dek(list_data_in, type_f=None):
 
+def write_file_dek(list_data_in, type_f=None, type_w='Неизвестная'):
     list_out_new = []
     for row in list_data_in:
         # for i, cell in enumerate(row):
@@ -153,9 +110,10 @@ def write_file_dek(list_data_in, type_f=None):
 
         for _ in list_out_new:
             fw.writelines(_)
-    return print(f'Данные записаны в файл jornal_out_{type_f}.csv')
+    return print(f'Сделанна запись "{type_w}", данные записаны в файл jornal_out_{type_f}.csv')
 
-# Функции для формирования журнала DEK
+
+'''Функции для формирования журнала DEK'''
 def create_write_dek_1(list_out_dek):
     # Цикл для формирования записи вскрытия в последний раз опечатанного DEK
     for i, row in enumerate(list_out_dek):
@@ -179,7 +137,7 @@ def create_write_dek_1(list_out_dek):
             elif i == 0:
                 pass
             elif i in [1, 2, 3, 4, 5, 6, 7, 8] and j in [1, 2, 3, 4, 5, 6, 7, 9, 10, 11]:
-                list_out_dek[i][j] = str(i) + ',' + str(j) # ''
+                list_out_dek[i][j] = str(i) + ',' + str(j)  # ''
             # elif i != 0 and j != 0:
             #     list_out_dek[i][j] = str(i) + ',' + str(j) # ''
             # elif i != 4 and j != 8:
@@ -187,6 +145,7 @@ def create_write_dek_1(list_out_dek):
             # elif i != 8 and j != 8:
             #     list_out_dek[i][j] = str(i) + ',' + str(j) # ''
     return list_out_dek
+
 
 def create_write_dek_2(list_out_dek):
     # Цикл для формирования записи стирания старого DEK
@@ -231,11 +190,12 @@ def create_write_dek_2(list_out_dek):
             elif i == 0:
                 pass
             elif i in [1, 2, 3, 4, 5, 6, 7, 8] and j in [1, 4, 5, 6, 7, 8, 9]:
-                list_out_dek[i][j] = str(i) + ',' + str(j) # ''
+                list_out_dek[i][j] = str(i) + ',' + str(j)  # ''
 
     del list_out_dek[0]
 
     return list_out_dek
+
 
 def create_write_dek_3_new(list_out_dek):
     # Цикл для формирования записи ввода нового DEK
@@ -293,13 +253,14 @@ def create_write_dek_3_new(list_out_dek):
                 list_out_dek[i][j] = date_time_erase_dek1_new.strftime('T-%H:%M')
 
             elif i in [1, 2, 3, 4, 5, 6, 7, 8] and j in [5, 7, 8, 10, 11]:
-                list_out_dek[i][j] = str(i) + ',' + str(j) # ''
+                list_out_dek[i][j] = str(i) + ',' + str(j)  # ''
 
     del list_out_dek[0]
 
     return list_out_dek
 
-# Функции для формирования журнала RDT
+
+'''Функции для формирования журнала RDT'''
 def create_write_rdt_1(list_out_rdt):
     # Цикл для формирования записи вскрытия в последний раз опечатанного RDT
     for i, row in enumerate(list_out_rdt):
@@ -319,50 +280,87 @@ def create_write_rdt_1(list_out_rdt):
                 list_out_rdt[i][j] = time_now
 
             elif i in [1, 2, 3, 4, 5, 6, 7, 8] and j in [1, 2, 3, 4, 5, 6, 7, 8, 10, 11]:
-                list_out_rdt[i][j] = str(i) + ',' + str(j) # ''
+                list_out_rdt[i][j] = str(i) + ',' + str(j)  # ''
 
     return list_out_rdt
 
-'''Функции для формирования журнала RDT'''
+
+'''Функции для формирования журнала CKT'''
 def create_write_ckt_old(list_out_ckt):
-    # Цикл для формирования записи вскрытия в последний раз опечатанного RDT
+    # Цикл для формирования записи проверке старым CKT
     for i, row in enumerate(list_out_ckt):
         # print(row)
         for j, cell in enumerate(row):
             # print(cell)
             if i == 2 and j == 0:
                 list_out_ckt[i][j] = f'№ {ser_number_ckt_old}, э.ед.'
-
             elif i == 1 and j == 1:
-                list_out_ckt[i][j] = date_ckt
+                list_out_ckt[i][j] = date_time_ckt.strftime('%d.%m.%Y')
             elif i == 2 and j == 1:
-                list_out_ckt[i][j] = time_now
+                list_out_ckt[i][j] = date_time_ckt.strftime('%H:%M')
             elif i == 1 and j == 2 or i == 2 and j == 3 or i == 2 and j == 6:
                 list_out_ckt[i][j] = number_tape_ckt_old
-
             elif i == 3 and j == 1:
                 list_out_ckt[i][j] = stamp_numer_one_r_ckt_old
             elif i == 2 and j == 2:
-                list_out_ckt[i][j] = extract_date_time_ckt
-
+                list_out_ckt[i][j] = extract_date_time_ckt.strftime('%d.%m.%Y %H:%M')
             elif i == 1 and j == 3:
                 list_out_ckt[i][j] = number_device
             elif i == 3 and j == 3:
-                list_out_ckt[i][j] = input_date_time_ckt
-
+                list_out_ckt[i][j] = input_date_time_ckt.strftime('%d.%m.%Y %H:%M')
             elif i == 2 and j == 4:
-                list_out_ckt[i][j] = input_date_time_ckt
-
+                list_out_ckt[i][j] = input_date_time_ckt.strftime('%d.%m.%Y')
             elif i == 1 and j == 5:
                 list_out_ckt[i][j] = stamp_numer_one_r
             elif i == 2 and j == 5:
-                list_out_ckt[i][j] = seal_date_time_ckt
-
+                list_out_ckt[i][j] = seal_date_time_ckt.strftime('%d.%m.%Y %H:%M')
             elif i == 1 and j == 6:
-                list_out_ckt[i][j] = del_date_time
+                list_out_ckt[i][j] = del_date_time.strftime('%d.%m.%Y %H:%M')
 
-            elif i in [4] and j in [2, 4, 5, 6, 7]:
-                list_out_ckt[i][j] = str(i) + ',' + str(j) # ''
+            elif i in [1, 2, 3, 4] and j in [7]:
+                list_out_ckt[i][j] = str(i) + ',' + str(j)  # ''
+
+    return list_out_ckt
+
+def create_write_ckt_new(list_out_ckt):
+    # Цикл для формирования записи проверки новым CKT
+    for i, row in enumerate(list_out_ckt):
+        # print(row)
+        for j, cell in enumerate(row):
+            # print(cell)
+            if i == 2 and j == 0:
+                list_out_ckt[i][j] = f'№ {ser_number_ckt_new}, э.ед.'
+            elif i == 1 and j == 1:
+                list_out_ckt[i][j] = date_time_ckt_new.strftime('%d.%m.%Y')
+            elif i == 2 and j == 1:
+                list_out_ckt[i][j] = date_time_ckt_new.strftime('%H:%M')
+            elif i == 1 and j == 2 or i == 2 and j == 3 or i == 2 and j == 6:
+                list_out_ckt[i][j] = number_tape_ckt_new
+            elif i == 3 and j == 1:
+                list_out_ckt[i][j] = 'подпись'
+            elif i == 4 and j == 1:
+                list_out_ckt[i][j] = ''
+            elif i == 2 and j == 2:
+                list_out_ckt[i][j] = extract_date_time_ckt_new.strftime('%d.%m.%Y %H:%M')
+            elif i == 1 and j == 3:
+                list_out_ckt[i][j] = number_device
+            elif i == 3 and j == 3:
+                list_out_ckt[i][j] = input_date_time_ckt_new.strftime('%d.%m.%Y %H:%M')
+            elif i == 2 and j == 4:
+                list_out_ckt[i][j] = input_date_time_ckt_new.strftime('%d.%m.%Y')
+            elif i == 1 and j == 5:
+                list_out_ckt[i][j] = stamp_numer_one_r
+            elif i == 2 and j == 5:
+                list_out_ckt[i][j] = seal_date_time_ckt_new.strftime('%d.%m.%Y %H:%M')
+            elif i == 1 and j == 6:
+                list_out_ckt[i][j] = del_date_time.strftime('%d.%m.%Y %H:%M')
+
+            elif i in [1, 2, 3, 4] and j in [7]:
+                list_out_ckt[i][j] = str(i) + ',' + str(j)  # ''
+            elif i == 0:
+                list_out_ckt[i][j] = ''
+
+    list_out_ckt[0][0] = 'Запись о проверке новым CKT'
 
     return list_out_ckt
 
@@ -370,8 +368,8 @@ def create_write_ckt_old(list_out_ckt):
 def create_write_spo_1(list_out_nsd_spo):
     # Цикл для формирования записи сброса SPO
     del list_out_nsd_spo[1]
-    del list_out_nsd_spo[2]
-    del list_out_nsd_spo[3]
+    del list_out_nsd_spo[1]
+    del list_out_nsd_spo[1]
     for i, row in enumerate(list_out_nsd_spo):
         # print(row)
         for j, cell in enumerate(row):
@@ -384,7 +382,7 @@ def create_write_spo_1(list_out_nsd_spo):
                 list_out_nsd_spo[i][j] = ser_number_comp_spo2
             elif i == 6 and j == 0:
                 list_out_nsd_spo[i][j] = fac_number_spo2
-            elif i == 2 and j == 2:
+            elif i == 1 and j == 2:
                 list_out_nsd_spo[i][j] = number_device_last_in_spo
             elif i == 1 and j == 7:
                 list_out_nsd_spo[i][j] = date_time_op_spo1.strftime('D-%d.%m.%Y T-%H:%M')
@@ -395,50 +393,130 @@ def create_write_spo_1(list_out_nsd_spo):
             elif i == 5 and j == 7:
                 list_out_nsd_spo[i][j] = stamp_numer_two_spo_last
 
-            # elif i == 5 and j == 1:
-            #     list_out_dek[i][j] = date_time_op_dek2_new.strftime('D-%d.%m.%Y')
-            # elif i == 6 and j == 1:
-            #     list_out_dek[i][j] = date_time_op_dek2_new.strftime('T-%H:%M')
-            # elif i == 1 and j == 2:
-            #     list_out_dek[i][j] = number_device
-            # elif i == 1 and j == 3:
-            #     list_out_dek[i][j] = date_time_begin.strftime('D-%d.%m.%Y')
-            # elif i == 2 and j == 3:
-            #     list_out_dek[i][j] = date_time_begin.strftime('T-%H:%M')
-            # elif i == 3 and j == 3:
-            #     list_out_dek[i][j] = stamp_numer_common_old
-            # elif i == 1 and j == 4:
-            #     list_out_dek[i][j] = date_time_op_dek2_new.strftime('D-%d.%m.%Y')
-            # elif i == 2 and j == 4:
-            #     list_out_dek[i][j] = date_time_op_dek2_new.strftime('T-%H:%M')
-            # elif i == 5 and j == 4:
-            #     list_out_dek[i][j] = date_time_in_dek2_new.strftime('D-%d.%m.%Y')
-            # elif i == 6 and j == 4:
-            #     list_out_dek[i][j] = date_time_in_dek2_new.strftime('T-%H:%M')
-            # elif i == 5 and j == 6:
-            #     list_out_dek[i][j] = date_time_cl_cap_input.strftime('D-%d.%m.%Y')
-            # elif i == 6 and j == 6:
-            #     list_out_dek[i][j] = date_time_cl_cap_input.strftime('T-%H:%M')
-            # elif i == 2 and j == 9:
-            #     list_out_dek[i][j] = date_time_erase_dek1_new.strftime('D-%d.%m.%Y')
-            # elif i == 3 and j == 9:
-            #     list_out_dek[i][j] = date_time_erase_dek1_new.strftime('T-%H:%M')
-            # elif i == 6 and j == 9:
-            #     list_out_dek[i][j] = date_time_erase_dek1_new.strftime('D-%d.%m.%Y')
-            # elif i == 7 and j == 9:
-            #     list_out_dek[i][j] = date_time_erase_dek1_new.strftime('T-%H:%M')
-
             elif i in [1, 2, 3, 4, 5, 6] and j in [1, 3, 4, 5, 6, 8, 9, 10, 11]:
-                list_out_nsd_spo[i][j] = str(i) + ',' + str(j) # ''
-
-    # del list_out_dek[0]
+                list_out_nsd_spo[i][j] = str(i) + ',' + str(j)  # ''
 
     return list_out_nsd_spo
 
 
+def create_write_spo_2(list_out_nsd_spo):
+    # Цикл для формирования записи сброса SPO
+    del list_out_nsd_spo[1]
+    del list_out_nsd_spo[1]
+    del list_out_nsd_spo[1]
+    for i, row in enumerate(list_out_nsd_spo):
+        # print(row)
+        for j, cell in enumerate(row):
+            # print(cell)
+            if i == 2 and j == 0:
+                list_out_nsd_spo[i][j] = ser_number_comp_spo1
+            elif i == 3 and j == 0:
+                list_out_nsd_spo[i][j] = fac_number_spo1
+            elif i == 5 and j == 0:
+                list_out_nsd_spo[i][j] = ser_number_comp_spo2
+            elif i == 6 and j == 0:
+                list_out_nsd_spo[i][j] = fac_number_spo2
+            if i == 1 and j == 2:
+                list_out_nsd_spo[i][j] = number_device
+            elif i == 2 and j == 8:
+                list_out_nsd_spo[i][j] = date_time_del_spo12.strftime('D-%d.%m.%Y T-%H:%M')
+            elif i == 5 and j == 8:
+                list_out_nsd_spo[i][j] = date_time_del_spo12.strftime('D-%d.%m.%Y T-%H:%M')
+
+            elif i in [1, 2, 3, 4, 5, 6] and j in [1, 3, 4, 5, 6, 7, 9, 10, 11]:
+                list_out_nsd_spo[i][j] = str(i) + ',' + str(j)  # ''
+
+    del list_out_nsd_spo[0]
+
+    return list_out_nsd_spo
+
+
+def create_write_nsd_1(list_out_nsd_spo):
+    # Цикл для формирования записи сброса NSD
+    for i, row in enumerate(list_out_nsd_spo):
+        # print(row)
+        for j, cell in enumerate(row):
+            # print(cell)
+            if i == 2 and j == 0:
+                list_out_nsd_spo[i][j] = ser_number_nsd
+            elif i == 3 and j == 0:
+                list_out_nsd_spo[i][j] = fac_number_nsd
+            if i == 1 and j == 2:
+                list_out_nsd_spo[i][j] = number_device
+            elif i == 2 and j == 8:
+                list_out_nsd_spo[i][j] = date_time_del_spo12.strftime('D-%d.%m.%Y T-%H:%M')
+            elif i == 5 and j == 8:
+                list_out_nsd_spo[i][j] = date_time_del_spo12.strftime('D-%d.%m.%Y T-%H:%M')
+
+            elif i in [1, 2, 3, 4, 5, 6] and j in [1, 3, 4, 5, 6, 7, 9, 10, 11]:
+                list_out_nsd_spo[i][j] = str(i) + ',' + str(j)  # ''
+
+    del list_out_nsd_spo[4]
+    del list_out_nsd_spo[4]
+    del list_out_nsd_spo[4]
+    del list_out_nsd_spo[4]
+    del list_out_nsd_spo[4]
+    del list_out_nsd_spo[4]
+    del list_out_nsd_spo[0]
+
+    return list_out_nsd_spo
+
+
+def create_write_nsd_2(list_out_nsd_spo):
+    # Цикл для формирования записи ввода NSD
+    for i, row in enumerate(list_out_nsd_spo):
+        # print(row)
+        for j, cell in enumerate(row):
+            # print(cell)
+            if i == 2 and j == 0:
+                list_out_nsd_spo[i][j] = ser_number_nsd_new
+            elif i == 3 and j == 0:
+                list_out_nsd_spo[i][j] = fac_number_nsd_new
+            elif i == 1 and j == 1:
+                list_out_nsd_spo[i][j] = date_time_op_nsd_new.strftime('D-%d.%m.%Y')
+            elif i == 2 and j == 1:
+                list_out_nsd_spo[i][j] = date_time_op_nsd_new.strftime('T-%H:%M')
+            if i == 1 and j == 2:
+                list_out_nsd_spo[i][j] = number_device
+            elif i == 1 and j == 3:
+                list_out_nsd_spo[i][j] = date_time_begin.strftime('D-%d.%m.%Y T-%H:%M')
+            elif i == 2 and j == 3:
+                list_out_nsd_spo[i][j] = stamp_numer_common_old
+            elif i == 1 and j == 4:
+                list_out_nsd_spo[i][j] = date_time_in_nsd_new.strftime('D-%d.%m.%Y')
+            elif i == 2 and j == 4:
+                list_out_nsd_spo[i][j] = date_time_in_nsd_new.strftime('T-%H:%M')
+            elif i == 1 and j == 5:
+                list_out_nsd_spo[i][j] = date_time_cl_cap_input.strftime('D-%d.%m.%Y T-%H:%M')
+            elif i == 2 and j == 5:
+                list_out_nsd_spo[i][j] = stamp_numer_common
+            elif i == 2 and j == 9:
+                list_out_nsd_spo[i][j] = date_time_erase_nsd_new.strftime('D-%d.%m.%Y T-%H:%M')
+            elif i == 1 and j == 10:
+                list_out_nsd_spo[i][j] = date_time_cl_nsd_new.strftime('D-%d.%m.%Y')
+            elif i == 2 and j == 10:
+                list_out_nsd_spo[i][j] = date_time_cl_nsd_new.strftime('T-%H:%M')
+            elif i == 3 and j == 10:
+                list_out_nsd_spo[i][j] = stamp_numer_one_r
+
+            elif i in [1, 2, 3, 4, 5, 6] and j in [6, 7, 8, 11]:
+                list_out_nsd_spo[i][j] = str(i) + ',' + str(j)  # ''
+            elif i == 0:
+                list_out_nsd_spo[i][j] = ''
+
+    del list_out_nsd_spo[4]
+    del list_out_nsd_spo[4]
+    del list_out_nsd_spo[4]
+    del list_out_nsd_spo[4]
+    del list_out_nsd_spo[4]
+    del list_out_nsd_spo[4]
+    # del list_out_nsd_spo[0]
+    list_out_nsd_spo[0][0] = 'Запись о вводе НСД в аппарат'
+
+    return list_out_nsd_spo
+
 
 if __name__ == '__main__':
-
     # write_file_password(result_10_min, 'rdt')
 
     # print(list_out_dek[1][2])
@@ -452,18 +530,15 @@ if __name__ == '__main__':
     # # Запись о вкрытие старого DEK
     # list_out_dek = create_write_dek_1(read_file_jornal('dek'))
     # write_file_dek(list_out_dek, 'dek')
-    #
     # # Запись о стирание старого DEK
     # list_out_dek = create_write_dek_2(read_file_jornal('dek'))
     # pprint.pprint(list_out_dek, depth=12, width=144)
     # # print(list_out_dek)
     # write_file_dek(list_out_dek, 'dek')
-    #
     # # Запись о первом вводе нового DEK
     # list_out_dek = create_write_dek_3_new(read_file_jornal('dek'))
     # pprint.pprint(list_out_dek, depth=12, width=144)
     # write_file_dek(list_out_dek, 'dek')
-
 
     '''Собираем журнал RDT'''
     # list_out_rdt = create_write_rdt_1(read_file_jornal('rdt'))
@@ -471,14 +546,29 @@ if __name__ == '__main__':
     # write_file_dek(list_out_rdt, 'rdt')
 
     '''Собираем журнал CKT'''
-    # list_out_ckt = create_write_ckt_old(read_file_jornal('ckt'))
-    # pprint.pprint(list_out_ckt, depth=12, width=144)
-    # write_file_dek(list_out_ckt, 'ckt')
+    # Запись о проверке старым CKT
+    list_out_ckt = create_write_ckt_old(read_file_jornal('ckt'))
+    pprint.pprint(list_out_ckt, depth=12, width=144)
+    write_file_dek(list_out_ckt, 'ckt', 'Проверка старым CKT')
+    # Запись о проверке новым CKT
+    list_out_ckt = create_write_ckt_new(read_file_jornal('ckt'))
+    pprint.pprint(list_out_ckt, depth=12, width=144)
+    write_file_dek(list_out_ckt, 'ckt', 'Проверка новым CKT')
 
     '''Собираем журнал SPO'''
-    # Запись о вкрытие старого DEK
-    # list_out_nsd_spo = read_file_jornal('nsd_spo')
+    # # Запись о вскрытие старого SPO
+    # list_out_nsd_spo = create_write_spo_1(read_file_jornal('nsd_spo'))
     # print(list_out_nsd_spo)
-    list_out_nsd_spo = create_write_spo_1(read_file_jornal('nsd_spo'))
-    print(list_out_nsd_spo)
-    write_file_dek(list_out_nsd_spo, 'nsd_spo')
+    # write_file_dek(list_out_nsd_spo, 'nsd_spo')
+    # # Запись о сбросе введённого ранее SPO
+    # list_out_nsd_spo = create_write_spo_2(read_file_jornal('nsd_spo'))
+    # print(list_out_nsd_spo)
+    # write_file_dek(list_out_nsd_spo, 'nsd_spo')
+    # # Запись о сбросе введённого ранее NSD
+    # list_out_nsd_spo = create_write_nsd_1(read_file_jornal('nsd_spo'))
+    # print(list_out_nsd_spo)
+    # write_file_dek(list_out_nsd_spo, 'nsd_spo')
+    # # Запись о вводе нового NSD
+    # list_out_nsd_spo = create_write_nsd_2(read_file_jornal('nsd_spo'))
+    # print(list_out_nsd_spo)
+    # write_file_dek(list_out_nsd_spo, 'nsd_spo')

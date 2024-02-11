@@ -11,20 +11,26 @@ date_time_now = datetime.datetime.now().strftime('Date - %d.%m.%Y Time - %H:%M')
 date_time_begin = datetime.datetime.now()
 date_now = datetime.datetime.now().strftime('Date - %d.%m.%Y')
 time_now = datetime.datetime.now().strftime('Time - %H:%M')
-date_time_ckt = datetime.datetime.now().strftime('Date - %d.%m.%Y Time - %H:%M')
-date_ckt = datetime.datetime.now().strftime('Date - %d.%m.%Y')
-time_ckt = datetime.datetime.now().strftime('Time - %H:%M')
+
+# Приращения времени
 duration_1_minutes = datetime.timedelta(minutes=1)
 duration_2_minutes = datetime.timedelta(minutes=2)
 duration_4_minutes = datetime.timedelta(minutes=4)
-duration_10_hours = datetime.timedelta(hours=10)
+duration_6_minutes = datetime.timedelta(minutes=6)
+duration_14_minutes = datetime.timedelta(minutes=14)
 duration_58_minutes = datetime.timedelta(minutes=58)
-duration_10_h_19_m = datetime.timedelta(hours=2, minutes=19)
+duration_52_minutes = datetime.timedelta(minutes=52)
 duration_1_h_25_m = datetime.timedelta(hours=1, minutes=25)
-extract_date_time_ckt = (datetime.datetime.now() + duration_1_minutes).strftime('Date - %d.%m.%Y Time - %H:%M')
-input_date_time_ckt = (datetime.datetime.now() + duration_2_minutes).strftime('Date - %d.%m.%Y Time - %H:%M')
-seal_date_time_ckt = (datetime.datetime.now() + duration_4_minutes).strftime('Date - %d.%m.%Y Time - %H:%M')
-del_date_time = (datetime.datetime.now() + duration_10_hours).strftime('Date - %d.%m.%Y Time - %H:%M')
+duration_1_h_14_m = datetime.timedelta(hours=1, minutes=14)
+duration_1_h_02_m = datetime.timedelta(hours=1, minutes=2)
+duration_10_hours = datetime.timedelta(hours=10)
+duration_10_h_19_m = datetime.timedelta(hours=10, minutes=19)
+duration_14_hours = datetime.timedelta(hours=14)
+duration_14_h_30_m = datetime.timedelta(hours=14, minutes=30)
+
+# Время уничтожения ключей, блокнотов и упаковок
+del_date_time = date_time_begin + duration_14_h_30_m
+# Опечатывание крышки ввод аппарата
 date_time_cl_cap_input = date_time_begin + duration_10_h_19_m
 
 # даты и время для DEK
@@ -35,6 +41,21 @@ date_time_erase_dek1_new = date_time_in_dek2_new + duration_2_minutes
 # даты и время для SPO
 date_time_op_spo1 = date_time_begin + duration_1_h_25_m
 date_time_op_spo2 = date_time_op_spo1 + duration_1_minutes
+date_time_del_spo12 = date_time_begin + duration_1_h_02_m
+# даты и время для NSD
+date_time_op_nsd_new = date_time_del_spo12 + duration_6_minutes
+date_time_in_nsd_new = date_time_op_nsd_new + duration_1_minutes
+date_time_erase_nsd_new = date_time_in_nsd_new + duration_14_minutes
+date_time_cl_nsd_new = date_time_erase_nsd_new + duration_1_minutes
+# даты и время для CKT
+date_time_ckt = date_time_begin + duration_52_minutes
+extract_date_time_ckt = date_time_ckt + duration_1_minutes
+input_date_time_ckt = date_time_ckt + duration_2_minutes
+seal_date_time_ckt = date_time_ckt + duration_4_minutes
+date_time_ckt_new = date_time_begin + duration_1_h_14_m
+extract_date_time_ckt_new = date_time_ckt_new + duration_1_minutes
+input_date_time_ckt_new = date_time_ckt_new + duration_2_minutes
+seal_date_time_ckt_new = date_time_ckt_new + duration_4_minutes
 
 number_device = '№апп.М567М'
 number_device_last_in_spo = '№апп.М567М был введён SPO'
@@ -49,18 +70,28 @@ stamp_numer_one_spo_last = 'п.кр.№1 spo_last'
 stamp_numer_two_spo_last = 'п.кр.№2 spo_last'
 
 # номера и серии ключей
+# CKT
 ser_number_ckt_old = 'номер ckt старый'
 number_tape_ckt_old = 'номер ленты ckt старый'
+ser_number_ckt_new = 'номер ckt новый'
+number_tape_ckt_new = 'номер ленты ckt новый'
+# DEK
 ser_number_dek_new_1 = '1-номер dek новый'
 number_com_dek_new_1 = '1-номер компл dek новый'
 fac_number_dek_new_1 = '1-зав. № dek новый'
 ser_number_dek_new_2 = '2-номер dek новый'
 number_com_dek_new_2 = '2-номер компл dek новый'
 fac_number_dek_new_2 = '2-зав. № dek новый'
+# SPO
 ser_number_comp_spo1 = '1-номер и комп spo1'
 fac_number_spo1 = '1-зав. № spo1'
 ser_number_comp_spo2 = '2-номер и комп spo2'
 fac_number_spo2 = '2-зав. № spo2'
+# NSD
+ser_number_nsd = 'номер серии nsd'
+fac_number_nsd = 'зав. № nsd'
+ser_number_nsd_new = 'номер серии nsd_new'
+fac_number_nsd_new = 'зав. № nsd_new'
 
 
 
