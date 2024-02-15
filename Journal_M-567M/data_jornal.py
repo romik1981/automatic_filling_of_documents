@@ -18,8 +18,10 @@ duration_2_minutes = datetime.timedelta(minutes=2)
 duration_4_minutes = datetime.timedelta(minutes=4)
 duration_6_minutes = datetime.timedelta(minutes=6)
 duration_14_minutes = datetime.timedelta(minutes=14)
-duration_58_minutes = datetime.timedelta(minutes=58)
+duration_23_minutes = datetime.timedelta(minutes=23)
+duration_27_minutes = datetime.timedelta(minutes=27)
 duration_52_minutes = datetime.timedelta(minutes=52)
+duration_58_minutes = datetime.timedelta(minutes=58)
 duration_1_h_25_m = datetime.timedelta(hours=1, minutes=25)
 duration_1_h_14_m = datetime.timedelta(hours=1, minutes=14)
 duration_1_h_02_m = datetime.timedelta(hours=1, minutes=2)
@@ -38,10 +40,21 @@ date_time_op_dek1_new = date_time_begin + duration_58_minutes
 date_time_op_dek2_new = date_time_op_dek1_new + duration_1_minutes
 date_time_in_dek2_new = date_time_op_dek2_new + duration_1_minutes
 date_time_erase_dek1_new = date_time_in_dek2_new + duration_2_minutes
+
 # даты и время для SPO
 date_time_op_spo1 = date_time_begin + duration_1_h_25_m
 date_time_op_spo2 = date_time_op_spo1 + duration_1_minutes
 date_time_del_spo12 = date_time_begin + duration_1_h_02_m
+date_time_in_1_spo1 = date_time_op_spo2 + duration_2_minutes
+date_time_in_1_spo2 = date_time_in_1_spo1 + duration_2_minutes
+date_time_del_1_spo12 = date_time_in_1_spo2 + duration_27_minutes
+# даты и время для DEK продолжение
+date_time_in_1_dek1_new = date_time_in_1_spo1 + duration_2_minutes
+date_time_in_1_dek2_new = date_time_in_1_dek1_new + duration_1_minutes
+date_time_seal_1_dek12_new = date_time_in_1_dek2_new + duration_23_minutes
+date_time_op_2_dek1_new = 'вр вск dek для апп №2'
+date_time_op_2_dek2_new = 'вр вск dek для апп №1'
+date_time_erase_1_dek12_new = date_time_seal_1_dek12_new + duration_1_minutes
 # даты и время для NSD
 date_time_op_nsd_new = date_time_del_spo12 + duration_6_minutes
 date_time_in_nsd_new = date_time_op_nsd_new + duration_1_minutes
