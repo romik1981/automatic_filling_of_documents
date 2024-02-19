@@ -15,16 +15,21 @@ time_now = datetime.datetime.now().strftime('Time - %H:%M')
 # Приращения времени
 duration_1_minutes = datetime.timedelta(minutes=1)
 duration_2_minutes = datetime.timedelta(minutes=2)
+duration_3_minutes = datetime.timedelta(minutes=3)
 duration_4_minutes = datetime.timedelta(minutes=4)
+duration_5_minutes = datetime.timedelta(minutes=5)
 duration_6_minutes = datetime.timedelta(minutes=6)
 duration_14_minutes = datetime.timedelta(minutes=14)
 duration_23_minutes = datetime.timedelta(minutes=23)
 duration_27_minutes = datetime.timedelta(minutes=27)
+duration_38_minutes = datetime.timedelta(minutes=38)
+duration_50_minutes = datetime.timedelta(minutes=50)
 duration_52_minutes = datetime.timedelta(minutes=52)
 duration_58_minutes = datetime.timedelta(minutes=58)
 duration_1_h_25_m = datetime.timedelta(hours=1, minutes=25)
 duration_1_h_14_m = datetime.timedelta(hours=1, minutes=14)
 duration_1_h_02_m = datetime.timedelta(hours=1, minutes=2)
+duration_2_h_19_m = datetime.timedelta(hours=2, minutes=19)
 duration_10_hours = datetime.timedelta(hours=10)
 duration_10_h_19_m = datetime.timedelta(hours=10, minutes=19)
 duration_14_hours = datetime.timedelta(hours=14)
@@ -33,9 +38,15 @@ duration_14_h_30_m = datetime.timedelta(hours=14, minutes=30)
 # Время уничтожения ключей, блокнотов и упаковок
 del_date_time = date_time_begin + duration_14_h_30_m
 # Опечатывание крышки ввод аппарата
-date_time_cl_cap_input = date_time_begin + duration_10_h_19_m
+date_time_cl_cap_input = date_time_begin + duration_2_h_19_m
 
 # даты и время для DEK
+date_time_op_dek1_old = date_time_begin + duration_38_minutes
+date_time_op_dek2_old = date_time_op_dek1_old + duration_2_minutes
+date_time_del_dek1_old = date_time_op_dek2_old + duration_3_minutes
+date_time_del_dek2_old = date_time_del_dek1_old + duration_5_minutes
+date_time_cl_dek1_old = date_time_del_dek1_old + duration_1_minutes
+date_time_cl_dek2_old = date_time_del_dek2_old + duration_1_minutes
 date_time_op_dek1_new = date_time_begin + duration_58_minutes
 date_time_op_dek2_new = date_time_op_dek1_new + duration_1_minutes
 date_time_in_dek2_new = date_time_op_dek2_new + duration_1_minutes
@@ -48,12 +59,18 @@ date_time_del_spo12 = date_time_begin + duration_1_h_02_m
 date_time_in_1_spo1 = date_time_op_spo2 + duration_2_minutes
 date_time_in_1_spo2 = date_time_in_1_spo1 + duration_2_minutes
 date_time_del_1_spo12 = date_time_in_1_spo2 + duration_27_minutes
+date_time_in_2_spo1 = date_time_del_1_spo12 + duration_3_minutes
+date_time_in_2_spo2 = date_time_in_2_spo1 + duration_2_minutes
+date_time_cl_2_spo2 = date_time_in_2_spo2 + duration_1_minutes
+date_time_op_1_spo1 = 'вр вск spo для апп №2'
+date_time_op_1_spo2 = 'вр вск spo для апп №2'
+
 # даты и время для DEK продолжение
 date_time_in_1_dek1_new = date_time_in_1_spo1 + duration_2_minutes
 date_time_in_1_dek2_new = date_time_in_1_dek1_new + duration_1_minutes
 date_time_seal_1_dek12_new = date_time_in_1_dek2_new + duration_23_minutes
 date_time_op_2_dek1_new = 'вр вск dek для апп №2'
-date_time_op_2_dek2_new = 'вр вск dek для апп №1'
+date_time_op_2_dek2_new = 'вр вск dek для апп №2'
 date_time_erase_1_dek12_new = date_time_seal_1_dek12_new + duration_1_minutes
 # даты и время для NSD
 date_time_op_nsd_new = date_time_del_spo12 + duration_6_minutes
@@ -69,7 +86,19 @@ date_time_ckt_new = date_time_begin + duration_1_h_14_m
 extract_date_time_ckt_new = date_time_ckt_new + duration_1_minutes
 input_date_time_ckt_new = date_time_ckt_new + duration_2_minutes
 seal_date_time_ckt_new = date_time_ckt_new + duration_4_minutes
+# даты и время для RDT
+date_time_del_rdt_old = date_time_begin + duration_50_minutes
+date_time_op_rdt1 = date_time_del_rdt_old + duration_1_h_14_m
+date_time_op_rdt2 = date_time_op_rdt1 + duration_1_minutes
+date_time_in_rdt2 = date_time_op_rdt2 + duration_1_minutes
+date_time_erase_rdt1 = date_time_in_rdt2 + duration_6_minutes
+date_time_erase_rdt2 = date_time_erase_rdt1 + duration_5_minutes
+date_time_cl_rdt1 = date_time_erase_rdt1 + duration_1_minutes
+date_time_cl_rdt2 = date_time_erase_rdt2 + duration_1_minutes
 
+
+
+# номера аппаратов и печати
 number_device = '№апп.М567М'
 number_device_last_in_spo = '№апп.М567М был введён SPO'
 stamp_numer_one_old = 'п.ст.№1старая'
@@ -89,6 +118,12 @@ number_tape_ckt_old = 'номер ленты ckt старый'
 ser_number_ckt_new = 'номер ckt новый'
 number_tape_ckt_new = 'номер ленты ckt новый'
 # DEK
+ser_number_dek_old_1 = '1-номер dek старый'
+number_com_dek_old_1 = '1-номер компл dek старый'
+fac_number_dek_old_1 = '1-зав. № dek старый'
+ser_number_dek_old_2 = '2-номер dek старый'
+number_com_dek_old_2 = '2-номер компл dek старый'
+fac_number_dek_old_2 = '2-зав. № dek старый'
 ser_number_dek_new_1 = '1-номер dek новый'
 number_com_dek_new_1 = '1-номер компл dek новый'
 fac_number_dek_new_1 = '1-зав. № dek новый'
@@ -105,7 +140,13 @@ ser_number_nsd = 'номер серии nsd'
 fac_number_nsd = 'зав. № nsd'
 ser_number_nsd_new = 'номер серии nsd_new'
 fac_number_nsd_new = 'зав. № nsd_new'
-
+# RDT
+ser_number_rdt_1 = '1- сер номер rdt, з.№'
+number_com_rdt_1 = '1-номер компл rdt'
+fac_number_rdt_1 = '1-зав. № rdt'
+ser_number_rdt_2 = '2- сер номер rdt, з.№'
+number_com_rdt_2 = '2-номер компл rdt'
+fac_number_rdt_2 = '2-зав. № rdt'
 
 
 stamp_numer_common_old = stamp_numer_one_old + ', ' + stamp_numer_two_old
