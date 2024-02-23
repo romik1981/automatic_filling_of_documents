@@ -4,7 +4,9 @@
 from data_jornal import last_device_input_dek, number_device, number_device_last_in_spo
 
 # импорт номеров и серий ключей
-from data_jornal import number_tape_ckt_old, ser_number_ckt_old, ser_number_ckt_new, number_tape_ckt_new,\
+from data_jornal import ser_number_rdt_1_old, number_com_rdt_1_old, fac_number_rdt_1_old, ser_number_rdt_2_old,\
+    number_com_rdt_2_old, fac_number_rdt_2_old,\
+    number_tape_ckt_old, ser_number_ckt_old, ser_number_ckt_new, number_tape_ckt_new,\
     ser_number_dek_old_1, number_com_dek_old_1, fac_number_dek_old_1, ser_number_dek_old_2, number_com_dek_old_2, \
     fac_number_dek_old_2, \
     ser_number_dek_new_1, number_com_dek_new_1, fac_number_dek_new_1, \
@@ -373,27 +375,27 @@ def create_write_rdt_1(list_out_rdt):
         for j, cell in enumerate(row):
             # print(cell)
             if i == 2 and j == 0:
-                list_out_rdt[i][j] = ser_number_rdt_1
+                list_out_rdt[i][j] = ser_number_rdt_1_old
             elif i == 3 and j == 0:
-                list_out_rdt[i][j] = number_com_rdt_1
+                list_out_rdt[i][j] = number_com_rdt_1_old
             elif i == 4 and j == 0:
-                list_out_rdt[i][j] = fac_number_rdt_2
+                list_out_rdt[i][j] = fac_number_rdt_1_old
             elif i == 6 and j == 0:
-                list_out_rdt[i][j] = ser_number_rdt_2
+                list_out_rdt[i][j] = ser_number_rdt_2_old
             elif i == 7 and j == 0:
-                list_out_rdt[i][j] = number_com_rdt_2
+                list_out_rdt[i][j] = number_com_rdt_2_old
             elif i == 8 and j == 0:
-                list_out_rdt[i][j] = fac_number_rdt_2
+                list_out_rdt[i][j] = fac_number_rdt_2_old
             elif i == 1 and j == 2:
                 list_out_rdt[i][j] = number_device
             elif i == 2 and j == 9:
-                list_out_rdt[i][j] = date_time_del_rdt_old.strftime('D-%d.%m.%Y')
+                list_out_rdt[i][j] = date_time_del_rdt_old.strftime('%d.%m.%Y')
             elif i == 3 and j == 9:
-                list_out_rdt[i][j] = date_time_del_rdt_old.strftime('T-%H:%M')
+                list_out_rdt[i][j] = date_time_del_rdt_old.strftime('%H:%M')
             elif i == 6 and j == 9:
-                list_out_rdt[i][j] = date_time_del_rdt_old.strftime('D-%d.%m.%Y')
+                list_out_rdt[i][j] = date_time_del_rdt_old.strftime('%d.%m.%Y')
             elif i == 7 and j == 9:
-                list_out_rdt[i][j] = date_time_del_rdt_old.strftime('T-%H:%M')
+                list_out_rdt[i][j] = date_time_del_rdt_old.strftime('%H:%M')
 
             elif i in [1, 2, 3, 4, 5, 6, 7, 8] and j in [1, 3, 4, 5, 6, 7, 8, 10, 11]:
                 list_out_rdt[i][j] = str(i) + ',' + str(j)  # ''
@@ -411,7 +413,7 @@ def create_write_rdt_2(list_out_rdt):
             elif i == 3 and j == 0:
                 list_out_rdt[i][j] = number_com_rdt_1
             elif i == 4 and j == 0:
-                list_out_rdt[i][j] = fac_number_rdt_2
+                list_out_rdt[i][j] = fac_number_rdt_1
             elif i == 6 and j == 0:
                 list_out_rdt[i][j] = ser_number_rdt_2
             elif i == 7 and j == 0:
@@ -419,58 +421,58 @@ def create_write_rdt_2(list_out_rdt):
             elif i == 8 and j == 0:
                 list_out_rdt[i][j] = fac_number_rdt_2
             elif i == 1 and j == 1:
-                list_out_rdt[i][j] = date_time_op_rdt1.strftime('D-%d.%m.%Y')
+                list_out_rdt[i][j] = date_time_op_rdt1.strftime('%d.%m.%Y')
             elif i == 2 and j == 1:
-                list_out_rdt[i][j] = date_time_op_rdt1.strftime('T-%H:%M')
+                list_out_rdt[i][j] = date_time_op_rdt1.strftime('%H:%M')
             elif i == 5 and j == 1:
-                list_out_rdt[i][j] = date_time_op_rdt2.strftime('D-%d.%m.%Y')
+                list_out_rdt[i][j] = date_time_op_rdt2.strftime('%d.%m.%Y')
             elif i == 6 and j == 1:
-                list_out_rdt[i][j] = date_time_op_rdt2.strftime('T-%H:%M')
+                list_out_rdt[i][j] = date_time_op_rdt2.strftime('%H:%M')
             if i == 1 and j == 2:
                 list_out_rdt[i][j] = number_device
             elif i == 1 and j == 3:
-                list_out_rdt[i][j] = date_time_begin.strftime('D-%d.%m.%Y')
+                list_out_rdt[i][j] = date_time_begin.strftime('%d.%m.%Y')
             elif i == 2 and j == 3:
-                list_out_rdt[i][j] = date_time_begin.strftime('T-%H:%M')
+                list_out_rdt[i][j] = date_time_begin.strftime('%H:%M')
             elif i == 2 and j == 3:
                 list_out_rdt[i][j] = stamp_numer_common_old
             elif i == 1 and j == 4:
-                list_out_rdt[i][j] = date_time_op_rdt2.strftime('D-%d.%m.%Y')
+                list_out_rdt[i][j] = date_time_op_rdt2.strftime('%d.%m.%Y')
             elif i == 2 and j == 4:
-                list_out_rdt[i][j] = date_time_op_rdt2.strftime('T-%H:%M')
+                list_out_rdt[i][j] = date_time_op_rdt2.strftime('%H:%M')
             elif i == 5 and j == 4:
-                list_out_rdt[i][j] = date_time_in_rdt2.strftime('D-%d.%m.%Y')
+                list_out_rdt[i][j] = date_time_in_rdt2.strftime('%d.%m.%Y')
             elif i == 6 and j == 4:
-                list_out_rdt[i][j] = date_time_in_rdt2.strftime('T-%H:%M')
+                list_out_rdt[i][j] = date_time_in_rdt2.strftime('%H:%M')
             elif i == 5 and j == 6:
-                list_out_rdt[i][j] = date_time_cl_cap_input.strftime('D-%d.%m.%Y')
+                list_out_rdt[i][j] = date_time_cl_cap_input.strftime('%d.%m.%Y')
             elif i == 6 and j == 6:
-                list_out_rdt[i][j] = date_time_cl_cap_input.strftime('T-%H:%M')
+                list_out_rdt[i][j] = date_time_cl_cap_input.strftime('%H:%M')
             elif i == 7 and j == 6:
                 list_out_rdt[i][j] = stamp_numer_common
             elif i == 2 and j == 10:
-                list_out_rdt[i][j] = date_time_erase_rdt1.strftime('D-%d.%m.%Y')
+                list_out_rdt[i][j] = date_time_erase_rdt1.strftime('%d.%m.%Y')
             elif i == 3 and j == 10:
-                list_out_rdt[i][j] = date_time_erase_rdt1.strftime('T-%H:%M')
+                list_out_rdt[i][j] = date_time_erase_rdt1.strftime('%H:%M')
             elif i == 6 and j == 10:
-                list_out_rdt[i][j] = date_time_erase_rdt2.strftime('D-%d.%m.%Y')
+                list_out_rdt[i][j] = date_time_erase_rdt2.strftime('%d.%m.%Y')
             elif i == 7 and j == 10:
-                list_out_rdt[i][j] = date_time_erase_rdt2.strftime('T-%H:%M')
+                list_out_rdt[i][j] = date_time_erase_rdt2.strftime('%H:%M')
             elif i == 1 and j == 11:
-                list_out_rdt[i][j] = date_time_cl_rdt1.strftime('D-%d.%m.%Y')
+                list_out_rdt[i][j] = date_time_cl_rdt1.strftime('%d.%m.%Y')
             elif i == 2 and j == 11:
-                list_out_rdt[i][j] = date_time_cl_rdt1.strftime('T-%H:%M')
+                list_out_rdt[i][j] = date_time_cl_rdt1.strftime('%H:%M')
             elif i == 3 and j == 11:
                 list_out_rdt[i][j] = stamp_numer_one_r
             elif i == 5 and j == 11:
-                list_out_rdt[i][j] = date_time_cl_rdt2.strftime('D-%d.%m.%Y')
+                list_out_rdt[i][j] = date_time_cl_rdt2.strftime('%d.%m.%Y')
             elif i == 6 and j == 11:
-                list_out_rdt[i][j] = date_time_cl_rdt2.strftime('T-%H:%M')
+                list_out_rdt[i][j] = date_time_cl_rdt2.strftime('%H:%M')
             elif i == 7 and j == 11:
                 list_out_rdt[i][j] = stamp_numer_two_r
 
             elif i in [1, 2, 3, 4, 5, 6, 7, 8] and j in [5, 7, 8, 9]:
-                list_out_rdt[i][j] = str(i) + ',' + str(j)  # ''
+                list_out_rdt[i][j] = '' # str(i) + ',' + str(j)
             elif i == 0:
                 list_out_rdt[i][j] = ''
 
@@ -860,14 +862,14 @@ if __name__ == '__main__':
     # write_file_dek(list_out_dek, 'dek', 'Ввод №2 нового DEK')
 
     '''Собираем журнал RDT'''
-    # Запись о сбросе RDT
-    list_out_rdt = create_write_rdt_1(read_file_jornal('rdt'))
-    pprint.pprint(list_out_rdt, depth=12, width=144)
-    write_file_dek(list_out_rdt, 'rdt', 'Сброс старого RDT')
-    # Запись о вводе RDT
-    list_out_rdt = create_write_rdt_2(read_file_jornal('rdt'))
-    pprint.pprint(list_out_rdt, depth=12, width=144)
-    write_file_dek(list_out_rdt, 'rdt', 'Сброс нового RDT')
+    # # Запись о сбросе RDT
+    # list_out_rdt = create_write_rdt_1(read_file_jornal('rdt'))
+    # pprint.pprint(list_out_rdt, depth=12, width=144)
+    # write_file_dek(list_out_rdt, 'rdt', 'Сброс старого RDT')
+    # # Запись о вводе RDT
+    # list_out_rdt = create_write_rdt_2(read_file_jornal('rdt'))
+    # pprint.pprint(list_out_rdt, depth=12, width=144)
+    # write_file_dek(list_out_rdt, 'rdt', 'Ввод нового RDT')
 
     '''Собираем журнал CKT'''
     # # Запись о проверке старым CKT

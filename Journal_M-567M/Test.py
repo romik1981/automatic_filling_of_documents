@@ -110,9 +110,9 @@ def write_file_password(password, type_f=None):
 # print(b)
 # print(c)
 # print(d)
-date_now = datetime.datetime.now()
-duration_10_minutes = datetime.timedelta(minutes=10)
-result_10_min = (date_now + duration_10_minutes).strftime('Date - %d.%m.%Y Time - %H:%M')
+# date_now = datetime.datetime.now()
+# duration_10_minutes = datetime.timedelta(minutes=10)
+# result_10_min = (date_now + duration_10_minutes).strftime('Date - %d.%m.%Y Time - %H:%M')
 
 
 if __name__ == '__main__':
@@ -129,78 +129,90 @@ if __name__ == '__main__':
     # print(e.strftime('%d-%m-%Y'))
     # print(e.strftime('%H:%M'))
 
-    date_now = datetime.datetime.now()
-    duration_10_minutes = datetime.timedelta(minutes=10)
-    duration_minutes = datetime.timedelta(days=1, minutes=10)
-    duration_minutes_1 = datetime.timedelta(days=1, minutes=10, seconds=10)
-    duration_minutes_2 = datetime.timedelta(days=1, minutes=10, seconds=10, milliseconds=10)
-    duration_minutes_3 = datetime.timedelta(days=1, minutes=10, seconds=10, milliseconds=10, microseconds=10)
-    # print(duration_minutes)
-    result_10_min = (date_now + duration_10_minutes).strftime('Date - %d.%m.%Y Time - %H:%M')
-    result = date_now + duration_minutes
-    result_1 = date_now + duration_minutes_1
-    result_2 = date_now + duration_minutes_2
-    result_3 = date_now + duration_minutes_3
+    # date_now = datetime.datetime.now()
+    # duration_10_minutes = datetime.timedelta(minutes=10)
+    # duration_minutes = datetime.timedelta(days=1, minutes=10)
+    # duration_minutes_1 = datetime.timedelta(days=1, minutes=10, seconds=10)
+    # duration_minutes_2 = datetime.timedelta(days=1, minutes=10, seconds=10, milliseconds=10)
+    # duration_minutes_3 = datetime.timedelta(days=1, minutes=10, seconds=10, milliseconds=10, microseconds=10)
+    # # print(duration_minutes)
+    # result_10_min = (date_now + duration_10_minutes).strftime('Date - %d.%m.%Y Time - %H:%M')
+    # result = date_now + duration_minutes
+    # result_1 = date_now + duration_minutes_1
+    # result_2 = date_now + duration_minutes_2
+    # result_3 = date_now + duration_minutes_3
     # print(result_10_min, type(result_10_min))
     # print(result, type(result))
     # print(result_1, type(result))
     # print(result_2, type(result))
     # print(result_3, type(result))
     # print(date_now.timestamp())
-    # print()
-
-
-
-
     # print(e - d)
     # print(time.time())
     # print(f.strftime("%A %d. %B %Y Time %h %m"))
-
     # write_file_password(result_10_min, 'test')
 
-    list_out_dek = [['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']]
-    print(list_out_dek[1][2])
-    list_out_dek[1][2] = '2a'
-    list_out_dek[1][1] = '1a'
-    list_out_dek[1][3] = '3a'
-    print(list_out_dek)
+    # list_out_dek = [['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']]
+    # print(list_out_dek[1][2])
+    # list_out_dek[1][2] = '2a'
+    # list_out_dek[1][1] = '1a'
+    # list_out_dek[1][3] = '3a'
+    # print(list_out_dek)
+    #
+    # # Кодирование декодирование данных
+    #
+    # data_dek = read_file_jornal()
+    # print('Изменение кодировки:')
+    # print(data_dek[1][2])
+    # print(data_dek[0][0])
+    # # d[0][0] = d[0][0].decode('cp1251').encode('utf8')
+    # print(data_dek[0][0])
+    #
+    # text = "pitón"
+    #
+    # data_dek[0][0] = data_dek[0][0].encode()
+    # print(type(data_dek[0][0]))
+    # data_dek[0][0] = data_dek[0][0].decode()
+    # print(data_dek[0][0], type(data_dek[0][0]), '1')
+    #
+    # text = "pitón"
+    # text = text.encode()
+    # print(text)
+    # text = text.decode('utf-8')
+    # print(text, type(text), '2')
+    #
+    # text = "pitón"
+    # text = text.encode()
+    # print(text)
+    # text = text.decode('utf-16')
+    # print(text, type(text), '3')
+    #
+    # data_dek = read_file_jornal()
+    # data_dek[0][0] = data_dek[0][0].encode('cp1251')
+    # print(data_dek[0][0])
+    # data_dek[0][0] = data_dek[0][0].decode('cp1251')
+    # print(data_dek[0][0], type(data_dek[0][0]), '4')
+    #
+    # data_dek = read_file_jornal()
+    # data_dek[0][0] = data_dek[0][0].encode('utf-8')
+    # print(data_dek[0][0])
+    # data_dek[0][0] = data_dek[0][0].decode('utf-8')
+    # print(data_dek[0][0], type(data_dek[0][0]), '5')
 
-    # Кодирование декодирование данных
-
-    data_dek = read_file_jornal()
-    print('Изменение кодировки:')
-    print(data_dek[1][2])
-    print(data_dek[0][0])
-    # d[0][0] = d[0][0].decode('cp1251').encode('utf8')
-    print(data_dek[0][0])
-
-    text = "pitón"
-
-    data_dek[0][0] = data_dek[0][0].encode()
-    print(type(data_dek[0][0]))
-    data_dek[0][0] = data_dek[0][0].decode()
-    print(data_dek[0][0], type(data_dek[0][0]), '1')
-
-    text = "pitón"
-    text = text.encode()
-    print(text)
-    text = text.decode('utf-8')
-    print(text, type(text), '2')
-
-    text = "pitón"
-    text = text.encode()
-    print(text)
-    text = text.decode('utf-16')
-    print(text, type(text), '3')
-
-    data_dek = read_file_jornal()
-    data_dek[0][0] = data_dek[0][0].encode('cp1251')
-    print(data_dek[0][0])
-    data_dek[0][0] = data_dek[0][0].decode('cp1251')
-    print(data_dek[0][0], type(data_dek[0][0]), '4')
-
-    data_dek = read_file_jornal()
-    data_dek[0][0] = data_dek[0][0].encode('utf-8')
-    print(data_dek[0][0])
-    data_dek[0][0] = data_dek[0][0].decode('utf-8')
-    print(data_dek[0][0], type(data_dek[0][0]), '5')
+    # Создание собственной даты и времени
+    # date_now = datetime.datetime.now()
+    # print(date_now)
+    # print(date_now.strftime('%d.%m.%Y - %H:%M'))
+    # date = datetime.date(2024, 2, 23)
+    # print(date, type(date))
+    # date_time = datetime.datetime(year=2024, month=2, day=23, hour=10, minute=00, second=00)
+    # print(date_time.strftime('%d.%m.%Y - %H:%M:'), type(date_time))
+    # time = date_time.strftime('%X')
+    # print(time, type(time))
+    # h = 12
+    # date_time = datetime.datetime(year=2024, month=2, day=23, hour=h, minute=00, second=00)
+    # print(date_time.strftime('%d.%m.%Y - %H:%M:'), type(date_time))
+    # m = 15
+    # time = datetime.time(12, m, second=33, microsecond=122)
+    # print(time, type(time))
+    # print(time.hour)
