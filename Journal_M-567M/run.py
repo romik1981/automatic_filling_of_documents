@@ -5,7 +5,6 @@ import pprint
 
 point_exit = 'y'
 
-
 while True:
     if point_exit == 'n':
         break

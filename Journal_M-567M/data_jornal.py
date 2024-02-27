@@ -7,7 +7,7 @@
 import datetime, pprint
 # импорт встроенных модулей
 # from read_write_file import read_file_jornal
-# from run import type_work
+
 
 '''Функции считывания и ввода данных'''
 def read_file_date_input(type_f=''):
@@ -116,6 +116,7 @@ last_device_input_dek = 'Номер аппарата куда в последн�
 
 # Переменные даты и времени
 date_time_now = datetime.datetime.now().strftime('Date - %d.%m.%Y Time - %H:%M')
+# время начала работ (вскрытие крышки ввод)
 date_time_begin = datetime.datetime.now()
 date_now = datetime.datetime.now().strftime('Date - %d.%m.%Y')
 time_now = datetime.datetime.now().strftime('Time - %H:%M')
@@ -346,8 +347,6 @@ fac_number_rdt_2 = 'зав. №' + input('Введите заводской но
 stamp_numer_common_old = stamp_numer_one_old + ', ' + stamp_numer_two_old
 stamp_numer_common = stamp_numer_one + ', ' + stamp_numer_two
 
-
-
 # получаем данные необходимые для выполнения работ
 # ввод ключей в аппарат
 # list_in_rdt_old = read_file_date_input('rdt_old') # список данных по старым ключам rdt
@@ -355,7 +354,6 @@ stamp_numer_common = stamp_numer_one + ', ' + stamp_numer_two
 # print(create_date_rdt_old(list_in_rdt_old))
 # print(create_date_rdt_old(list_in_rdt_old)[6])
 # print(create_date_rdt_old(list_in_rdt_old)[7].split(' ')[0])
-
 
 if __name__ == '__main__':
     '''Функции считывания и ввода данных'''
