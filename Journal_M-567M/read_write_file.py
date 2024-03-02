@@ -47,6 +47,7 @@ list_out_dek = []
 list_out_rdt = []
 list_out_ckt = []
 list_out_nsd_spo = []
+list_out_technical = []
 
 def read_file_jornal(type_f=''):
     ''' Функция записи данных в файл журнала DEK '''
@@ -103,6 +104,18 @@ def read_file_jornal(type_f=''):
                 list_out_nsd_spo.append(str)
 
         return list_out_nsd_spo
+
+    if type_f == 'technical':
+        list_out_nsd_spo = []
+
+        with open(f'{type_f}_jornal_M567M.csv', 'r', encoding='cp1251') as fr:
+            for str_ in fr:
+                str = str_.strip().split(";")
+                for _ in str:
+                    _ = _.encode('utf-8')
+                list_out_technical.append(str)
+
+        return list_out_technical
 
     if type_f == '':
         print('Не указан тип файла жрнала!')
@@ -909,3 +922,5 @@ if __name__ == '__main__':
     # list_out_nsd_spo = create_write_spo_4(read_file_jornal('nsd_spo'))
     # print(list_out_nsd_spo)
     # write_file_dek(list_out_nsd_spo, 'nsd_spo', 'Ввод №2 СПО')
+    # Записи в технический журнал
+    pprint.pprint(read_file_jornal('technical'), depth=12, width=144)
