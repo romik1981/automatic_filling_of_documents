@@ -803,7 +803,8 @@ def create_write_nsd_2(list_out_nsd_spo):
 Формирование данных для передачи в функции записи журналов.
 """
 
-type_work = input('Введите вид работ ("ТО", "ОН", "Сб"): ')
+type_work = input('Введите вид работ ("ТО", "ОН", "Сб"): ') # выбор типа работ с аппаратурой
+quantity_device = int(input('Сколько аппаратов вы используете: ')) # количество вводимых аппаратов
 
 last_device_input_dek = 'Номер аппарата куда в последний раз был введён ДЕК'
 
@@ -814,6 +815,8 @@ duration_3_minutes = datetime.timedelta(minutes=3)
 duration_4_minutes = datetime.timedelta(minutes=4)
 duration_5_minutes = datetime.timedelta(minutes=5)
 duration_6_minutes = datetime.timedelta(minutes=6)
+duration_7_minutes = datetime.timedelta(minutes=7)
+duration_11_minutes = datetime.timedelta(minutes=11)
 duration_14_minutes = datetime.timedelta(minutes=14)
 duration_20_minutes = datetime.timedelta(minutes=20)
 duration_23_minutes = datetime.timedelta(minutes=23)
@@ -839,9 +842,9 @@ duration_14_h_30_m = datetime.timedelta(hours=14, minutes=30)
 """
 
 point_exit = 'y'
-n = 1
+n = 1 # счётчик циклов набора аппаратов
 date_time_cl_cap_input = datetime.datetime.now()
-while True:
+while n <= quantity_device:
     if point_exit == 'n':
         break
     else:
@@ -850,10 +853,10 @@ while True:
         else:
             date_time_begin = datetime.datetime.now()
         # получаем значения года, месяца, дня, часа, минут, секунд
-        print(date_time_begin)
+
         if n == 1:
-            type_dt = input('Хотите ввести время начала работ(y/n): ')
-            if type_dt == 'y':
+            type_dt = input('Хотите ввести время начала работ(да/нет): ')
+            if type_dt == 'да':
                 year = date_time_begin.year
                 # print(year, type(year))
                 month = date_time_begin.month
@@ -866,10 +869,13 @@ while True:
                 # print(minute, type(minute))
                 second = date_time_begin.second
                 # print(second, type(second))
-                hour = int(input('Введите время начала работ: '))
-                minute = int(input('-'))
+                hour = int(input('Введите время начала работ- часы: '))
+                minute = int(input('-минуты: '))
                 # print(hour, type(hour))
-                date_time_begin = datetime.datetime(year=year, month=month, day=day, hour=hour, minute=minute, second=second)
+                date_time_begin = datetime.datetime(year=year, month=month, day=day, hour=hour, minute=minute, second=00)
+
+        print(date_time_begin)
+
         # даты и время для DEK
         date_time_op_dek1_old = date_time_begin + duration_38_minutes
         date_time_op_dek2_old = date_time_op_dek1_old + duration_2_minutes
@@ -902,21 +908,26 @@ while True:
         date_time_op_2_dek1_new = 'вр вск dek для апп №2'
         date_time_op_2_dek2_new = 'вр вск dek для апп №2'
         date_time_erase_1_dek12_new = date_time_seal_1_dek12_new + duration_1_minutes
+
         # даты и время для NSD
         date_time_op_nsd_new = date_time_del_spo12 + duration_6_minutes
         date_time_in_nsd_new = date_time_op_nsd_new + duration_1_minutes
         date_time_erase_nsd_new = date_time_in_nsd_new + duration_14_minutes
         date_time_cl_nsd_new = date_time_erase_nsd_new + duration_1_minutes
+
         # даты и время для CKT
         # набор очередного ключа
         if type_work == 'ОН':
-            date_time_ckt = date_time_begin + duration_20_minutes
+            if n == 1:
+                date_time_ckt = date_time_begin + duration_20_minutes # вскрытие футляра ckt
+            else:
+                date_time_ckt = date_time_begin + duration_1_minutes
             extract_date_time_ckt = date_time_ckt + duration_1_minutes
             input_date_time_ckt = date_time_ckt + duration_2_minutes
             seal_date_time_ckt = date_time_ckt + duration_4_minutes
             # Время уничтожения ключей, блокнотов и упаковок
             if n == 1:
-                del_date_time = date_time_begin + duration_4_hours
+                del_date_time = date_time_begin + duration_20_minutes + datetime.timedelta(minutes=quantity_device*25) # уничтожение ключей и таблиц блокнотов
             date_time_ckt_new = date_time_begin + duration_1_h_14_m
             extract_date_time_ckt_new = date_time_ckt_new + duration_1_minutes
             input_date_time_ckt_new = date_time_ckt_new + duration_2_minutes
@@ -935,8 +946,13 @@ while True:
         # даты и время для RDT
         # набор очередного ключа
         if type_work == 'ОН':
-            date_time_del_rdt_old = date_time_begin + duration_30_minutes
-            date_time_op_rdt1 = date_time_begin + duration_26_minutes
+            if n == 1:
+                date_time_del_rdt_old = date_time_begin + duration_30_minutes # сброс старого rdt
+                date_time_op_rdt1 = date_time_begin + duration_26_minutes     # вскрытие нового rdt
+            else:
+                date_time_del_rdt_old = date_time_begin + duration_11_minutes
+                date_time_op_rdt1 = date_time_begin + duration_7_minutes
+
             date_time_op_rdt2 = date_time_op_rdt1 + duration_1_minutes
             date_time_in_rdt2 = date_time_op_rdt2 + duration_1_minutes
             date_time_erase_rdt1 = date_time_in_rdt2 + duration_6_minutes
@@ -1023,18 +1039,24 @@ while True:
         # RDT
         # старые
         # cmd
-        ser_number_rdt_1_old = '№' + input('Введите номер старой серии rdt: ') + ', з.017'
-        number_com_rdt_1_old = '№' + input('Введите номер старого комплекта rdt: ') + ', кл.3, э.ед.'
-        fac_number_rdt_1_old = 'зав. №' + input('Введите заводской номер старого rdt1: ')
+        if n == 1:
+            ser_number_rdt_1_old = '№' + input('Введите номер старой серии rdt: ') + ', з.017'
+            number_key_rdt_old = input('Введите номер ключа старой серии rdt: ')
+        number_com_rdt_1_old = "№" + input(f"Введите номер старого комплекта rdt для аппарата №"
+                                           f"{number_device}: ") + ", кл." + number_key_rdt_old + ", э.ед."
+        fac_number_rdt_1_old = 'зав. №' + input(f'Введите заводской номер старого rdt1 для аппарата {number_device}: ')
         ser_number_rdt_2_old = ser_number_rdt_1_old
         number_com_rdt_2_old = number_com_rdt_1_old
-        fac_number_rdt_2_old = 'зав. №' + input('Введите заводской номер старого rdt2: ')
-        ser_number_rdt_1 = '№' + input('Введите номер новой серии rdt: ') + ', з.017'
-        number_com_rdt_1 = '№' + input('Введите номер нового комплекта rdt: ') + ', кл.3, э.ед.'
-        fac_number_rdt_1 = 'зав. №' + input('Введите заводской номер нового rdt1: ')
+        fac_number_rdt_2_old = 'зав. №' + input(f'Введите заводской номер старого rdt2 для аппарата {number_device}: ')
+        if n == 1:
+            ser_number_rdt_1 = '№' + input('Введите номер новой серии rdt: ') + ', з.017'
+            number_key_rdt = input('Введите номер ключа новой серии rdt: ')
+        number_com_rdt_1 = "№" + input(f"Введите номер нового комплекта rdt для аппарата №"
+                                       f"{number_device}: ") + ", кл." + number_key_rdt + ", э.ед."
+        fac_number_rdt_1 = 'зав. №' + input(f'Введите заводской номер нового rdt1 для аппарата {number_device}: ')
         ser_number_rdt_2 = ser_number_rdt_1
         number_com_rdt_2 = number_com_rdt_1
-        fac_number_rdt_2 = 'зав. №' + input('Введите заводской номер нового rdt2: ')
+        fac_number_rdt_2 = 'зав. №' + input(f'Введите заводской номер нового rdt2 для аппарата {number_device}: ')
         # test
         # ser_number_rdt_1_old = '1- сер номер rdt, з.№ старая'
         # number_com_rdt_1_old = '1-номер компл rdt старая'
@@ -1120,5 +1142,5 @@ while True:
 
         print(f'Вы набрали {n} аппарат.')
         n += 1
-
-        point_exit = input('Продолжить ввод (y/n): ')
+        if n <= quantity_device:
+            point_exit = input('Продолжить набор аппаратов (да/нет): ')
