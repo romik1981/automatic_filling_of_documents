@@ -36,7 +36,11 @@ from data_jornal import date_now, time_now, date_time_ckt, extract_date_time_ckt
     date_time_in_2_spo1, date_time_in_2_spo2, date_time_cl_2_spo2, date_time_op_1_spo1, date_time_op_1_spo2,\
     date_time_in_1_spo1, date_time_del_1_spo12, date_time_in_1_spo2, date_time_op_nsd_new, date_time_in_nsd_new,\
     date_time_erase_nsd_new, date_time_cl_nsd_new, date_time_del_rdt_old, date_time_op_rdt1, date_time_op_rdt2, \
-    date_time_in_rdt2, date_time_erase_rdt1, date_time_erase_rdt2, date_time_cl_rdt1, date_time_cl_rdt2
+    date_time_in_rdt2, date_time_erase_rdt1, date_time_erase_rdt2, date_time_cl_rdt1, date_time_cl_rdt2, date_time_op_MUVK,\
+    date_time_op_CUV_1, date_time_op_CUV_2, date_time_check_CPO_MUVK_b, date_time_check_CPO_MUVK_e, date_time_erase_CUV_1_b,\
+    date_time_erase_CUV_1_e, date_time_cl_CUV_1, date_time_cl_CUV_2, date_time_CPO_INPUT_b, date_time_CPO_INPUT_e,\
+    date_time_erase_RDT_b, date_time_erase_RDT_e, date_time_cl_cap_input_b, date_time_cl_cap_input_e, date_time_cl_MUVK,\
+    date_time_op_box_CUV_2, date_time_del_CUV_2, date_time_erase_RDT_old_b, date_time_erase_RDT_old_e, date_time_cl_cap_input_dev1
 
 
 import pprint
@@ -48,6 +52,7 @@ list_out_rdt = []
 list_out_ckt = []
 list_out_nsd_spo = []
 list_out_technical = []
+dict_out_technical = {}
 
 def read_file_jornal(type_f=''):
     ''' Функция записи данных в файл журнала DEK '''
@@ -848,6 +853,69 @@ def create_write_nsd_2(list_out_nsd_spo):
 
     return list_out_nsd_spo
 
+def create_dict_tech(list_out_technical):
+
+    dict_out_technical = {
+        # заголовки технического журнала
+        'title': list_out_technical[0],
+        # записи о вскрытии контейнера с МУВК
+        'date_time_op_MUVK': date_time_op_MUVK,
+        'write_open_kontainer': list_out_technical[1][1],
+        'catatan_ON_begin': list_out_technical[1][8],
+        'FIO_1part': list_out_technical[2][6], # ФИО 1 часть
+        'FIO_lukisan_1part': list_out_technical[2][7], # подпись 1 часть
+        # записи о вскрытии 1 аппарата
+        'date_time_op_cap_input_1_device': date_time_begin,
+        'write_open_cap_input_1_device': list_out_technical[3][1],
+        'write_open_cap_input_devices': list_out_technical[5][1],
+        # записи о проверке ЦПО МУВК
+        'date_time_op_CUV_1': date_time_op_CUV_1,
+        'write_open_CUV_1': list_out_technical[7][1],
+        'date_time_op_CUV_2': date_time_op_CUV_2,
+        'FIO_2part': list_out_technical[10][6], # ФИО 2 часть
+        'FIO_lukisan_2part': list_out_technical[10][7], # подпись 2 часть
+        'date_time_check_open': date_time_op_CUV_2, # дата проверки вскрытия
+        'write_check_open': list_out_technical[11][1], # проверка вскрытия
+        'FIO_chief': list_out_technical[2][6],  # ФИО начальник
+        'FIO_lukisan_chief': list_out_technical[2][7], # подпись начальник
+        'date_time_check_CPO_MUVK_b': date_time_check_CPO_MUVK_b, # проверка ЦПО МУВК начало
+        'date_time_check_CPO_MUVK_e': date_time_check_CPO_MUVK_e, # проверка ЦПО МУВК конец
+        'write_check_CPO_MUVK': list_out_technical[13][1], # проверка ЦПО МУВК
+        'date_time_erase_CUV_1_b': date_time_erase_CUV_1_b, # стирание ЦУВ-1 начало
+        'date_time_erase_CUV_1_e': date_time_erase_CUV_1_e, # стирание ЦУВ-1 конец
+        'write_erase_CUV_1': list_out_technical[16][1], # стирание ЦУВ-1
+        'date_time_cl_CUV_1': date_time_cl_CUV_1, # опечатывание ЦУВ-1
+        'write_cl_CUV_1': list_out_technical[18][1], # опечатывание ЦУВ-1
+        'date_time_cl_CUV_2': date_time_cl_CUV_2, # опечатывание ЦУВ-2
+        'write_cl_CUV_2': list_out_technical[20][1], # опечатывание ЦУВ-2
+        'date_time_CPO_INPUT_b': date_time_CPO_INPUT_b, # проверка ЦПО аппаратов, ввод ключей
+        'date_time_CPO_INPUT_e': date_time_CPO_INPUT_e, # проверка ЦПО аппаратов, ввод ключей
+        'write_CPO_INPUT': list_out_technical[22][1], # проверка ЦПО аппаратов, ввод ключей
+        'date_time_erase_RDT_b': date_time_erase_RDT_b, # стирание RDT
+        'date_time_erase_RDT_e': date_time_erase_RDT_e, # стирание RDT
+        'write_erase_RDT': list_out_technical[25][1], # стирание RDT
+        'date_time_cl_cap_input_b': date_time_cl_cap_input_b, # опечатывание крышки ввод аппарата №1
+        'date_time_cl_cap_input_e': date_time_cl_cap_input_e, # опечатывание крышки ввод последнего аппарата
+        'write_cl_cap_input': list_out_technical[28][1], # опечатывание крышки ввод последнего аппарата
+        'date_time_cl_MUVK': date_time_cl_MUVK, # опечатывание МУВК
+        'write_cl_MUVK': list_out_technical[31][1], # опечатывание МУВК
+        'date_time_op_box_CUV_2': date_time_op_box_CUV_2, # вскрытие пенала ЦУВ-2
+        'write_op_box_CUV_2': list_out_technical[34][1], # вскрытие пенала ЦУВ-2
+        'date_time_del_CUV_2': date_time_del_CUV_2, # уничтожение ЦУВ-2
+        'write_del_CUV_2': list_out_technical[36][1], # уничтожение ЦУВ-2
+        'date_time_use_KD': date_time_del_CUV_2, # дата проверки правильности обращения с КД
+        'write_use_KD': list_out_technical[39][1], # уничтожение ЦУВ-2
+        'FIO_carry_KD': list_out_technical[39][6],  # ФИО ответственный за КД
+        'lukisan_carry_KD': list_out_technical[39][7],  # подпись ответственный за КД
+        'date_time_erase_RDT_old_b': date_time_erase_RDT_old_b, # начало стирания выведенных из обращения RDT
+        'date_time_erase_RDT_old_e': date_time_erase_RDT_old_e, # конец стирания выведенных из обращения RDT
+        'write_erase_RDT_old': list_out_technical[44][1], # стирание выведенных из обращения RDT
+        'date_time_cl_cap_input_dev1': date_time_cl_cap_input_dev1, # опечатывания разъёма ввод аппарата после стирания RDT
+        'write_cl_cap_input_dev1': list_out_technical[47][1], # опечатывания разъёма ввод аппарата после стирания RDT
+    }
+
+    return dict_out_technical
+
 
 if __name__ == '__main__':
     # write_file_password(result_10_min, 'rdt')
@@ -923,4 +991,6 @@ if __name__ == '__main__':
     # print(list_out_nsd_spo)
     # write_file_dek(list_out_nsd_spo, 'nsd_spo', 'Ввод №2 СПО')
     # Записи в технический журнал
-    pprint.pprint(read_file_jornal('technical'), depth=12, width=144)
+    list_out_technical = read_file_jornal('technical')
+    pprint.pprint(list_out_technical, depth=12, width=144)
+    pprint.pprint(create_dict_tech(list_out_technical), depth=12, width=144)

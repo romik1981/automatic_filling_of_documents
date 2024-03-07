@@ -250,6 +250,29 @@ else:
     # Опечатывание крышки ввод аппарата
     date_time_cl_cap_input = date_time_begin + duration_2_h_19_m
 
+# даты и время для technical_jornal
+date_time_op_MUVK = date_time_begin - duration_2_minutes # вскрытие фуляра МУВК
+date_time_op_CUV_1 = date_time_begin + duration_2_minutes # вскрытие упаковки ЦУВ-1
+date_time_op_CUV_2 = date_time_op_CUV_1 + duration_2_minutes # вскрытие упаковки ЦУВ-2
+date_time_check_CPO_MUVK_b = date_time_op_CUV_2 + duration_2_minutes # проверка ЦПО МУВК начало
+date_time_check_CPO_MUVK_e= date_time_op_CUV_2 + duration_4_minutes # проверка ЦПО МУВК конец
+date_time_erase_CUV_1_b = date_time_check_CPO_MUVK_e + duration_1_minutes # стирание ЦУВ-1 начало
+date_time_erase_CUV_1_e = date_time_check_CPO_MUVK_e + duration_1_minutes # стирание ЦУВ-1 конец
+date_time_cl_CUV_1 = date_time_erase_CUV_1_e + duration_2_minutes # опечатывание ЦУВ-1
+date_time_cl_CUV_2 = date_time_cl_CUV_1 + duration_1_minutes # опечатывание ЦУВ-2
+date_time_CPO_INPUT_b = 'дата время проверки ЦПО в аппарате №1' # проверка ЦПО аппаратов, ввод ключей
+date_time_CPO_INPUT_e = 'дата время ввода rdt в последний аппарат' # проверка ЦПО аппаратов, ввод ключей
+date_time_erase_RDT_b = 'дата время стирания введённых RDT начало' # стирание RDT
+date_time_erase_RDT_e = 'дата время стирания введённых RDT конец' # стирание RDT
+date_time_cl_cap_input_b = 'дата время опчатывания крышки ввод аппарата №1'  # опечатывание крышки ввод аппарата №1
+date_time_cl_cap_input_e = 'дата время опчатывания крышки ввод последнего аппарата' # опечатывание крышки ввод последнего аппарата
+date_time_cl_MUVK = date_time_cl_cap_input + duration_3_minutes # опечатывание МУВК
+date_time_op_box_CUV_2 = date_time_cl_MUVK + duration_2_minutes # вскрытие пенала ЦУВ-2
+date_time_del_CUV_2 = date_time_cl_CUV_2 + duration_3_minutes # уничтожение ЦУВ-2
+date_time_erase_RDT_old_b = 'дата время начала стирания выведенных из обращения RDT' # начало стирания выведенных из обращения RDT
+date_time_erase_RDT_old_e = 'дата время окончания стирания выведенных из обращения RDT' # начало стирания выведенных из обращения RDT
+date_time_cl_cap_input_dev1 = date_time_cl_cap_input # опечатывания разъёма ввод аппарата после стирания RDT
+
 # номера аппаратов и печати
 # через командную строку
 
