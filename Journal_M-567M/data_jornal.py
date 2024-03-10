@@ -8,6 +8,9 @@ import datetime, pprint
 # импорт встроенных модулей
 # from read_write_file import read_file_jornal
 
+# глобальные переменные
+list_number_device = []
+
 
 '''Функции считывания и ввода данных'''
 def read_file_date_input(type_f=''):
@@ -162,8 +165,6 @@ duration_10_h_19_m = datetime.timedelta(hours=10, minutes=19)
 duration_14_hours = datetime.timedelta(hours=14)
 duration_14_h_30_m = datetime.timedelta(hours=14, minutes=30)
 
-
-
 # даты и время для DEK
 date_time_op_dek1_old = date_time_begin + duration_38_minutes
 date_time_op_dek2_old = date_time_op_dek1_old + duration_2_minutes
@@ -260,12 +261,12 @@ date_time_erase_CUV_1_b = date_time_check_CPO_MUVK_e + duration_1_minutes # ст
 date_time_erase_CUV_1_e = date_time_check_CPO_MUVK_e + duration_1_minutes # стирание ЦУВ-1 конец
 date_time_cl_CUV_1 = date_time_erase_CUV_1_e + duration_2_minutes # опечатывание ЦУВ-1
 date_time_cl_CUV_2 = date_time_cl_CUV_1 + duration_1_minutes # опечатывание ЦУВ-2
-date_time_CPO_INPUT_b = 'дата время проверки ЦПО в аппарате №1' # проверка ЦПО аппаратов, ввод ключей
-date_time_CPO_INPUT_e = 'дата время ввода rdt в последний аппарат' # проверка ЦПО аппаратов, ввод ключей
-date_time_erase_RDT_b = 'дата время стирания введённых RDT начало' # стирание RDT
-date_time_erase_RDT_e = 'дата время стирания введённых RDT конец' # стирание RDT
-date_time_cl_cap_input_b = 'дата время опчатывания крышки ввод аппарата №1'  # опечатывание крышки ввод аппарата №1
-date_time_cl_cap_input_e = 'дата время опчатывания крышки ввод последнего аппарата' # опечатывание крышки ввод последнего аппарата
+date_time_CPO_INPUT_b = input_date_time_ckt # проверка ЦПО аппаратов, ввод ключей
+date_time_CPO_INPUT_e = date_time_in_rdt2 # проверка ЦПО аппаратов, ввод ключей
+date_time_erase_RDT_b = date_time_erase_rdt1 # стирание RDT
+date_time_erase_RDT_e = date_time_erase_rdt2 # стирание RDT
+date_time_cl_cap_input_b = date_time_cl_cap_input  # опечатывание крышки ввод аппарата №1
+date_time_cl_cap_input_e = date_time_cl_cap_input # опечатывание крышки ввод последнего аппарата
 date_time_cl_MUVK = date_time_cl_cap_input + duration_3_minutes # опечатывание МУВК
 date_time_op_box_CUV_2 = date_time_cl_MUVK + duration_2_minutes # вскрытие пенала ЦУВ-2
 date_time_del_CUV_2 = date_time_cl_CUV_2 + duration_3_minutes # уничтожение ЦУВ-2
@@ -273,45 +274,72 @@ date_time_erase_RDT_old_b = 'дата время начала стирания �
 date_time_erase_RDT_old_e = 'дата время окончания стирания выведенных из обращения RDT' # начало стирания выведенных из обращения RDT
 date_time_cl_cap_input_dev1 = date_time_cl_cap_input # опечатывания разъёма ввод аппарата после стирания RDT
 
-# номера аппаратов и печати
-# через командную строку
-
-number_device = '428M-00' + input('Введите номер аппарата М-567М: ')
-# number_device_last_in_spo = '№апп.М567М был введён SPO'
-stamp_numer_one_old = input('Введите номер старой печати №1 столбик: ')
-stamp_numer_two_old = input('Введите номер старой печати №2 столбик: ')
-stamp_numer_one = input('Введите номер новой печати №1 столбик: ')
-stamp_numer_two = input('Введите номер новой печати №2 столбик: ')
-stamp_numer_one_r_ckt_old = '№' + input('Введите номер старой печати №1 круглая: ')
-stamp_numer_one_r = '№' + input('Введите номер новой печати №1 круглая: ')
-stamp_numer_two_r = '№' + input('Введите номер новой печати №2 круглая: ')
-# stamp_numer_one_spo_last = 'п.кр.№1 spo_last'
-# stamp_numer_two_spo_last = 'п.кр.№2 spo_last'
-# тестовые данные
-# number_device = '№апп.М567М'1676
-number_device_last_in_spo = '№апп.М567М был введён SPO'
-# stamp_numer_one_old = 'п.ст.№1старая'
-# stamp_numer_two_old = 'п.ст.№2старая'
-# stamp_numer_one = 'п.ст.№1'
-# stamp_numer_two = 'п.ст.№2'
-# stamp_numer_one_r = 'п.кр.№1'
-# stamp_numer_two_r = 'п.кр.№2'
-# stamp_numer_one_r_ckt_old = 'п.кр.№1 ckt_old'
-stamp_numer_one_spo_last = 'п.кр.№1 spo_last'
-stamp_numer_two_spo_last = 'п.кр.№2 spo_last'
+# номера аппаратов, печати, ФИО участников
+if type_work == 'ОН':
+    # через командную строку
+    number_device = '428M-00' + input('Введите номер аппарата М-567М: ')
+    list_number_device.append(number_device)
+    str_number_device = str(list_number_device)
+    str_number_device = str_number_device[1:len(str_number_device)-1]
+    number_MUVK = '№' + input('Введите номер МУВК: ')
+    FIO_1part = input('Введите ФИО 1-й части: ')
+    FIO_2part = input('Введите ФИО 2-й части: ')
+    FIO_chief = input('Введите ФИО начальника (ответственного за вскрытие упаковок): ')
+    FIO_carry_KD = input('Введите ФИО ответственного за обращение с ключами: ')
+    stamp_numer_one_old_MUVK = input('Введите номер старой печати №1 столбик, которой опечатан МУВК: ')
+    stamp_numer_two_old_MUVK = input('Введите номер старой печати №2 столбик, которой опечатан МУВК: ')
+    stamp_numer_one_old = input('Введите номер старой печати №1 столбик: ')
+    stamp_numer_two_old = input('Введите номер старой печати №2 столбик: ')
+    stamp_numer_one = input('Введите номер новой печати №1 столбик: ')
+    stamp_numer_two = input('Введите номер новой печати №2 столбик: ')
+    stamp_numer_one_r_ckt_old = '№' + input('Введите номер старой печати №1 круглая: ')
+    stamp_numer_one_r = '№' + input('Введите номер новой печати №1 круглая: ')
+    stamp_numer_two_r = '№' + input('Введите номер новой печати №2 круглая: ')
+    number_device_last_in_spo = '№апп.М567М был введён SPO'
+    stamp_numer_one_spo_last = 'п.кр.№1 spo_last'
+    stamp_numer_two_spo_last = 'п.кр.№2 spo_last'
+else:
+    # тестовые данные
+    stamp_numer_one_spo_last = 'п.кр.№1 spo_last'
+    stamp_numer_two_spo_last = 'п.кр.№2 spo_last'
+    number_device = '№апп.М567М'
+    number_device_last_in_spo = '№апп.М567М был введён SPO'
+    stamp_numer_one_old = 'п.ст.№1старая'
+    stamp_numer_two_old = 'п.ст.№2старая'
+    stamp_numer_one = 'п.ст.№1'
+    stamp_numer_two = 'п.ст.№2'
+    stamp_numer_one_r = 'п.кр.№1'
+    stamp_numer_two_r = 'п.кр.№2'
+    stamp_numer_one_r_ckt_old = 'п.кр.№1 ckt_old'
+    stamp_numer_one_spo_last = 'п.кр.№1 spo_last'
+    stamp_numer_two_spo_last = 'п.кр.№2 spo_last'
 
 # номера и серии ключей
+# CUV
+if type_work == 'ОН':
+    # cmd
+    ser_number_CUV_1_2 = input('Введите номер серии ЦУВ-1,2: ')
+    fac_number_CUV_1 = 'зав. №' + input('Введите заводской номер ЦУВ-1: ')
+else:
+    # test
+    ser_number_CUV_1_2 = 'номер серии ЦУВ-1,2'
+    fac_number_CUV_1 = 'заводской номер ЦУВ-1'
+    ser_number_ckt_new = 'номер ckt новый'
+    number_tape_ckt_new = 'номер ленты ckt новый'
+
 # CKT
-# cmd
-ser_number_ckt_old = input('Введите номер ckt старый: ')
-number_tape_ckt_old = input('Введите номер ленты ckt старый: ')
-# ser_number_ckt_new = '№' + input('Введите номер ckt новый: ') + ', э.ед.'
-# number_tape_ckt_new = input('Введите номер ленты ckt новый: ')
-# test
-# ser_number_ckt_old = 'номер ckt старый'
-# number_tape_ckt_old = 'номер ленты ckt старый'
-ser_number_ckt_new = 'номер ckt новый'
-number_tape_ckt_new = 'номер ленты ckt новый'
+if type_work == 'ОН':
+    # cmd
+    ser_number_ckt_old = input('Введите номер ckt старый: ')
+    number_tape_ckt_old = input('Введите номер ленты ckt старый: ')
+    ser_number_ckt_new = '№' + input('Введите номер ckt новый: ') + ', э.ед.'
+    number_tape_ckt_new = input('Введите номер ленты ckt новый: ')
+else:
+    # test
+    ser_number_ckt_old = 'номер ckt старый'
+    number_tape_ckt_old = 'номер ленты ckt старый'
+    ser_number_ckt_new = 'номер ckt новый'
+    number_tape_ckt_new = 'номер ленты ckt новый'
 
 # DEK
 ser_number_dek_old_1 = '1-номер dek старый'
@@ -336,39 +364,43 @@ ser_number_nsd = 'номер серии nsd'
 fac_number_nsd = 'зав. № nsd'
 ser_number_nsd_new = 'номер серии nsd_new'
 fac_number_nsd_new = 'зав. № nsd_new'
+
 # RDT
-# старые
-# cmd
-ser_number_rdt_1_old = '№' + input('Введите номер старой серии rdt: ') + ', з.017'
-number_com_rdt_1_old = '№' + input('Введите номер старого комплекта rdt: ') + ', кл.3, э.ед.'
-fac_number_rdt_1_old = 'зав. №' + input('Введите заводской номер старого rdt1: ')
-ser_number_rdt_2_old = ser_number_rdt_1_old
-number_com_rdt_2_old = number_com_rdt_1_old
-fac_number_rdt_2_old = 'зав. №' + input('Введите заводской номер старого rdt2: ')
-ser_number_rdt_1 = '№' + input('Введите номер новой серии rdt: ') + ', з.017'
-number_com_rdt_1 = '№' + input('Введите номер нового комплекта rdt: ') + ', кл.3, э.ед.'
-fac_number_rdt_1 = 'зав. №' + input('Введите заводской номер нового rdt1: ')
-ser_number_rdt_2 = ser_number_rdt_1
-number_com_rdt_2 = number_com_rdt_1
-fac_number_rdt_2 = 'зав. №' + input('Введите заводской номер нового rdt2: ')
-# test
-# ser_number_rdt_1_old = '1- сер номер rdt, з.№ старая'
-# number_com_rdt_1_old = '1-номер компл rdt старая'
-# fac_number_rdt_1_old = '1-зав. № rdt старая'
-# ser_number_rdt_2_old = '2- сер номер rdt, з.№ старая'
-# number_com_rdt_2_old = '2-номер компл rdt старая'
-# fac_number_rdt_2_old = '2-зав. № rdt старая'
-# новые
-# ser_number_rdt_1 = '1- сер номер rdt, з.№'
-# number_com_rdt_1 = '1-номер компл rdt'
-# fac_number_rdt_1 = '1-зав. № rdt'
-# ser_number_rdt_2 = '2- сер номер rdt, з.№'
-# number_com_rdt_2 = '2-номер компл rdt'
-# fac_number_rdt_2 = '2-зав. № rdt'
+if type_work == 'ОН':
+    # старые
+    # cmd
+    ser_number_rdt_1_old = '№' + input('Введите номер старой серии rdt: ') + ', з.017'
+    number_com_rdt_1_old = '№' + input('Введите номер старого комплекта rdt: ') + ', кл.3, э.ед.'
+    fac_number_rdt_1_old = 'зав. №' + input('Введите заводской номер старого rdt1: ')
+    ser_number_rdt_2_old = ser_number_rdt_1_old
+    number_com_rdt_2_old = number_com_rdt_1_old
+    fac_number_rdt_2_old = 'зав. №' + input('Введите заводской номер старого rdt2: ')
+    ser_number_rdt_1 = '№' + input('Введите номер новой серии rdt: ') + ', з.017'
+    number_com_rdt_1 = '№' + input('Введите номер нового комплекта rdt: ') + ', кл.3, э.ед.'
+    fac_number_rdt_1 = 'зав. №' + input('Введите заводской номер нового rdt1: ')
+    ser_number_rdt_2 = ser_number_rdt_1
+    number_com_rdt_2 = number_com_rdt_1
+    fac_number_rdt_2 = 'зав. №' + input('Введите заводской номер нового rdt2: ')
+else:
+    # test
+    ser_number_rdt_1_old = '1- сер номер rdt, з.№ старая'
+    number_com_rdt_1_old = '1-номер компл rdt старая'
+    fac_number_rdt_1_old = '1-зав. № rdt старая'
+    ser_number_rdt_2_old = '2- сер номер rdt, з.№ старая'
+    number_com_rdt_2_old = '2-номер компл rdt старая'
+    fac_number_rdt_2_old = '2-зав. № rdt старая'
+    # новые
+    ser_number_rdt_1 = '1- сер номер rdt, з.№'
+    number_com_rdt_1 = '1-номер компл rdt'
+    fac_number_rdt_1 = '1-зав. № rdt'
+    ser_number_rdt_2 = '2- сер номер rdt, з.№'
+    number_com_rdt_2 = '2-номер компл rdt'
+    fac_number_rdt_2 = '2-зав. № rdt'
 
 # объединнённые печати
 stamp_numer_common_old = stamp_numer_one_old + ', ' + stamp_numer_two_old
 stamp_numer_common = stamp_numer_one + ', ' + stamp_numer_two
+stamp_numer_common_old_MUVK = stamp_numer_one_old_MUVK + ', ' + stamp_numer_two_old_MUVK
 
 # получаем данные необходимые для выполнения работ
 # ввод ключей в аппарат

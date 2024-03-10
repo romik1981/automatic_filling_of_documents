@@ -6,7 +6,10 @@ import random
 #from datetime import date
 import time
 import datetime
-from read_write_file import read_file_jornal
+import pprint
+# from read_write_file import read_file_jornal, create_dict_tech, list_out_technical, dict_out_technical
+
+
 
 cap_let = [chr(let) for let in range(ord('A'), ord('Z') + 1)]  # Заглавные буквы латиницы
 low_let = [chr(let) for let in range(ord('a'), ord('z') + 1)]  # Строчные буквы латиницы
@@ -216,3 +219,25 @@ if __name__ == '__main__':
     # time = datetime.time(12, m, second=33, microsecond=122)
     # print(time, type(time))
     # print(time.hour)
+
+    # Работа со словарём
+    # list_out_technical = read_file_jornal('technical')
+    # print(type(create_dict_tech(list_out_technical)))
+    # pprint.pprint(create_dict_tech(list_out_technical), depth=12, width=144)
+    # dict_out_technical = create_dict_tech(list_out_technical)
+    # print(dict_out_technical['date_time_cl_MUVK'].strftime('Дата и время начала работ %d.%m.%Y - %H:%M:'))
+    # print(len(dict_out_technical))
+    # x = dict_out_technical.copy()
+    # print(x)
+    # print(dict_out_technical.get('title')[0])
+    # for k, v in dict_out_technical.items():
+    #     print(f'Ключ: {k}; значение: {v}')
+    # print('Вставляю значения в словарь')
+    # print(dict_out_technical.setdefault('date_time_use_KD'))
+    # print(dict_out_technical.setdefault('Мой ключ', 'Добавил данныев словарь'))
+    # pprint.pprint(dict_out_technical, depth=12, width=144)
+    # Работа со списками
+    list_number_device = ['428М-001676', '428М-001677', '428М-001678']
+    s = str(list_number_device)
+    print(s)
+    print(s[1:len(s)-1])
