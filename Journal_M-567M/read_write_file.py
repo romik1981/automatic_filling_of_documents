@@ -935,6 +935,7 @@ def create_write_technical(list_in_technical, dict_out_technical, type_work=None
         list_out_technical[1][0] = dict_out_technical['date_time_op_MUVK'].strftime('%d.%m.%Y')
         dict_out_technical['write_open_kontainer'] = f'Вскрыт контейнер с МУВК ПА655М {number_MUVK}, опечатанный печатями {stamp_numer_common_old_MUVK}'
         list_out_technical[1][1] = dict_out_technical['write_open_kontainer']
+        del list_out_technical[1][8] # удаляем примечание
         # print(list_out_technical[1][1])
         list_out_technical[2][0] = dict_out_technical['date_time_op_MUVK'].strftime('%H:%M')
         dict_out_technical['FIO_1part'] = FIO_1part
@@ -943,7 +944,7 @@ def create_write_technical(list_in_technical, dict_out_technical, type_work=None
         list_out_technical.append(list_in_technical[3])
         list_out_technical.append(list_in_technical[4])
         list_out_technical[3][0] = dict_out_technical['date_time_op_cap_input_1_device'].strftime('%d.%m.%Y')
-        dict_out_technical['write_open_cap_input_1_device'] = f'Вскрыта крышка разъёма "Ввод" аппаратуры М-567М {number_device},' \
+        dict_out_technical['write_open_cap_input_1_device'] = f'Вскрыта крышка разъёма "Ввод" аппаратуры М-567М №{number_device},' \
             f'опечатанный печатями {stamp_numer_common_old}'
         list_out_technical[3][1] = dict_out_technical['write_open_cap_input_1_device']
         list_out_technical[4][0] = dict_out_technical['date_time_op_cap_input_1_device'].strftime('%H:%M')
@@ -952,7 +953,7 @@ def create_write_technical(list_in_technical, dict_out_technical, type_work=None
         list_out_technical.append(list_in_technical[5])
         list_out_technical.append(list_in_technical[6])
         list_out_technical[5][0] = dict_out_technical['date_time_op_cap_input_2_device'].strftime('%d.%m.%Y')
-        dict_out_technical['write_open_cap_input_devices'] = f'Вскрыты крышки разъёма "Ввод" аппаратуры М-567М {str_number_device}, опечатанные печатями {stamp_numer_common_old}'
+        dict_out_technical['write_open_cap_input_devices'] = f'Вскрыты крышки разъёма "Ввод" аппаратуры М-567М №{str_number_device}, опечатанные печатями {stamp_numer_common_old}'
         list_out_technical[5][1] = dict_out_technical['write_open_cap_input_devices']
         list_out_technical[6][0] = dict_out_technical['date_time_op_cap_input_2_device'].strftime('%H:%M') + '-' +\
                                    dict_out_technical['date_time_op_cap_input_n_device'].strftime('%H:%M')
@@ -987,8 +988,8 @@ def create_write_technical(list_in_technical, dict_out_technical, type_work=None
         list_out_technical.append(list_in_technical[14])
         list_out_technical.append(list_in_technical[15])
         list_out_technical[13][0] = dict_out_technical['date_time_check_CPO_MUVK_b'].strftime('%d.%m.%Y')
-        dict_out_technical['write_check_CPO_MUVK'] = f'Проведена проверка ЦПО МУВК ПА655М(V1012) №К0152, подключенного к аппаратуре ' \
-            f'М-567М(V1054){number_device} с использованием КД ЦУВ-1,2-1012 серия №{ser_number_CUV_1_2}, э.ед. Результат проверки - "норма"'
+        dict_out_technical['write_check_CPO_MUVK'] = f'Проведена проверка ЦПО МУВК ПА655М(V1012) №{number_MUVK}, подключенного к аппаратуре ' \
+            f'М-567М(V1054)№{number_device} с использованием КД ЦУВ-1,2-1012 серия №{ser_number_CUV_1_2}, э.ед. Результат проверки - "норма"'
         list_out_technical[13][1] = dict_out_technical['write_check_CPO_MUVK']
         list_out_technical[14][0] = dict_out_technical['date_time_check_CPO_MUVK_b'].strftime('%H:%M') + '-' + \
                                    dict_out_technical['date_time_check_CPO_MUVK_e'].strftime('%H:%M')
@@ -1085,11 +1086,11 @@ def create_write_technical(list_in_technical, dict_out_technical, type_work=None
         list_out_technical[38][6] = dict_out_technical['FIO_2part']
         # запись о проверки правильности обращения с КД
         list_out_technical.append(list_in_technical[39])
-        list_out_technical[11][0] = dict_out_technical['date_time_use_KD'].strftime('%d.%m.%Y')
+        list_out_technical[39][0] = dict_out_technical['date_time_use_KD'].strftime('%d.%m.%Y')
         dict_out_technical['write_use_KD'] = f'Правильность обращения с КД проверил'
-        list_out_technical[11][1] = dict_out_technical['write_use_KD']
+        list_out_technical[39][1] = dict_out_technical['write_use_KD']
         dict_out_technical['FIO_carry_KD'] = FIO_carry_KD
-        list_out_technical[12][6] = dict_out_technical['FIO_carry_KD']
+        list_out_technical[39][6] = dict_out_technical['FIO_carry_KD']
 
     return list_out_technical
 
@@ -1176,4 +1177,5 @@ if __name__ == '__main__':
     list_out_technical = create_write_technical(list_in_technical, dict_out_technical, 'ОН')
     print('Новый список технического журнала\n')
     pprint.pprint(list_out_technical, depth=12, width=144)
+    # Неверно записывает отвественного за КД!!!
     write_file_dek(list_out_technical, 'technical', 'Технический журнал')
