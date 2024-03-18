@@ -1,6 +1,7 @@
 from read_write_file import read_file_jornal, write_file_dek, create_write_dek_1, create_write_dek_2, create_write_dek_3_new,\
     create_write_rdt_1, create_write_ckt_old, create_write_ckt_new, create_write_spo_1, create_write_spo_2, create_write_nsd_1,\
-    create_write_nsd_2, create_write_spo_3, create_write_dek_4_new, create_write_spo_4, create_write_rdt_2
+    create_write_nsd_2, create_write_spo_3, create_write_dek_4_new, create_write_spo_4, create_write_rdt_2, create_dict_tech,\
+    create_write_technical
 import pprint
 
 point_exit = 'y'
@@ -73,6 +74,13 @@ while True:
         # list_out_nsd_spo = create_write_spo_4(read_file_jornal('nsd_spo'))
         # pprint.pprint(list_out_nsd_spo, depth=12, width=144)
         # write_file_dek(list_out_nsd_spo, 'nsd_spo', 'Ввод №2 СПО')
+        '''Форимрование  технического журнала'''
+        # Записи в технический журнал
+        list_in_technical = read_file_jornal('technical')
+        dict_out_technical = create_dict_tech(list_in_technical)
+        list_out_technical = create_write_technical(list_in_technical, dict_out_technical, 'ОН')
+        pprint.pprint(list_out_technical, depth=12, width=144)
+        write_file_dek(list_out_technical, 'technical', 'Технический журнал')
 
         print(f'Вы набрали {n} аппарат.')
         n += 1

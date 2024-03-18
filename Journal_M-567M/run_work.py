@@ -9,6 +9,10 @@ list_out_dek = []
 list_out_rdt = []
 list_out_ckt = []
 list_out_nsd_spo = []
+list_in_technical = []
+list_out_technical = []
+dict_out_technical = {}
+list_number_device = []
 
 def read_file_jornal(type_f=''):
     ''' Функция записи данных в файл журнала DEK '''
@@ -65,6 +69,18 @@ def read_file_jornal(type_f=''):
                 list_out_nsd_spo.append(str)
 
         return list_out_nsd_spo
+
+    if type_f == 'technical':
+        list_in_technical = []
+
+        with open(f'{type_f}_jornal_M567M.csv', 'r', encoding='cp1251') as fr:
+            for str_ in fr:
+                str = str_.strip().split(";")
+                for _ in str:
+                    _ = _.encode('utf-8')
+                list_in_technical.append(str)
+
+        return list_in_technical
 
     if type_f == '':
         print('Не указан тип файла жрнала!')
@@ -797,6 +813,247 @@ def create_write_nsd_2(list_out_nsd_spo):
 
     return list_out_nsd_spo
 
+'''Функции для формирования технического журнала'''
+def create_dict_tech(list_in_technical):
+
+    dict_out_technical = {
+        # заголовки технического журнала
+        'title': list_in_technical[0],
+        # записи о вскрытии контейнера с МУВК
+        'date_time_op_MUVK': date_time_op_MUVK,
+        'write_open_kontainer': list_in_technical[1][1],
+        'catatan_ON_begin': list_in_technical[1][8],
+        'FIO_1part': list_in_technical[2][6], # ФИО 1 часть
+        'FIO_lukisan_1part': list_in_technical[2][7], # подпись 1 часть
+        # записи о вскрытии 1 аппарата
+        'date_time_op_cap_input_1_device': date_time_op_cap_input_1_device,
+        'date_time_op_cap_input_2_device': date_time_op_cap_input_2_device,
+        'date_time_op_cap_input_n_device': date_time_op_cap_input_n_device,
+        'write_open_cap_input_1_device': list_in_technical[3][1],
+        'write_open_cap_input_devices': list_in_technical[5][1],
+        # записи о проверке ЦПО МУВК
+        'date_time_op_CUV_1': date_time_op_CUV_1,
+        'write_open_CUV_1': list_in_technical[7][1],
+        'date_time_op_CUV_2': date_time_op_CUV_2,
+        'write_open_CUV_2': list_in_technical[9][1],
+        'FIO_2part': list_in_technical[10][6], # ФИО 2 часть
+        'FIO_lukisan_2part': list_in_technical[10][7], # подпись 2 часть
+        'date_time_check_open': date_time_op_CUV_2, # дата проверки вскрытия
+        'write_check_open': list_in_technical[11][1], # проверка вскрытия
+        'FIO_chief': list_in_technical[2][6],  # ФИО начальник
+        'FIO_lukisan_chief': list_in_technical[2][7], # подпись начальник
+        'date_time_check_CPO_MUVK_b': date_time_check_CPO_MUVK_b, # проверка ЦПО МУВК начало
+        'date_time_check_CPO_MUVK_e': date_time_check_CPO_MUVK_e, # проверка ЦПО МУВК конец
+        'write_check_CPO_MUVK': list_in_technical[13][1], # проверка ЦПО МУВК
+        'date_time_erase_CUV_1_b': date_time_erase_CUV_1_b, # стирание ЦУВ-1 начало
+        'date_time_erase_CUV_1_e': date_time_erase_CUV_1_e, # стирание ЦУВ-1 конец
+        'write_erase_CUV_1': list_in_technical[16][1], # стирание ЦУВ-1
+        'date_time_cl_CUV_1': date_time_cl_CUV_1, # опечатывание ЦУВ-1
+        'write_cl_CUV_1': list_in_technical[18][1], # опечатывание ЦУВ-1
+        'date_time_cl_CUV_2': date_time_cl_CUV_2, # опечатывание ЦУВ-2
+        'write_cl_CUV_2': list_in_technical[20][1], # опечатывание ЦУВ-2
+        'date_time_CPO_INPUT_b': date_time_CPO_INPUT_b, # проверка ЦПО аппаратов, ввод ключей
+        'date_time_CPO_INPUT_e': date_time_CPO_INPUT_e, # проверка ЦПО аппаратов, ввод ключей
+        'write_CPO_INPUT': list_in_technical[22][1], # проверка ЦПО аппаратов, ввод ключей
+        'date_time_erase_RDT_b': date_time_erase_RDT_b, # стирание RDT
+        'date_time_erase_RDT_e': date_time_erase_RDT_e, # стирание RDT
+        'write_erase_RDT': list_in_technical[25][1], # стирание RDT
+        'date_time_cl_cap_input_b': date_time_cl_cap_input_b, # опечатывание крышки ввод аппарата №1
+        'date_time_cl_cap_input_e': date_time_cl_cap_input_e, # опечатывание крышки ввод последнего аппарата
+        'write_cl_cap_input': list_in_technical[28][1], # опечатывание крышек ввод  аппаратов
+        'date_time_cl_MUVK': date_time_cl_MUVK, # опечатывание МУВК
+        'write_cl_MUVK': list_in_technical[31][1], # опечатывание МУВК
+        'date_time_op_box_CUV_2': date_time_op_box_CUV_2, # вскрытие пенала ЦУВ-2
+        'write_op_box_CUV_2': list_in_technical[34][1], # вскрытие пенала ЦУВ-2
+        'date_time_del_CUV_2': date_time_del_CUV_2, # уничтожение ЦУВ-2
+        'write_del_CUV_2': list_in_technical[36][1], # уничтожение ЦУВ-2
+        'date_time_use_KD': date_time_del_CUV_2, # дата проверки правильности обращения с КД
+        'write_use_KD': list_in_technical[39][1], # проверка правильности обращения с КД
+        'FIO_carry_KD': list_in_technical[39][6],  # ФИО ответственный за КД
+        'lukisan_carry_KD': list_in_technical[39][7],  # подпись ответственный за КД
+        'date_time_erase_RDT_old_b': date_time_erase_RDT_old_b, # начало стирания выведенных из обращения RDT
+        'date_time_erase_RDT_old_e': date_time_erase_RDT_old_e, # конец стирания выведенных из обращения RDT
+        'write_erase_RDT_old': list_in_technical[44][1], # стирание выведенных из обращения RDT
+        'date_time_cl_cap_input_dev1': date_time_cl_cap_input_dev1, # опечатывания разъёма ввод аппарата после стирания RDT
+        'write_cl_cap_input_dev1': list_in_technical[47][1], # опечатывания разъёма ввод аппарата после стирания RDT
+    }
+
+    return dict_out_technical
+
+def create_write_technical(list_in_technical, dict_out_technical, type_work=None):
+
+    list_out_technical = []
+    # Условие для формирования технического журнала при очередном наборе
+    if type_work == 'ОН':
+
+        list_out_technical.append(list_in_technical[0])
+        # запись о вскрытии МУВК
+        list_out_technical.append(list_in_technical[1])
+        list_out_technical.append(list_in_technical[2])
+        list_out_technical[1][0] = dict_out_technical['date_time_op_MUVK'].strftime('%d.%m.%Y')
+        dict_out_technical['write_open_kontainer'] = f'Вскрыт контейнер с МУВК ПА655М {number_MUVK}, опечатанный печатями {stamp_numer_common_old_MUVK}'
+        list_out_technical[1][1] = dict_out_technical['write_open_kontainer']
+        del list_out_technical[1][8] # удаляем примечание
+        # print(list_out_technical[1][1])
+        list_out_technical[2][0] = dict_out_technical['date_time_op_MUVK'].strftime('%H:%M')
+        dict_out_technical['FIO_1part'] = FIO_1part
+        list_out_technical[2][6] = dict_out_technical['FIO_1part']
+        # запись о вскрытии крышки "Ввод" первого аппарата
+        list_out_technical.append(list_in_technical[3])
+        list_out_technical.append(list_in_technical[4])
+        list_out_technical[3][0] = dict_out_technical['date_time_op_cap_input_1_device'].strftime('%d.%m.%Y')
+        dict_out_technical['write_open_cap_input_1_device'] = f'Вскрыта крышка разъёма "Ввод" аппаратуры М-567М №{number_device},' \
+            f'опечатанный печатями {stamp_numer_common_old}'
+        list_out_technical[3][1] = dict_out_technical['write_open_cap_input_1_device']
+        list_out_technical[4][0] = dict_out_technical['date_time_op_cap_input_1_device'].strftime('%H:%M')
+        list_out_technical[4][6] = dict_out_technical['FIO_1part']
+        # запись о вскрытии крышек "Ввод" остальных аппаратов
+        list_out_technical.append(list_in_technical[5])
+        list_out_technical.append(list_in_technical[6])
+        list_out_technical[5][0] = dict_out_technical['date_time_op_cap_input_2_device'].strftime('%d.%m.%Y')
+        dict_out_technical['write_open_cap_input_devices'] = f'Вскрыты крышки разъёма "Ввод" аппаратуры М-567М №{str_number_device}, опечатанные печатями {stamp_numer_common_old}'
+        list_out_technical[5][1] = dict_out_technical['write_open_cap_input_devices']
+        list_out_technical[6][0] = dict_out_technical['date_time_op_cap_input_2_device'].strftime('%H:%M') + '-' +\
+                                   dict_out_technical['date_time_op_cap_input_n_device'].strftime('%H:%M')
+        list_out_technical[6][6] = dict_out_technical['FIO_1part']
+        # запись о вскрытии ЦУВ-1
+        list_out_technical.append(list_in_technical[7])
+        list_out_technical.append(list_in_technical[8])
+        list_out_technical[7][0] = dict_out_technical['date_time_op_CUV_1'].strftime('%d.%m.%Y')
+        dict_out_technical['write_open_CUV_1'] = f'Вскрыта упаковка шифрблокнота ЦУВ-1-1012 серия №{ser_number_CUV_1_2}, э.ед., {fac_number_CUV_1}'
+        list_out_technical[7][1] = dict_out_technical['write_open_CUV_1']
+        list_out_technical[8][0] = dict_out_technical['date_time_op_CUV_1'].strftime('%H:%M')
+        list_out_technical[8][6] = dict_out_technical['FIO_1part']
+        # запись о вскрытии ЦУВ-2
+        list_out_technical.append(list_in_technical[9])
+        list_out_technical.append(list_in_technical[10])
+        list_out_technical[9][0] = dict_out_technical['date_time_op_CUV_2'].strftime('%d.%m.%Y')
+        dict_out_technical['write_open_CUV_2'] = f'Вскрыта упаковка шифрблокнота ЦУВ-2-1012 серия №{ser_number_CUV_1_2}, э.ед.'
+        list_out_technical[9][1] = dict_out_technical['write_open_CUV_2']
+        list_out_technical[10][0] = dict_out_technical['date_time_op_CUV_2'].strftime('%H:%M')
+        dict_out_technical['FIO_2part'] = FIO_2part
+        list_out_technical[10][6] = dict_out_technical['FIO_2part']
+        # запись о проверки правильности вскрытия
+        list_out_technical.append(list_in_technical[11])
+        list_out_technical.append(list_in_technical[12])
+        list_out_technical[11][0] = dict_out_technical['date_time_check_open'].strftime('%d.%m.%Y')
+        dict_out_technical['write_open_CUV_1'] = f'Вскрыта упаковка шифрблокнота ЦУВ-1-1012 серия №{ser_number_CUV_1_2}, э.ед., {fac_number_CUV_1}'
+        list_out_technical[11][1] = dict_out_technical['write_check_open']
+        dict_out_technical['FIO_chief'] = FIO_chief
+        list_out_technical[12][6] = dict_out_technical['FIO_chief']
+        # проверка ЦПО МУВК
+        list_out_technical.append(list_in_technical[13])
+        list_out_technical.append(list_in_technical[14])
+        list_out_technical.append(list_in_technical[15])
+        list_out_technical[13][0] = dict_out_technical['date_time_check_CPO_MUVK_b'].strftime('%d.%m.%Y')
+        dict_out_technical['write_check_CPO_MUVK'] = f'Проведена проверка ЦПО МУВК ПА655М(V1012) {number_MUVK}, подключенного к аппаратуре ' \
+            f'М-567М(V1054)№{number_device} с использованием КД ЦУВ-1,2-1012 серия №{ser_number_CUV_1_2}, э.ед. Результат проверки - "норма"'
+        list_out_technical[13][1] = dict_out_technical['write_check_CPO_MUVK']
+        list_out_technical[14][0] = dict_out_technical['date_time_check_CPO_MUVK_b'].strftime('%H:%M') + '-' + \
+                                   dict_out_technical['date_time_check_CPO_MUVK_e'].strftime('%H:%M')
+        list_out_technical[14][6] = dict_out_technical['FIO_1part']
+        list_out_technical[15][6] = dict_out_technical['FIO_2part']
+        # стирание ЦУВ-1
+        list_out_technical.append(list_in_technical[16])
+        list_out_technical.append(list_in_technical[17])
+        list_out_technical[16][0] = dict_out_technical['date_time_erase_CUV_1_b'].strftime('%d.%m.%Y')
+        dict_out_technical['write_erase_CUV_1'] = f'Произведено стирание КИ с КД ЦУВ-1-1012 серия №{ser_number_CUV_1_2}, э.ед.,' \
+            f'зав. №{fac_number_CUV_1} с использованием МУВК ПА655М {number_MUVK}, подключенного к аппаратуре М-567М №{number_device}'
+        list_out_technical[16][1] = dict_out_technical['write_erase_CUV_1']
+        list_out_technical[17][0] = dict_out_technical['date_time_erase_CUV_1_b'].strftime('%H:%M') + '-' + \
+                                    dict_out_technical['date_time_erase_CUV_1_e'].strftime('%H:%M')
+        list_out_technical[17][6] = dict_out_technical['FIO_1part']
+        # опечатывание стёртого ЦУВ-1
+        list_out_technical.append(list_in_technical[18])
+        list_out_technical.append(list_in_technical[19])
+        list_out_technical[18][0] = dict_out_technical['date_time_cl_CUV_1'].strftime('%d.%m.%Y')
+        dict_out_technical['write_cl_CUV_1'] = f'Конверт с ключевым носителем К1634ДК6 {fac_number_CUV_1} закрыт и опечатан печатью {stamp_numer_one_r}'
+        list_out_technical[18][1] = dict_out_technical['write_cl_CUV_1']
+        list_out_technical[19][0] = dict_out_technical['date_time_cl_CUV_1'].strftime('%H:%M')
+        list_out_technical[19][6] = dict_out_technical['FIO_1part']
+        # опечатывание ЦУВ-2
+        list_out_technical.append(list_in_technical[20])
+        list_out_technical.append(list_in_technical[21])
+        list_out_technical[20][0] = dict_out_technical['date_time_cl_CUV_2'].strftime('%d.%m.%Y')
+        dict_out_technical['write_cl_CUV_2'] = f'Пенал с КД ЦУВ-2-1012 серия {ser_number_CUV_1_2}, э.ед. закрыт и опечатан печатью {stamp_numer_two_r}'
+        list_out_technical[20][1] = dict_out_technical['write_cl_CUV_2']
+        list_out_technical[21][0] = dict_out_technical['date_time_cl_CUV_2'].strftime('%H:%M')
+        list_out_technical[21][6] = dict_out_technical['FIO_2part']
+        # проверка ЦПО аппаратов, ввод КИ, переход на очередную КИ в аппратах
+        list_out_technical.append(list_in_technical[22])
+        list_out_technical.append(list_in_technical[23])
+        list_out_technical.append(list_in_technical[24])
+        list_out_technical[22][0] = dict_out_technical['date_time_CPO_INPUT_b'].strftime('%d.%m.%Y')
+        dict_out_technical['write_CPO_INPUT'] = f'В аппаратуре М-567М №{str_number_device} проведена проверка ЦПО,' \
+            f'произведён ввод очередного ключа и произведён переход на очередной ключ'
+        list_out_technical[22][1] = dict_out_technical['write_CPO_INPUT']
+        list_out_technical[23][0] = dict_out_technical['date_time_CPO_INPUT_b'].strftime('%H:%M') + '-' + \
+                                    dict_out_technical['date_time_CPO_INPUT_e'].strftime('%H:%M')
+        list_out_technical[23][6] = dict_out_technical['FIO_1part']
+        list_out_technical[24][6] = dict_out_technical['FIO_2part']
+        # стирание КИ с введённых КД
+        list_out_technical.append(list_in_technical[25])
+        list_out_technical.append(list_in_technical[26])
+        list_out_technical.append(list_in_technical[27])
+        list_out_technical[25][0] = dict_out_technical['date_time_erase_RDT_b'].strftime('%d.%m.%Y')
+        dict_out_technical['write_erase_RDT'] = f'Стирание КИ с введённых КД с использованием МУВК ПА655М {number_MUVK}'
+        list_out_technical[25][1] = dict_out_technical['write_erase_RDT']
+        list_out_technical[26][0] = dict_out_technical['date_time_erase_RDT_b'].strftime('%H:%M') + '-' + \
+                                    dict_out_technical['date_time_erase_RDT_e'].strftime('%H:%M')
+        list_out_technical[26][6] = dict_out_technical['FIO_1part']
+        list_out_technical[27][6] = dict_out_technical['FIO_2part']
+        # опечатывание крышек разъёма "Ввод" аппаратуры
+        list_out_technical.append(list_in_technical[28])
+        list_out_technical.append(list_in_technical[29])
+        list_out_technical.append(list_in_technical[30])
+        list_out_technical[28][0] = dict_out_technical['date_time_cl_cap_input_b'].strftime('%d.%m.%Y')
+        dict_out_technical['write_cl_cap_input'] = f'Крышки рзаъёмов "Ввод" аппаратуры М567М №{str_number_device} закрыты' \
+            f' и опечатаны печатями {stamp_numer_common}'
+        list_out_technical[28][1] = dict_out_technical['write_cl_cap_input']
+        list_out_technical[29][0] = dict_out_technical['date_time_cl_cap_input_b'].strftime('%H:%M') + '-' + \
+                                    dict_out_technical['date_time_cl_cap_input_e'].strftime('%H:%M')
+        list_out_technical[29][6] = dict_out_technical['FIO_1part']
+        list_out_technical[30][6] = dict_out_technical['FIO_2part']
+        # запись об оепчатывании МУВК
+        list_out_technical.append(list_in_technical[31])
+        list_out_technical.append(list_in_technical[32])
+        list_out_technical.append(list_in_technical[33])
+        list_out_technical[31][0] = dict_out_technical['date_time_cl_MUVK'].strftime('%d.%m.%Y')
+        dict_out_technical['write_cl_MUVK'] = f'Контейнер с МУВК ПА655М {number_MUVK} закрыт и опечатан печатями {stamp_numer_common}'
+        list_out_technical[31][1] = dict_out_technical['write_cl_MUVK']
+        list_out_technical[32][0] = dict_out_technical['date_time_cl_MUVK'].strftime('%H:%M')
+        list_out_technical[32][6] = dict_out_technical['FIO_1part']
+        list_out_technical[33][6] = dict_out_technical['FIO_2part']
+        # запись о вскрытии ЦУВ-1 для стирания
+        list_out_technical.append(list_in_technical[34])
+        list_out_technical.append(list_in_technical[35])
+        list_out_technical[34][0] = dict_out_technical[ 'date_time_op_box_CUV_2'].strftime('%d.%m.%Y')
+        dict_out_technical['write_op_box_CUV_2'] = f'Вскрыт пенал с КД ЦУВ-2-1012 серия №{ser_number_CUV_1_2}, э.ед., ' \
+            f'опечатанный печатью {stamp_numer_two_r}'
+        list_out_technical[34][1] = dict_out_technical['write_op_box_CUV_2']
+        list_out_technical[35][0] = dict_out_technical[ 'date_time_op_box_CUV_2'].strftime('%H:%M')
+        list_out_technical[35][6] = dict_out_technical['FIO_2part']
+        # запись об уничтожении ЦУВ-2
+        list_out_technical.append(list_in_technical[36])
+        list_out_technical.append(list_in_technical[37])
+        list_out_technical.append(list_in_technical[38])
+        list_out_technical[36][0] = dict_out_technical['date_time_del_CUV_2'].strftime('%d.%m.%Y')
+        dict_out_technical['write_del_CUV_2'] = f'Произведено уничтожение ЦУВ-2-1012 серия №{ser_number_CUV_1_2}, э.ед.'
+        list_out_technical[36][1] = dict_out_technical['write_del_CUV_2']
+        list_out_technical[37][0] = dict_out_technical['date_time_del_CUV_2'].strftime('%H:%M')
+        list_out_technical[37][6] = dict_out_technical['FIO_1part']
+        list_out_technical[38][6] = dict_out_technical['FIO_2part']
+        # запись о проверки правильности обращения с КД
+        list_out_technical.append(list_in_technical[39])
+        list_out_technical[39][0] = dict_out_technical['date_time_use_KD'].strftime('%d.%m.%Y')
+        dict_out_technical['write_use_KD'] = f'Правильность обращения с КД проверил'
+        list_out_technical[39][1] = dict_out_technical['write_use_KD']
+        dict_out_technical['FIO_carry_KD'] = FIO_carry_KD
+        list_out_technical[39][6] = dict_out_technical['FIO_carry_KD']
+
+    return list_out_technical
+
+
 """
 Образцы записей в журналы.
 Данные используемые в журналах.
@@ -820,6 +1077,7 @@ duration_11_minutes = datetime.timedelta(minutes=11)
 duration_14_minutes = datetime.timedelta(minutes=14)
 duration_20_minutes = datetime.timedelta(minutes=20)
 duration_23_minutes = datetime.timedelta(minutes=23)
+duration_25_minutes = datetime.timedelta(minutes=25)
 duration_26_minutes = datetime.timedelta(minutes=26)
 duration_27_minutes = datetime.timedelta(minutes=27)
 duration_30_minutes = datetime.timedelta(minutes=30)
@@ -841,11 +1099,11 @@ duration_14_h_30_m = datetime.timedelta(hours=14, minutes=30)
 Код запуска процессов формирования записей производимых при данных работах.
 """
 
-point_exit = 'y'
+point_exit = 'да'
 n = 1 # счётчик циклов набора аппаратов
 date_time_cl_cap_input = datetime.datetime.now()
 while n <= quantity_device:
-    if point_exit == 'n':
+    if point_exit == 'нет':
         break
     else:
         if n > 1:
@@ -920,6 +1178,10 @@ while n <= quantity_device:
         if type_work == 'ОН':
             if n == 1:
                 date_time_ckt = date_time_begin + duration_20_minutes # вскрытие футляра ckt
+            # if n == 2:
+            #     dict_out_technical['date_time_op_cap_input_2_device'] = date_time_begin # вскрытие крышки ввод 2-го аппарата
+            # if n == quantity_device:
+            #     dict_out_technical['date_time_op_cap_input_n_device'] = date_time_begin # вскрытие крышки ввод n-го аппарата
             else:
                 date_time_ckt = date_time_begin + duration_1_minutes
             extract_date_time_ckt = date_time_ckt + duration_1_minutes
@@ -927,7 +1189,7 @@ while n <= quantity_device:
             seal_date_time_ckt = date_time_ckt + duration_4_minutes
             # Время уничтожения ключей, блокнотов и упаковок
             if n == 1:
-                del_date_time = date_time_begin + duration_20_minutes + datetime.timedelta(minutes=quantity_device*25) # уничтожение ключей и таблиц блокнотов
+                del_date_time = date_time_begin + duration_25_minutes + datetime.timedelta(minutes=quantity_device*25) # уничтожение ключей и таблиц блокнотов
             date_time_ckt_new = date_time_begin + duration_1_h_14_m
             extract_date_time_ckt_new = date_time_ckt_new + duration_1_minutes
             input_date_time_ckt_new = date_time_ckt_new + duration_2_minutes
@@ -943,6 +1205,7 @@ while n <= quantity_device:
             seal_date_time_ckt_new = date_time_ckt_new + duration_4_minutes
             # Время уничтожения ключей, блокнотов и упаковок
             del_date_time = date_time_begin + duration_14_h_30_m
+
         # даты и время для RDT
         # набор очередного ключа
         if type_work == 'ОН':
@@ -973,18 +1236,77 @@ while n <= quantity_device:
             # Опечатывание крышки ввод аппарата
             date_time_cl_cap_input = date_time_begin + duration_2_h_19_m
 
+        # даты и время для technical_jornal
+        if n == 1:
+            date_time_op_MUVK = date_time_begin - duration_2_minutes  # вскрытие фуляра МУВК
+            date_time_op_cap_input_1_device = date_time_begin # вскрытие крышки ввод 1-го аппарата
+            date_time_op_CUV_1 = date_time_begin + duration_2_minutes  # вскрытие упаковки ЦУВ-1
+            date_time_op_CUV_2 = date_time_op_CUV_1 + duration_2_minutes  # вскрытие упаковки ЦУВ-2
+            date_time_check_CPO_MUVK_b = date_time_op_CUV_2 + duration_2_minutes  # проверка ЦПО МУВК начало
+            date_time_check_CPO_MUVK_e = date_time_check_CPO_MUVK_b + duration_4_minutes  # проверка ЦПО МУВК конец
+            date_time_erase_CUV_1_b = date_time_check_CPO_MUVK_e + duration_1_minutes  # стирание ЦУВ-1 начало
+            date_time_erase_CUV_1_e = date_time_erase_CUV_1_b + duration_5_minutes  # стирание ЦУВ-1 конец
+            date_time_cl_CUV_1 = date_time_erase_CUV_1_e + duration_2_minutes  # опечатывание ЦУВ-1
+            date_time_cl_CUV_2 = date_time_cl_CUV_1 + duration_1_minutes  # опечатывание ЦУВ-2
+            date_time_CPO_INPUT_b = input_date_time_ckt  # проверка ЦПО аппаратов, ввод ключей
+            date_time_CPO_INPUT_e = date_time_in_rdt2  # проверка ЦПО аппаратов, ввод ключей
+            date_time_erase_RDT_b = date_time_erase_rdt1  # стирание RDT1 начало
+            date_time_erase_RDT_e = date_time_erase_rdt2  # стирание RDT2 конец
+            date_time_cl_cap_input_b = date_time_cl_cap_input  # опечатывание крышки ввод аппарата №1
+            date_time_cl_cap_input_e = date_time_cl_cap_input  # опечатывание крышки ввод последнего аппарата
+            date_time_cl_MUVK = date_time_cl_cap_input + duration_3_minutes  # опечатывание МУВК
+        if n == 2:
+            date_time_op_cap_input_2_device = date_time_begin  # вскрытие крышки ввод 2-го аппарата
+        if n == quantity_device:
+            date_time_op_cap_input_n_device = date_time_begin  # вскрытие крышки ввод n-го аппарата
+            date_time_CPO_INPUT_e = date_time_in_rdt2  # проверка ЦПО аппаратов, ввод ключей
+            date_time_erase_RDT_e = date_time_erase_rdt2  # стирание RDT2 конец
+            date_time_cl_cap_input_e = date_time_cl_cap_input  # опечатывание крышки ввод последнего аппарата
+            date_time_cl_MUVK = date_time_cl_cap_input + duration_3_minutes  # опечатывание МУВК
+        # if n == 1:
+        #     date_time_erase_RDT_b = date_time_erase_rdt1  # стирание RDT1 начало
+        # if n == 1:
+        #     date_time_erase_RDT_e = date_time_erase_rdt2  # стирание RDT2 конец
+        # elif n == quantity_device:
+        #     date_time_erase_RDT_e = date_time_erase_rdt2  # стирание RDT2 конец
+        # if n == 1:
+        #     date_time_cl_cap_input_b = date_time_cl_cap_input  # опечатывание крышки ввод аппарата №1
+        # if n == 1:
+        #     date_time_cl_cap_input_e = date_time_cl_cap_input  # опечатывание крышки ввод последнего аппарата
+        #     date_time_cl_MUVK = date_time_cl_cap_input + duration_3_minutes  # опечатывание МУВК
+        # elif n == quantity_device:
+        #     date_time_cl_cap_input_e = date_time_cl_cap_input  # опечатывание крышки ввод последнего аппарата
+        #     date_time_cl_MUVK = date_time_cl_cap_input + duration_3_minutes  # опечатывание МУВК
+        date_time_op_box_CUV_2 = del_date_time - duration_2_minutes  # вскрытие пенала ЦУВ-2
+        date_time_del_CUV_2 = del_date_time  # уничтожение ЦУВ-2
+        date_time_erase_RDT_old_b = 'дата время начала стирания выведенных из обращения RDT'  # начало стирания выведенных из обращения RDT
+        date_time_erase_RDT_old_e = 'дата время окончания стирания выведенных из обращения RDT'  # начало стирания выведенных из обращения RDT
+        date_time_cl_cap_input_dev1 = date_time_cl_cap_input  # опечатывания разъёма ввод аппарата после стирания RDT
+
         # номера аппаратов и печати
         # через командную строку
 
         number_device = '428M-00' + input('Введите номер аппарата М-567М: ')
-        # number_device_last_in_spo = '№апп.М567М был введён SPO'
+        list_number_device.append(number_device)
+        str_number_device = str(list_number_device)
+        str_number_device = str_number_device[1:len(str_number_device) - 1]
+        if n == 1:
+            number_MUVK = '№' + input('Введите номер МУВК: ')
+            FIO_1part = input('Введите ФИО 1-й части: ')
+            FIO_2part = input('Введите ФИО 2-й части: ')
+            FIO_chief = input('Введите ФИО начальника (ответственного за вскрытие упаковок): ')
+            FIO_carry_KD = input('Введите ФИО ответственного за обращение с ключами: ')
+            stamp_numer_one_old_MUVK = input('Введите номер старой печати №1 столбик, которой опечатан МУВК: ')
+            stamp_numer_two_old_MUVK = input('Введите номер старой печати №2 столбик, которой опечатан МУВК: ')
         stamp_numer_one_old = input('Введите номер старой печати №1 столбик: ')
         stamp_numer_two_old = input('Введите номер старой печати №2 столбик: ')
-        stamp_numer_one = input('Введите номер новой печати №1 столбик: ')
-        stamp_numer_two = input('Введите номер новой печати №2 столбик: ')
         stamp_numer_one_r_ckt_old = '№' + input('Введите номер старой печати №1 круглая: ')
-        stamp_numer_one_r = '№' + input('Введите номер новой печати №1 круглая: ')
-        stamp_numer_two_r = '№' + input('Введите номер новой печати №2 круглая: ')
+        if n == 1:
+            stamp_numer_one = input('Введите номер новой печати №1 столбик: ')
+            stamp_numer_two = input('Введите номер новой печати №2 столбик: ')
+            stamp_numer_one_r = '№' + input('Введите номер новой печати №1 круглая: ')
+            stamp_numer_two_r = '№' + input('Введите номер новой печати №2 круглая: ')
+        # number_device_last_in_spo = '№апп.М567М был введён SPO'
         # stamp_numer_one_spo_last = 'п.кр.№1 spo_last'
         # stamp_numer_two_spo_last = 'п.кр.№2 spo_last'
         # тестовые данные
@@ -1001,6 +1323,10 @@ while n <= quantity_device:
         stamp_numer_two_spo_last = 'п.кр.№2 spo_last'
 
         # номера и серии ключей
+        # CUV
+        if n == 1:
+            ser_number_CUV_1_2 = input('Введите номер серии ЦУВ-1,2: ')
+            fac_number_CUV_1 = 'зав. №' + input('Введите заводской номер ЦУВ-1: ')
         # CKT
         # cmd
         ser_number_ckt_old = input('Введите номер ckt старый: ')
@@ -1075,6 +1401,7 @@ while n <= quantity_device:
         # объединнённые печати
         stamp_numer_common_old = stamp_numer_one_old + ', ' + stamp_numer_two_old
         stamp_numer_common = stamp_numer_one + ', ' + stamp_numer_two
+        stamp_numer_common_old_MUVK = stamp_numer_one_old_MUVK + ', ' + stamp_numer_two_old_MUVK
 
         ''' Формирование журнала DEK '''
         # # Запись о вкрытие старого DEK
@@ -1139,6 +1466,18 @@ while n <= quantity_device:
         # list_out_nsd_spo = create_write_spo_4(read_file_jornal('nsd_spo'))
         # pprint.pprint(list_out_nsd_spo, depth=12, width=144)
         # write_file_dek(list_out_nsd_spo, 'nsd_spo', 'Ввод №2 СПО')
+
+        '''Форимрование технического журнала'''
+        # Записи в технический журнал
+        if n == quantity_device:
+            list_in_technical = read_file_jornal('technical')
+            # print(list_in_technical)
+            dict_out_technical = create_dict_tech(list_in_technical)
+        # if n == quantity_device:
+        #     dict_out_technical = create_dict_tech(list_in_technical)
+            list_out_technical = create_write_technical(list_in_technical, dict_out_technical, 'ОН')
+            pprint.pprint(list_out_technical, depth=12, width=144)
+            write_file_dek(list_out_technical, 'technical', 'Технический журнал')
 
         print(f'Вы набрали {n} аппарат.')
         n += 1

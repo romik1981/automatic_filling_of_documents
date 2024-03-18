@@ -197,11 +197,13 @@ date_time_seal_1_dek12_new = date_time_in_1_dek2_new + duration_23_minutes
 date_time_op_2_dek1_new = 'вр вск dek для апп №2'
 date_time_op_2_dek2_new = 'вр вск dek для апп №2'
 date_time_erase_1_dek12_new = date_time_seal_1_dek12_new + duration_1_minutes
+
 # даты и время для NSD
 date_time_op_nsd_new = date_time_del_spo12 + duration_6_minutes
 date_time_in_nsd_new = date_time_op_nsd_new + duration_1_minutes
 date_time_erase_nsd_new = date_time_in_nsd_new + duration_14_minutes
 date_time_cl_nsd_new = date_time_erase_nsd_new + duration_1_minutes
+
 # даты и время для CKT
 # набор очередного ключа
 if type_work == 'ОН':
@@ -226,6 +228,7 @@ else:
     seal_date_time_ckt_new = date_time_ckt_new + duration_4_minutes
     # Время уничтожения ключей, блокнотов и упаковок
     del_date_time = date_time_begin + duration_14_h_30_m
+
 # даты и время для RDT
 # набор очередного ключа
 if type_work == 'ОН':
