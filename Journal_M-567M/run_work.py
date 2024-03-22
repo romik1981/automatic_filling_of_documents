@@ -409,13 +409,13 @@ def create_write_rdt_2(list_out_rdt):
                 list_out_rdt[i][j] = date_time_op_rdt2.strftime('%d.%m.%Y')
             elif i == 6 and j == 1:
                 list_out_rdt[i][j] = date_time_op_rdt2.strftime('%H:%M')
-            if i == 1 and j == 2:
+            elif i == 1 and j == 2:
                 list_out_rdt[i][j] = number_device
             elif i == 1 and j == 3:
                 list_out_rdt[i][j] = date_time_begin.strftime('%d.%m.%Y')
             elif i == 2 and j == 3:
                 list_out_rdt[i][j] = date_time_begin.strftime('%H:%M')
-            elif i == 2 and j == 3:
+            elif i == 3 and j == 3:
                 list_out_rdt[i][j] = stamp_numer_common_old
             elif i == 1 and j == 4:
                 list_out_rdt[i][j] = date_time_op_rdt2.strftime('%d.%m.%Y')
@@ -958,7 +958,7 @@ def create_write_technical(list_in_technical, dict_out_technical, type_work=None
         list_out_technical.append(list_in_technical[17])
         list_out_technical[16][0] = dict_out_technical['date_time_erase_CUV_1_b'].strftime('%d.%m.%Y')
         dict_out_technical['write_erase_CUV_1'] = f'Произведено стирание КИ с КД ЦУВ-1-1012 серия №{ser_number_CUV_1_2}, э.ед.,' \
-            f'зав. №{fac_number_CUV_1} с использованием МУВК ПА655М {number_MUVK}, подключенного к аппаратуре М-567М №{number_device}'
+            f'{fac_number_CUV_1} с использованием МУВК ПА655М {number_MUVK}, подключенного к аппаратуре М-567М №{number_device}'
         list_out_technical[16][1] = dict_out_technical['write_erase_CUV_1']
         list_out_technical[17][0] = dict_out_technical['date_time_erase_CUV_1_b'].strftime('%H:%M') + '-' + \
                                     dict_out_technical['date_time_erase_CUV_1_e'].strftime('%H:%M')
@@ -1255,8 +1255,10 @@ while n <= quantity_device:
             date_time_cl_cap_input_b = date_time_cl_cap_input  # опечатывание крышки ввод аппарата №1
             date_time_cl_cap_input_e = date_time_cl_cap_input  # опечатывание крышки ввод последнего аппарата
             date_time_cl_MUVK = date_time_cl_cap_input + duration_3_minutes  # опечатывание МУВК
+            # если аппарат только один
+            date_time_op_cap_input_2_device = date_time_begin # вскрытие крышки ввод 2-го аппарата
         if n == 2:
-            date_time_op_cap_input_2_device = date_time_begin  # вскрытие крышки ввод 2-го аппарата
+            date_time_op_cap_input_2_device = date_time_begin # вскрытие крышки ввод 2-го аппарата
         if n == quantity_device:
             date_time_op_cap_input_n_device = date_time_begin  # вскрытие крышки ввод n-го аппарата
             date_time_CPO_INPUT_e = date_time_in_rdt2  # проверка ЦПО аппаратов, ввод ключей
