@@ -108,10 +108,49 @@ class DataJornal:
             self.stamp_numer_one_r_ckt_old = 'п.кр.№1 ckt_old'
             self.stamp_numer_one_spo_last = 'п.кр.№1 spo_last'
             self.stamp_numer_two_spo_last = 'п.кр.№2 spo_last'
+            self.stamp_numer_one_old_MUVK = 'п.ст.№1 MUVK'
+            self.stamp_numer_two_old_MUVK = 'п.ст.№2 MUVK'
+        # объединнённые печати
+        self.stamp_numer_common_old = self.stamp_numer_one_old + ', ' + self.stamp_numer_two_old
+        self.stamp_numer_common = self.stamp_numer_one + ', ' + self.stamp_numer_two
+        self.stamp_numer_common_old_MUVK = self.stamp_numer_one_old_MUVK + ', ' + self.stamp_numer_two_old_MUVK
 
         print(f'Создан новый объект DataJornal тип работ - {type_work}, с временем начала работ: {self.date_time_begin}')
 
-class JornalDEK(DataJornal):
+
+class JornalRDT(DataJornal):
+
+    def __init__(self, date_time_begin=datetime.datetime.now(), type_work='тест'):
+        """ Конструктор класса JornalDEK"""
+        super().__init__()
+
+        # даты и время для RDT
+        # набор очередного ключа
+        if type_work == 'ОН':
+            self.date_time_del_rdt_old = self.date_time_begin + self.duration_30_minutes
+            self.date_time_op_rdt1 = self.date_time_begin + self.duration_26_minutes
+            self.date_time_op_rdt2 = self.date_time_op_rdt1 + self.duration_1_minutes
+            self.date_time_in_rdt2 = self.date_time_op_rdt2 + self.duration_1_minutes
+            self.date_time_erase_rdt1 = self.date_time_in_rdt2 + self.duration_6_minutes
+            self.date_time_erase_rdt2 = self.date_time_erase_rdt1 + self.duration_5_minutes
+            self.date_time_cl_rdt1 = self.date_time_erase_rdt1 + self.duration_1_minutes
+            self.date_time_cl_rdt2 = self.date_time_erase_rdt2 + self.duration_1_minutes
+            # Опечатывание крышки ввод аппарата
+            self.date_time_cl_cap_input = self.date_time_cl_rdt2 + self.duration_2_minutes
+        else:
+            self.date_time_del_rdt_old = self.date_time_begin + self.duration_50_minutes
+            self.date_time_op_rdt1 = self.date_time_del_rdt_old + self.duration_1_h_14_m
+            self.date_time_op_rdt2 = self.date_time_op_rdt1 + self.duration_1_minutes
+            self.date_time_in_rdt2 = self.date_time_op_rdt2 + self.duration_1_minutes
+            self.date_time_erase_rdt1 = self.date_time_in_rdt2 + self.duration_6_minutes
+            self.date_time_erase_rdt2 = self.date_time_erase_rdt1 + self.duration_5_minutes
+            self.date_time_cl_rdt1 = self.date_time_erase_rdt1 + self.duration_1_minutes
+            self.date_time_cl_rdt2 = self.date_time_erase_rdt2 + self.duration_1_minutes
+            # Опечатывание крышки ввод аппарата
+            self.date_time_cl_cap_input = self.date_time_begin + self.duration_2_h_19_m
+
+class JornalDEK(JornalRDT):
+
     # печати и номера ключей
     # DEK
     ser_number_dek_old_1 = '1-номер dek старый'
@@ -169,17 +208,14 @@ class JornalDEK(DataJornal):
         list_out_new = []
 
         for row in list_out_dek:
-            # for i, cell in enumerate(row):
-            #     if cell == 'date':
-            #         row[i] = date
             row.append('\n')
             # print(row)
-
             list_out_new.append(';'.join(row))
-        with open(f'jornal_out_{type_f}.csv', 'a+', encoding='cp1251') as fw:
 
+        with open(f'jornal_out_{type_f}.csv', 'a+', encoding='cp1251') as fw:
             for _ in list_out_new:
                 fw.writelines(_)
+
         return print(f'Сделанна запись "{type_w}", данные записаны в файл jornal_out_{type_f}.csv')
 
 
@@ -224,68 +260,71 @@ class JornalDEK(DataJornal):
 
         return list_out_dek
 
-    # def create_write_dek_2(list_out_dek):
-    #     # Цикл для формирования записи стирания старого DEK
-    #     for i, row in enumerate(list_out_dek):
-    #         # print(row)
-    #         for j, cell in enumerate(row):
-    #             # print(cell)
-    #             if i == 2 and j == 0:
-    #                 list_out_dek[i][j] = ser_number_dek_old_1
-    #             elif i == 3 and j == 0:
-    #                 list_out_dek[i][j] = number_com_dek_old_1
-    #             elif i == 4 and j == 0:
-    #                 list_out_dek[i][j] = fac_number_dek_old_1
-    #             elif i == 6 and j == 0:
-    #                 list_out_dek[i][j] = ser_number_dek_old_2
-    #             elif i == 7 and j == 0:
-    #                 list_out_dek[i][j] = number_com_dek_old_2
-    #             elif i == 8 and j == 0:
-    #                 list_out_dek[i][j] = fac_number_dek_old_2
-    #             elif i == 1 and j == 2:
-    #                 list_out_dek[i][j] = number_device
-    #             elif i == 1 and j == 3:
-    #                 list_out_dek[i][j] = date_time_begin.strftime('D-%d.%m.%Y')
-    #             elif i == 2 and j == 3:
-    #                 list_out_dek[i][j] = date_time_begin.strftime('T-%H:%M')
-    #             elif i == 3 and j == 3:
-    #                 list_out_dek[i][j] = stamp_numer_common
-    #             elif i == 5 and j == 6:
-    #                 list_out_dek[i][j] = date_time_cl_cap_input.strftime('D-%d.%m.%Y')
-    #             elif i == 6 and j == 6:
-    #                 list_out_dek[i][j] = date_time_cl_cap_input.strftime('T-%H:%M')
-    #             elif i == 7 and j == 6:
-    #                 list_out_dek[i][j] = stamp_numer_common
-    #             elif i == 2 and j == 10:
-    #                 list_out_dek[i][j] = date_time_del_dek1_old.strftime('D-%d.%m.%Y')
-    #             elif i == 3 and j == 10:
-    #                 list_out_dek[i][j] = date_time_del_dek1_old.strftime('T-%H:%M')
-    #             elif i == 6 and j == 10:
-    #                 list_out_dek[i][j] = date_time_del_dek2_old.strftime('D-%d.%m.%Y')
-    #             elif i == 7 and j == 10:
-    #                 list_out_dek[i][j] = date_time_del_dek2_old.strftime('T-%H:%M')
-    #             elif i == 1 and j == 11:
-    #                 list_out_dek[i][j] = date_time_cl_dek1_old.strftime('D-%d.%m.%Y')
-    #             elif i == 2 and j == 11:
-    #                 list_out_dek[i][j] = date_time_cl_dek1_old.strftime('T-%H:%M')
-    #             elif i == 3 and j == 11:
-    #                 list_out_dek[i][j] = stamp_numer_one_r
-    #             elif i == 5 and j == 11:
-    #                 list_out_dek[i][j] = date_time_cl_dek2_old.strftime('D-%d.%m.%Y')
-    #             elif i == 6 and j == 11:
-    #                 list_out_dek[i][j] = date_time_cl_dek2_old.strftime('T-%H:%M')
-    #             elif i == 7 and j == 11:
-    #                 list_out_dek[i][j] = stamp_numer_two_r
-    #             elif i in [1, 2, 3, 4, 5, 6, 7, 8] and j in [1, 4, 5, 7, 8, 9]:
-    #                 list_out_dek[i][j] = str(i) + ',' + str(j)  # ''
-    #             elif i == 0:
-    #                 list_out_dek[i][j] = ''
-    #
-    #     list_out_dek[0][0] = 'Запись о стирание старого DEK'
-    #
-    #     # del list_out_dek[0]
-    #
-    #     return list_out_dek
+    def create_write_dek_2(self):
+        # Цикл для формирования записи стирания старого DEK
+
+        list_out_dek = self.read_file_jornal('dek')
+
+        for i, row in enumerate(list_out_dek):
+            # print(row)
+            for j, cell in enumerate(row):
+                # print(cell)
+                if i == 2 and j == 0:
+                    list_out_dek[i][j] = self.ser_number_dek_old_1
+                elif i == 3 and j == 0:
+                    list_out_dek[i][j] = self.number_com_dek_old_1
+                elif i == 4 and j == 0:
+                    list_out_dek[i][j] = self.fac_number_dek_old_1
+                elif i == 6 and j == 0:
+                    list_out_dek[i][j] = self.ser_number_dek_old_2
+                elif i == 7 and j == 0:
+                    list_out_dek[i][j] = self.number_com_dek_old_2
+                elif i == 8 and j == 0:
+                    list_out_dek[i][j] = self.fac_number_dek_old_2
+                elif i == 1 and j == 2:
+                    list_out_dek[i][j] = self.number_device
+                elif i == 1 and j == 3:
+                    list_out_dek[i][j] = self.date_time_begin.strftime('%d.%m.%Y')
+                elif i == 2 and j == 3:
+                    list_out_dek[i][j] = self.date_time_begin.strftime('%H:%M')
+                elif i == 3 and j == 3:
+                    list_out_dek[i][j] = self.stamp_numer_common
+                elif i == 5 and j == 6:
+                    list_out_dek[i][j] = self.date_time_cl_cap_input.strftime('%d.%m.%Y')
+                elif i == 6 and j == 6:
+                    list_out_dek[i][j] = self.date_time_cl_cap_input.strftime('%H:%M')
+                elif i == 7 and j == 6:
+                    list_out_dek[i][j] = self.stamp_numer_common
+                elif i == 2 and j == 10:
+                    list_out_dek[i][j] = self.date_time_del_dek1_old.strftime('%d.%m.%Y')
+                elif i == 3 and j == 10:
+                    list_out_dek[i][j] = self.date_time_del_dek1_old.strftime('%H:%M')
+                elif i == 6 and j == 10:
+                    list_out_dek[i][j] = self.date_time_del_dek2_old.strftime('%d.%m.%Y')
+                elif i == 7 and j == 10:
+                    list_out_dek[i][j] = self.date_time_del_dek2_old.strftime('%H:%M')
+                elif i == 1 and j == 11:
+                    list_out_dek[i][j] = self.date_time_cl_dek1_old.strftime('%d.%m.%Y')
+                elif i == 2 and j == 11:
+                    list_out_dek[i][j] = self.date_time_cl_dek1_old.strftime('%H:%M')
+                elif i == 3 and j == 11:
+                    list_out_dek[i][j] = self.stamp_numer_one_r
+                elif i == 5 and j == 11:
+                    list_out_dek[i][j] = self.date_time_cl_dek2_old.strftime('%d.%m.%Y')
+                elif i == 6 and j == 11:
+                    list_out_dek[i][j] = self.date_time_cl_dek2_old.strftime('%H:%M')
+                elif i == 7 and j == 11:
+                    list_out_dek[i][j] = self.stamp_numer_two_r
+                elif i in [1, 2, 3, 4, 5, 6, 7, 8] and j in [1, 4, 5, 7, 8, 9]:
+                    list_out_dek[i][j] = '' # str(i) + ',' + str(j)
+                elif i == 0:
+                    list_out_dek[i][j] = ''
+
+        list_out_dek[0][0] = 'Запись о стирание старого DEK'
+
+        # del list_out_dek[0]
+
+        return list_out_dek
     #
     # def create_write_dek_3_new(list_out_dek):
     #     # Цикл для формирования записи ввода №1 нового DEK
@@ -427,6 +466,8 @@ class JornalDEK(DataJornal):
     #
     #     return list_out_dek
 
+
+
 if __name__ == '__main__':
 
     # data_1 = DataJornal('да')
@@ -443,3 +484,6 @@ if __name__ == '__main__':
     list_out_dek = data_4.create_write_dek_1()
     pprint.pprint(list_out_dek, depth=12, width=144)
     data_4.write_file_dek(list_out_dek, 'dek', 'Вскрытие DEK')
+    list_out_dek = data_4.create_write_dek_2()
+    pprint.pprint(list_out_dek, depth=12, width=144)
+    data_4.write_file_dek(list_out_dek, 'dek', 'Стирание DEK')
