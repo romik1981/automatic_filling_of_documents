@@ -13,7 +13,7 @@ while True:
         n = 1
         ''' Формирование журнала DEK '''
         # # Запись о вкрытие старого DEK
-        # list_out_dek = create_write_dek_1(read_file_jornal('dek'))1676
+        # list_out_dek = create_write_dek_1(read_file_jornal('dek'))
         # pprint.pprint(list_out_dek, depth=12, width=144)
         # write_file_dek(list_out_dek, 'dek', 'Вскрытие старого DEK')
         # # Запись о стирание старого DEK

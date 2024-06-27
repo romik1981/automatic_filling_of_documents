@@ -13,6 +13,7 @@ list_in_technical = []
 list_out_technical = []
 dict_out_technical = {}
 list_number_device = []
+list_number_stamp = []
 
 def read_file_jornal(type_f=''):
     ''' Функция записи данных в файл журнала DEK '''
@@ -902,8 +903,8 @@ def create_write_technical(list_in_technical, dict_out_technical, type_work=None
         list_out_technical.append(list_in_technical[3])
         list_out_technical.append(list_in_technical[4])
         list_out_technical[3][0] = dict_out_technical['date_time_op_cap_input_1_device'].strftime('%d.%m.%Y')
-        dict_out_technical['write_open_cap_input_1_device'] = f'Вскрыта крышка разъёма "Ввод" аппаратуры М-567М №{number_device},' \
-            f'опечатанный печатями {stamp_numer_common_old}'
+        dict_out_technical['write_open_cap_input_1_device'] = f'Вскрыта крышка разъёма "Ввод" аппаратуры М-567М №{number_device_first},' \
+            f'опечатанный печатями {stamp_numer_common_old_first}'
         list_out_technical[3][1] = dict_out_technical['write_open_cap_input_1_device']
         list_out_technical[4][0] = dict_out_technical['date_time_op_cap_input_1_device'].strftime('%H:%M')
         list_out_technical[4][6] = dict_out_technical['FIO_1part']
@@ -911,7 +912,7 @@ def create_write_technical(list_in_technical, dict_out_technical, type_work=None
         list_out_technical.append(list_in_technical[5])
         list_out_technical.append(list_in_technical[6])
         list_out_technical[5][0] = dict_out_technical['date_time_op_cap_input_2_device'].strftime('%d.%m.%Y')
-        dict_out_technical['write_open_cap_input_devices'] = f'Вскрыты крышки разъёма "Ввод" аппаратуры М-567М №{str_number_device}, опечатанные печатями {stamp_numer_common_old}'
+        dict_out_technical['write_open_cap_input_devices'] = f'Вскрыты крышки разъёма "Ввод" аппаратуры М-567М №{str_number_device}, опечатанные печатями {str_number_stamp}'
         list_out_technical[5][1] = dict_out_technical['write_open_cap_input_devices']
         list_out_technical[6][0] = dict_out_technical['date_time_op_cap_input_2_device'].strftime('%H:%M') + '-' +\
                                    dict_out_technical['date_time_op_cap_input_n_device'].strftime('%H:%M')
@@ -947,7 +948,7 @@ def create_write_technical(list_in_technical, dict_out_technical, type_work=None
         list_out_technical.append(list_in_technical[15])
         list_out_technical[13][0] = dict_out_technical['date_time_check_CPO_MUVK_b'].strftime('%d.%m.%Y')
         dict_out_technical['write_check_CPO_MUVK'] = f'Проведена проверка ЦПО МУВК ПА655М(V1012) {number_MUVK}, подключенного к аппаратуре ' \
-            f'М-567М(V1054)№{number_device} с использованием КД ЦУВ-1,2-1012 серия №{ser_number_CUV_1_2}, э.ед. Результат проверки - "норма"'
+            f'М-567М(V1054)№{number_device_first} с использованием КД ЦУВ-1,2-1012 серия №{ser_number_CUV_1_2}, э.ед. Результат проверки - "норма"'
         list_out_technical[13][1] = dict_out_technical['write_check_CPO_MUVK']
         list_out_technical[14][0] = dict_out_technical['date_time_check_CPO_MUVK_b'].strftime('%H:%M') + '-' + \
                                    dict_out_technical['date_time_check_CPO_MUVK_e'].strftime('%H:%M')
@@ -958,7 +959,7 @@ def create_write_technical(list_in_technical, dict_out_technical, type_work=None
         list_out_technical.append(list_in_technical[17])
         list_out_technical[16][0] = dict_out_technical['date_time_erase_CUV_1_b'].strftime('%d.%m.%Y')
         dict_out_technical['write_erase_CUV_1'] = f'Произведено стирание КИ с КД ЦУВ-1-1012 серия №{ser_number_CUV_1_2}, э.ед.,' \
-            f'{fac_number_CUV_1} с использованием МУВК ПА655М {number_MUVK}, подключенного к аппаратуре М-567М №{number_device}'
+            f'{fac_number_CUV_1} с использованием МУВК ПА655М {number_MUVK}, подключенного к аппаратуре М-567М №{number_device_first}'
         list_out_technical[16][1] = dict_out_technical['write_erase_CUV_1']
         list_out_technical[17][0] = dict_out_technical['date_time_erase_CUV_1_b'].strftime('%H:%M') + '-' + \
                                     dict_out_technical['date_time_erase_CUV_1_e'].strftime('%H:%M')
@@ -1293,6 +1294,7 @@ while n <= quantity_device:
         str_number_device = str(list_number_device)
         str_number_device = str_number_device[1:len(str_number_device) - 1]
         if n == 1:
+            number_device_first = number_device
             number_MUVK = '№' + input('Введите номер МУВК: ')
             FIO_1part = input('Введите ФИО 1-й части: ')
             FIO_2part = input('Введите ФИО 2-й части: ')
@@ -1300,8 +1302,10 @@ while n <= quantity_device:
             FIO_carry_KD = input('Введите ФИО ответственного за обращение с ключами: ')
             stamp_numer_one_old_MUVK = input('Введите номер старой печати №1 столбик, которой опечатан МУВК: ')
             stamp_numer_two_old_MUVK = input('Введите номер старой печати №2 столбик, которой опечатан МУВК: ')
+        print('Крышка "Ввод" аппаратуры опечатана печатями')
         stamp_numer_one_old = input('Введите номер старой печати №1 столбик: ')
         stamp_numer_two_old = input('Введите номер старой печати №2 столбик: ')
+        print('Пенал с КД ЦК-Т-1054 опеатан печатью')
         stamp_numer_one_r_ckt_old = '№' + input('Введите номер старой печати №1 круглая: ')
         if n == 1:
             stamp_numer_one = input('Введите номер новой печати №1 столбик: ')
@@ -1377,7 +1381,8 @@ while n <= quantity_device:
         number_com_rdt_2_old = number_com_rdt_1_old
         fac_number_rdt_2_old = 'зав. №' + input(f'Введите заводской номер старого rdt2 для аппарата {number_device}: ')
         if n == 1:
-            ser_number_rdt_1 = '№' + input('Введите номер новой серии rdt: ') + ', з.017'
+            ser_number_rdt_1 = '№' + input('Введите номер новой серии rdt: ') + ', з.0' +\
+                               input('Введите номер зоны новой серии rdt: ')
             number_key_rdt = input('Введите номер ключа новой серии rdt: ')
         number_com_rdt_1 = "№" + input(f"Введите номер нового комплекта rdt для аппарата №"
                                        f"{number_device}: ") + ", кл." + number_key_rdt + ", э.ед."
@@ -1402,6 +1407,11 @@ while n <= quantity_device:
 
         # объединнённые печати
         stamp_numer_common_old = stamp_numer_one_old + ', ' + stamp_numer_two_old
+        if n == 1:
+            stamp_numer_common_old_first = stamp_numer_common_old
+        list_number_stamp.append(stamp_numer_common_old)
+        str_number_stamp = str(list_number_stamp)
+        str_number_stamp = str_number_stamp[1:len(str_number_stamp) - 1]
         stamp_numer_common = stamp_numer_one + ', ' + stamp_numer_two
         stamp_numer_common_old_MUVK = stamp_numer_one_old_MUVK + ', ' + stamp_numer_two_old_MUVK
 
