@@ -1,6 +1,4 @@
-'''
-Создадим классы для работы с журналами
-'''
+'''Создадим классы для работы с журналами'''
 
 # импорт внешних пакетов
 import datetime, pprint
@@ -1487,7 +1485,7 @@ if __name__ == '__main__':
     pprint.pprint(list_out_rdt, depth=12, width=144)
     data_7.write_file_dek(list_out_rdt, 'rdt', 'Запись о вводе RDT в аппарат')
     # Технический журнал
-    data_8 = TechnicalJornal('ОН')
+    data_8 = TechnicalJornal(type_work='ОН')
     print(data_8.read_file_jornal('technical'))
     # data_8.create_write_technical()
     list_out_technical = data_8.create_write_technical()
