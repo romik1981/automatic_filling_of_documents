@@ -5,7 +5,7 @@ import datetime, pprint
 
 class DataJornal():
 
-    def __init__(self, type_dt='', type_work=None):
+    def __init__(self, type_dt, type_work):
         """ Конструктор класса DataJornal"""
 
         self.type_dt = type_dt  # аттрибут ввода начала работ
@@ -63,9 +63,9 @@ class DataJornal():
             minute = int(input('-минуты: '))
             # print(hour, type(hour))
             # print(minute, type(minute))
-        date_time_begin = datetime.datetime(year=year, month=month, day=day, hour=hour, minute=minute, second=second)
+        self.date_time_begin = datetime.datetime(year=year, month=month, day=day, hour=hour, minute=minute, second=second) # время начала работ
 
-        self.date_time_begin = date_time_begin # время начала работ
+        # self.date_time_begin = date_time_begin
 
         # даты и время для SPO
         self.date_time_op_spo1 = self.date_time_begin + self.duration_1_h_25_m
@@ -181,7 +181,7 @@ class DataJornal():
             self.list_number_device.append(self.number_device)
             self.str_number_device = str(self.list_number_device)
             self.str_number_device = self.str_number_device[1:len(self.str_number_device) - 1]
-            self.number_MUVK = '№' + input('Введите номер МУВК: ')
+            self.number_MUVK = input('Введите номер МУВК: ')
             self.FIO_1part = input('Введите ФИО 1-й части: ')
             self.FIO_2part = input('Введите ФИО 2-й части: ')
             self.FIO_chief = input('Введите ФИО начальника (ответственного за вскрытие упаковок): ')
@@ -273,23 +273,28 @@ class DataJornal():
 
 class JornalRDT(DataJornal):
 
-    def __init__(self):
+    def __init__(self, type_dt, type_work):
         """ Конструктор класса JornalDEK"""
-        super().__init__()
+
+        super().__init__(type_dt, type_work)
 
         # RDT
         if self.type_work == 'ОН':
             # cmd
             # старые
-            self.ser_number_rdt_1_old = '№' + input('Введите номер старой серии rdt: ') + ', з.017'
-            self.number_com_rdt_1_old = '№' + input('Введите номер старого комплекта rdt: ') + ', кл.3, э.ед.'
+            self.ser_number_rdt_1_old = '№' + input('Введите номер старой серии rdt: ') + ', з.0' +\
+                                        input('Введите номер старой зоны rdt: ')
+            self.number_com_rdt_1_old = '№' + input('Введите номер старого комплекта rdt: ') + ', кл.' +\
+                                        input('Введите номер старого ключа rdt: ') + ', э.ед.'
             self.fac_number_rdt_1_old = 'зав. №' + input('Введите заводской номер старого rdt1: ')
             self.ser_number_rdt_2_old = self.ser_number_rdt_1_old
             self.number_com_rdt_2_old = self.number_com_rdt_1_old
             self.fac_number_rdt_2_old = 'зав. №' + input('Введите заводской номер старого rdt2: ')
             # новые
-            self.ser_number_rdt_1 = '№' + input('Введите номер новой серии rdt: ') + ', з.017'
-            self.number_com_rdt_1 = '№' + input('Введите номер нового комплекта rdt: ') + ', кл.3, э.ед.'
+            self.ser_number_rdt_1 = '№' + input('Введите номер новой серии rdt: ') + ', з.0' +\
+                                        input('Введите номер новой зоны rdt: ')
+            self.number_com_rdt_1 = '№' + input('Введите номер нового комплекта rdt: ') + ', кл.' +\
+                                        input('Введите номер нового ключа rdt: ') + ', э.ед.'
             self.fac_number_rdt_1 = 'зав. №' + input('Введите заводской номер нового rdt1: ')
             self.ser_number_rdt_2 = self.ser_number_rdt_1
             self.number_com_rdt_2 = self.number_com_rdt_1
@@ -335,10 +340,16 @@ class JornalRDT(DataJornal):
                     list_out_rdt[i][j] = self.fac_number_rdt_2_old
                 elif i == 1 and j == 2:
                     list_out_rdt[i][j] = self.number_device
+                elif i == 3 and j == 2:
+                    list_out_rdt[i][j] = self.number_MUVK
+                elif i == 1 and j == 9:
+                    list_out_rdt[i][j] = self.number_MUVK + ' v1012'
                 elif i == 2 and j == 9:
                     list_out_rdt[i][j] = self.date_time_del_rdt_old.strftime('%d.%m.%Y')
                 elif i == 3 and j == 9:
                     list_out_rdt[i][j] = self.date_time_del_rdt_old.strftime('%H:%M')
+                elif i == 5 and j == 9:
+                    list_out_rdt[i][j] = self.number_MUVK + ' v1012'
                 elif i == 6 and j == 9:
                     list_out_rdt[i][j] = self.date_time_del_rdt_old.strftime('%d.%m.%Y')
                 elif i == 7 and j == 9:
@@ -378,13 +389,15 @@ class JornalRDT(DataJornal):
                     list_out_rdt[i][j] = self.date_time_op_rdt2.strftime('%d.%m.%Y')
                 elif i == 6 and j == 1:
                     list_out_rdt[i][j] = self.date_time_op_rdt2.strftime('%H:%M')
-                if i == 1 and j == 2:
+                elif i == 1 and j == 2:
                     list_out_rdt[i][j] = self.number_device
+                elif i == 3 and j == 2:
+                    list_out_rdt[i][j] = self.number_MUVK
                 elif i == 1 and j == 3:
                     list_out_rdt[i][j] = self.date_time_begin.strftime('%d.%m.%Y')
                 elif i == 2 and j == 3:
                     list_out_rdt[i][j] = self.date_time_begin.strftime('%H:%M')
-                elif i == 2 and j == 3:
+                elif i == 3 and j == 3:
                     list_out_rdt[i][j] = self.stamp_numer_common_old
                 elif i == 1 and j == 4:
                     list_out_rdt[i][j] = self.date_time_op_rdt2.strftime('%d.%m.%Y')
@@ -400,10 +413,14 @@ class JornalRDT(DataJornal):
                     list_out_rdt[i][j] = self.date_time_cl_cap_input.strftime('%H:%M')
                 elif i == 7 and j == 6:
                     list_out_rdt[i][j] = self.stamp_numer_common
+                elif i == 1 and j == 10:
+                    list_out_rdt[i][j] = self.number_MUVK
                 elif i == 2 and j == 10:
                     list_out_rdt[i][j] = self.date_time_erase_rdt1.strftime('%d.%m.%Y')
                 elif i == 3 and j == 10:
                     list_out_rdt[i][j] = self.date_time_erase_rdt1.strftime('%H:%M')
+                elif i == 5 and j == 10:
+                    list_out_rdt[i][j] = self.number_MUVK
                 elif i == 6 and j == 10:
                     list_out_rdt[i][j] = self.date_time_erase_rdt2.strftime('%d.%m.%Y')
                 elif i == 7 and j == 10:
@@ -1030,9 +1047,10 @@ class JornalDEK(DataJornal):
 
 class JornalCKT(DataJornal):
 
-    def __init__(self):
+    def __init__(self, type_dt, type_work):
         """Конструктор класса JornalCKT"""
-        super().__init__()
+
+        super().__init__(type_dt, type_work)
 
         # CKT данные
         if self.type_work == 'ОН':
@@ -1476,7 +1494,7 @@ if __name__ == '__main__':
     pprint.pprint(list_out_nsd_spo, depth=12, width=144)
     data_6.write_file_dek(list_out_nsd_spo, 'nsd_spo', 'Запись о вводе НСД в аппарат')
     # Журнал RDT
-    data_7 = JornalRDT()
+    data_7 = JornalRDT('тест')
     print(data_7.read_file_jornal('rdt'))
     list_out_rdt = data_7.create_write_rdt_1()
     pprint.pprint(list_out_rdt, depth=12, width=144)
