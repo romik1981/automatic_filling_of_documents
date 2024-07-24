@@ -5,11 +5,15 @@ import datetime, pprint
 
 class DataJornal():
 
-    def __init__(self, type_dt, type_work):
+    def __init__(self, type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
+                 FIO_2part, FIO_chief, FIO_carry_KD, stamp_numer_one_old, stamp_numer_two_old, stamp_numer_one,
+                 stamp_numer_two, stamp_numer_one_old_MUVK, stamp_numer_two_old_MUVK, stamp_numer_one_r_ckt_old,
+                 stamp_numer_one_r, stamp_numer_two_r):
         """ Конструктор класса DataJornal"""
 
         self.type_dt = type_dt  # аттрибут ввода начала работ
         self.type_work = type_work
+        self.date_time_begin = date_time_begin # время начала работ
 
         # Приращения времени
         self.duration_1_minutes = datetime.timedelta(minutes=1)
@@ -40,32 +44,6 @@ class DataJornal():
         self.duration_10_h_19_m = datetime.timedelta(hours=10, minutes=19)
         self.duration_14_hours = datetime.timedelta(hours=14)
         self.duration_14_h_30_m = datetime.timedelta(hours=14, minutes=30)
-
-        # дата и время начала работ
-        date_time_begin = datetime.datetime.now()
-        # type_dt = input('Хотите ввести время начала работ(да/нет): ')
-
-        year = date_time_begin.year
-        # print(year, type(year))
-        month = date_time_begin.month
-        # print(month, type(month))
-        day = date_time_begin.day
-        # print(day, type(day))
-        hour = date_time_begin.hour
-        # print(hour, type(hour))
-        minute = date_time_begin.minute
-        # print(minute, type(minute))
-        second = date_time_begin.second
-        # print(second, type(second))
-
-        if self.type_dt == 'да':
-            hour = int(input('Введите время начала работ- часы: '))
-            minute = int(input('-минуты: '))
-            # print(hour, type(hour))
-            # print(minute, type(minute))
-        self.date_time_begin = datetime.datetime(year=year, month=month, day=day, hour=hour, minute=minute, second=second) # время начала работ
-
-        # self.date_time_begin = date_time_begin
 
         # даты и время для SPO
         self.date_time_op_spo1 = self.date_time_begin + self.duration_1_h_25_m
@@ -173,61 +151,29 @@ class DataJornal():
         self.date_time_erase_RDT_old_e = 'дата время окончания стирания выведенных из обращения RDT'  # начало стирания выведенных из обращения RDT
         self.date_time_cl_cap_input_dev1 = self.date_time_cl_cap_input  # опечатывания разъёма ввод аппарата после стирания RDT
 
-        # номера аппаратов, печати, ФИО участников
-        if self.type_work == 'ОН':
-            self.list_number_device = []
-            # через командную строку
-            self.number_device = '428M-00' + input('Введите номер аппарата М-567М: ')
-            self.list_number_device.append(self.number_device)
-            self.str_number_device = str(self.list_number_device)
-            self.str_number_device = self.str_number_device[1:len(self.str_number_device) - 1]
-            self.number_MUVK = input('Введите номер МУВК: ')
-            self.FIO_1part = input('Введите ФИО 1-й части: ')
-            self.FIO_2part = input('Введите ФИО 2-й части: ')
-            self.FIO_chief = input('Введите ФИО начальника (ответственного за вскрытие упаковок): ')
-            self.FIO_carry_KD = input('Введите ФИО ответственного за обращение с ключами: ')
-            self.stamp_numer_one_old_MUVK = input('Введите номер старой печати №1 столбик, которой опечатан МУВК: ')
-            self.stamp_numer_two_old_MUVK = input('Введите номер старой печати №2 столбик, которой опечатан МУВК: ')
-            self.stamp_numer_one_old = input('Введите номер старой печати №1 столбик: ')
-            self.stamp_numer_two_old = input('Введите номер старой печати №2 столбик: ')
-            self.stamp_numer_one = input('Введите номер новой печати №1 столбик: ')
-            self.stamp_numer_two = input('Введите номер новой печати №2 столбик: ')
-            self.stamp_numer_one_r_ckt_old = '№' + input('Введите номер старой печати №1 круглая: ')
-            self.stamp_numer_one_r = '№' + input('Введите номер новой печати №1 круглая: ')
-            self.stamp_numer_two_r = '№' + input('Введите номер новой печати №2 круглая: ')
-            self.number_device_last_in_spo = '№апп.М567М был введён SPO'
-            self.stamp_numer_one_spo_last = 'п.кр.№1 spo_last'
-            self.stamp_numer_two_spo_last = 'п.кр.№2 spo_last'
-        # elif self.type_work == 'тест':
-        else:
-            # тестовые данные
-            self.list_number_device = []
-            self.last_device_input_dek = 'Номер аппарата куда в последний раз был введён ДЕК'
-            self.stamp_numer_one_spo_last = 'п.кр.№1 spo_last'
-            self.stamp_numer_two_spo_last = 'п.кр.№2 spo_last'
-            self.number_device = '№апп.М567М'
-            self.list_number_device.append(self.number_device)
-            self.str_number_device = str(self.list_number_device)
-            self.str_number_device = self.str_number_device[1:len(self.str_number_device) - 1]
-            self.number_MUVK = 'номер МУВК'
-            self.FIO_1part = 'ФИО 1-й части'
-            self.FIO_2part = 'ФИО 2-й части'
-            self.FIO_chief = 'ФИО начальника (ответственного за вскрытие упаковок)'
-            self.FIO_carry_KD = 'ФИО ответственного за обращение с ключами'
-            self.stamp_numer_one_old_MUVK = 'номер ст. печати №1 столбик МУВК'
-            self.stamp_numer_two_old_MUVK = 'номер ст. печати №2 столбик МУВК'
-            self.number_device_last_in_spo = '№апп.М567М был введён SPO'
-            self.stamp_numer_one_old = 'п.ст.№1старая'
-            self.stamp_numer_two_old = 'п.ст.№2старая'
-            self.stamp_numer_one = 'п.ст.№1'
-            self.stamp_numer_two = 'п.ст.№2'
-            self.stamp_numer_one_r = 'п.кр.№1'
-            self.stamp_numer_two_r = 'п.кр.№2'
-            self.stamp_numer_one_r_ckt_old = 'п.кр.№1 ckt_old'
-            self.stamp_numer_one_spo_last = 'п.кр.№1 spo_last'
-            self.stamp_numer_two_spo_last = 'п.кр.№2 spo_last'
-            self.stamp_numer_one_old_MUVK = 'п.ст.№1 MUVK'
-            self.stamp_numer_two_old_MUVK = 'п.ст.№2 MUVK'
+        # номера аппаратов
+        self.number_device = number_device
+        self.str_number_device = str_number_device
+        # номер МУВК
+        self.number_MUVK = number_MUVK
+        # участники работ
+        self.FIO_1part = FIO_1part
+        self.FIO_2part = FIO_2part
+        self.FIO_chief = FIO_chief
+        self.FIO_carry_KD = FIO_carry_KD
+        # печати
+        self.stamp_numer_one_old = stamp_numer_one_old
+        self.stamp_numer_two_old = stamp_numer_two_old
+        self.stamp_numer_one = stamp_numer_one
+        self.stamp_numer_two = stamp_numer_two
+        self.stamp_numer_one_old_MUVK = stamp_numer_one_old_MUVK
+        self.stamp_numer_two_old_MUVK = stamp_numer_two_old_MUVK
+        self.stamp_numer_one_r_ckt_old = stamp_numer_one_r_ckt_old
+        self.stamp_numer_one_r = stamp_numer_one_r
+        self.stamp_numer_two_r = stamp_numer_two_r
+        self.number_device_last_in_spo = '№апп.М567М был введён SPO'
+        self.stamp_numer_one_spo_last = 'п.кр.№1 spo_last'
+        self.stamp_numer_two_spo_last = 'п.кр.№2 spo_last'
         # объединнённые печати
         self.stamp_numer_common_old = self.stamp_numer_one_old + ', ' + self.stamp_numer_two_old
         self.stamp_numer_common = self.stamp_numer_one + ', ' + self.stamp_numer_two
@@ -273,10 +219,17 @@ class DataJornal():
 
 class JornalRDT(DataJornal):
 
-    def __init__(self, type_dt, type_work):
+    def __init__(self, type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
+                 FIO_2part, FIO_chief, FIO_carry_KD, stamp_numer_one_old, stamp_numer_two_old, stamp_numer_one,
+                 stamp_numer_two, stamp_numer_one_old_MUVK, stamp_numer_two_old_MUVK, stamp_numer_one_r_ckt_old,
+                 stamp_numer_one_r, stamp_numer_two_r):
+
         """ Конструктор класса JornalDEK"""
 
-        super().__init__(type_dt, type_work)
+        super().__init__(type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
+                 FIO_2part, FIO_chief, FIO_carry_KD, stamp_numer_one_old, stamp_numer_two_old, stamp_numer_one,
+                 stamp_numer_two, stamp_numer_one_old_MUVK, stamp_numer_two_old_MUVK, stamp_numer_one_r_ckt_old,
+                 stamp_numer_one_r, stamp_numer_two_r)
 
         # RDT
         if self.type_work == 'ОН':
@@ -1047,18 +1000,27 @@ class JornalDEK(DataJornal):
 
 class JornalCKT(DataJornal):
 
-    def __init__(self, type_dt, type_work):
+    def __init__(self, type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
+                 FIO_2part, FIO_chief, FIO_carry_KD, stamp_numer_one_old, stamp_numer_two_old, stamp_numer_one,
+                 stamp_numer_two, stamp_numer_one_old_MUVK, stamp_numer_two_old_MUVK, stamp_numer_one_r_ckt_old,
+                 stamp_numer_one_r, stamp_numer_two_r):
+
         """Конструктор класса JornalCKT"""
 
-        super().__init__(type_dt, type_work)
+        super().__init__(type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
+                 FIO_2part, FIO_chief, FIO_carry_KD, stamp_numer_one_old, stamp_numer_two_old, stamp_numer_one,
+                 stamp_numer_two, stamp_numer_one_old_MUVK, stamp_numer_two_old_MUVK, stamp_numer_one_r_ckt_old,
+                 stamp_numer_one_r, stamp_numer_two_r)
 
         # CKT данные
         if self.type_work == 'ОН':
             # cmd
+            # старый ЦКТ
             self.ser_number_ckt_old = input('Введите номер ckt старый: ')
             self.number_tape_ckt_old = input('Введите номер ленты ckt старый: ')
-            self.ser_number_ckt_new = '№' + input('Введите номер ckt новый: ') + ', э.ед.'
-            self.number_tape_ckt_new = input('Введите номер ленты ckt новый: ')
+            # новый ЦКТ
+            # self.ser_number_ckt_new = '№' + input('Введите номер ckt новый: ') + ', э.ед.'
+            # self.number_tape_ckt_new = input('Введите номер ленты ckt новый: ')
         else:
             # test
             self.ser_number_ckt_old = 'номер ckt старый'
@@ -1154,11 +1116,16 @@ class JornalCKT(DataJornal):
 
 class TechnicalJornal(DataJornal):
 
-    def __init__(self, type_work=None):
-        """ Конструктор класса TechnicalJornal"""
-        super().__init__()
+    def __init__(self, type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
+                 FIO_2part, FIO_chief, FIO_carry_KD, stamp_numer_one_old, stamp_numer_two_old, stamp_numer_one,
+                 stamp_numer_two, stamp_numer_one_old_MUVK, stamp_numer_two_old_MUVK, stamp_numer_one_r_ckt_old,
+                 stamp_numer_one_r, stamp_numer_two_r):
 
-        self.type_work = type_work
+        """ Конструктор класса TechnicalJornal"""
+        super().__init__(type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
+                 FIO_2part, FIO_chief, FIO_carry_KD, stamp_numer_one_old, stamp_numer_two_old, stamp_numer_one,
+                 stamp_numer_two, stamp_numer_one_old_MUVK, stamp_numer_two_old_MUVK, stamp_numer_one_r_ckt_old,
+                 stamp_numer_one_r, stamp_numer_two_r)
 
         # номера и серии ключей
         # CUV
@@ -1249,7 +1216,6 @@ class TechnicalJornal(DataJornal):
 
 
         # Условие для формирования технического журнала при очередном наборе
-        # Разобраться с type_work!!!
         if self.type_work == 'ОН':
             list_out_technical.append(list_in_technical[0])
             # запись о вскрытии МУВК
