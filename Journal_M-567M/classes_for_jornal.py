@@ -5,15 +5,17 @@ import datetime, pprint
 
 class DataJornal():
 
-    def __init__(self, type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
+    def __init__(self, n, quantity_device, type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
                  FIO_2part, FIO_chief, FIO_carry_KD, stamp_numer_one_old, stamp_numer_two_old, stamp_numer_one,
                  stamp_numer_two, stamp_numer_one_old_MUVK, stamp_numer_two_old_MUVK, stamp_numer_one_r_ckt_old,
-                 stamp_numer_one_r, stamp_numer_two_r):
+                 stamp_numer_one_r, stamp_numer_two_r, del_date_time):
         """ Конструктор класса DataJornal"""
 
         self.type_dt = type_dt  # аттрибут ввода начала работ
         self.type_work = type_work
         self.date_time_begin = date_time_begin # время начала работ
+        self.n = n # счётчик циклов набора
+        self.quantity_device = quantity_device # количество аппаратов
 
         # Приращения времени
         self.duration_1_minutes = datetime.timedelta(minutes=1)
@@ -78,12 +80,18 @@ class DataJornal():
         # даты и время для CKT
         # набор очередного ключа
         if self.type_work == 'ОН':
-            self.date_time_ckt = self.date_time_begin + self.duration_20_minutes
+            if self.n == 1:
+                self.date_time_ckt = date_time_begin + self.duration_20_minutes  # вскрытие футляра ckt
+            else:
+                self.date_time_ckt = date_time_begin + self.duration_1_minutes
             self.extract_date_time_ckt = self.date_time_ckt + self.duration_1_minutes
             self.input_date_time_ckt = self.date_time_ckt + self.duration_2_minutes
             self.seal_date_time_ckt = self.date_time_ckt + self.duration_4_minutes
             # Время уничтожения ключей, блокнотов и упаковок
-            self.del_date_time = self.date_time_begin + self.duration_4_hours
+            # if self.n == 1:
+            #     self.del_date_time = self.date_time_begin + self.duration_25_minutes + datetime.timedelta(
+            #         minutes=self.quantity_device * 25)  # уничтожение ключей и таблиц блокнотов
+            self.del_date_time = del_date_time
             self.date_time_ckt_new = self.date_time_begin + self.duration_1_h_14_m
             self.extract_date_time_ckt_new = self.date_time_ckt_new + self.duration_1_minutes
             self.input_date_time_ckt_new = self.date_time_ckt_new + self.duration_2_minutes
@@ -107,8 +115,13 @@ class DataJornal():
         # даты и время для RDT
         # набор очередного ключа
         if self.type_work == 'ОН':
-            self.date_time_del_rdt_old = self.date_time_begin + self.duration_30_minutes
-            self.date_time_op_rdt1 = self.date_time_begin + self.duration_26_minutes
+            # работает для одного аппарата, разобраться с переменными для случая когда n > 1
+            if n == 1:
+                self.date_time_del_rdt_old = self.date_time_begin + self.duration_30_minutes  # сброс старого rdt
+                self.date_time_op_rdt1 = self.date_time_begin + self.duration_26_minutes  # вскрытие нового rdt
+            else:
+                self.date_time_del_rdt_old = self.date_time_begin + self.duration_11_minutes
+                self.date_time_op_rdt1 = self.date_time_begin + self.duration_7_minutes
             self.date_time_op_rdt2 = self.date_time_op_rdt1 + self.duration_1_minutes
             self.date_time_in_rdt2 = self.date_time_op_rdt2 + self.duration_1_minutes
             self.date_time_erase_rdt1 = self.date_time_in_rdt2 + self.duration_6_minutes
@@ -128,25 +141,61 @@ class DataJornal():
             self.date_time_cl_rdt2 = self.date_time_erase_rdt2 + self.duration_1_minutes
             # Опечатывание крышки ввод аппарата
             self.date_time_cl_cap_input = self.date_time_begin + self.duration_2_h_19_m
+
         # даты и время для technical_jornal
-        self.date_time_op_MUVK = self.date_time_begin - self.duration_2_minutes  # вскрытие фуляра МУВК
-        self.date_time_op_CUV_1 = self.date_time_begin + self.duration_2_minutes  # вскрытие упаковки ЦУВ-1
-        self.date_time_op_CUV_2 = self.date_time_op_CUV_1 + self.duration_2_minutes  # вскрытие упаковки ЦУВ-2
-        self.date_time_check_CPO_MUVK_b = self.date_time_op_CUV_2 + self.duration_2_minutes  # проверка ЦПО МУВК начало
-        self.date_time_check_CPO_MUVK_e = self.date_time_op_CUV_2 + self.duration_4_minutes  # проверка ЦПО МУВК конец
-        self.date_time_erase_CUV_1_b = self.date_time_check_CPO_MUVK_e + self.duration_1_minutes  # стирание ЦУВ-1 начало
-        self.date_time_erase_CUV_1_e = self.date_time_check_CPO_MUVK_e + self.duration_1_minutes  # стирание ЦУВ-1 конец
-        self.date_time_cl_CUV_1 = self.date_time_erase_CUV_1_e + self.duration_2_minutes  # опечатывание ЦУВ-1
-        self.date_time_cl_CUV_2 = self.date_time_cl_CUV_1 + self.duration_1_minutes  # опечатывание ЦУВ-2
-        self.date_time_CPO_INPUT_b = self.input_date_time_ckt  # проверка ЦПО аппаратов, ввод ключей
-        self.date_time_CPO_INPUT_e = self.date_time_in_rdt2  # проверка ЦПО аппаратов, ввод ключей
-        self.date_time_erase_RDT_b = self.date_time_erase_rdt1  # стирание RDT
-        self.date_time_erase_RDT_e = self.date_time_erase_rdt2  # стирание RDT
-        self.date_time_cl_cap_input_b = self.date_time_cl_cap_input  # опечатывание крышки ввод аппарата №1
-        self.date_time_cl_cap_input_e = self.date_time_cl_cap_input  # опечатывание крышки ввод последнего аппарата
-        self.date_time_cl_MUVK = self.date_time_cl_cap_input + self.duration_3_minutes  # опечатывание МУВК
-        self.date_time_op_box_CUV_2 = self.date_time_cl_MUVK + self.duration_2_minutes  # вскрытие пенала ЦУВ-2
-        self.date_time_del_CUV_2 = self.date_time_cl_CUV_2 + self.duration_3_minutes  # уничтожение ЦУВ-2
+
+        # self.date_time_op_MUVK = self.date_time_begin - self.duration_2_minutes  # вскрытие фуляра МУВК
+        # self.date_time_op_CUV_1 = self.date_time_begin + self.duration_2_minutes  # вскрытие упаковки ЦУВ-1
+        # self.date_time_op_CUV_2 = self.date_time_op_CUV_1 + self.duration_2_minutes  # вскрытие упаковки ЦУВ-2
+        # self.date_time_check_CPO_MUVK_b = self.date_time_op_CUV_2 + self.duration_2_minutes  # проверка ЦПО МУВК начало
+        # self.date_time_check_CPO_MUVK_e = self.date_time_op_CUV_2 + self.duration_4_minutes  # проверка ЦПО МУВК конец
+        # self.date_time_erase_CUV_1_b = self.date_time_check_CPO_MUVK_e + self.duration_1_minutes  # стирание ЦУВ-1 начало
+        # self.date_time_erase_CUV_1_e = self.date_time_check_CPO_MUVK_e + self.duration_1_minutes  # стирание ЦУВ-1 конец
+        # self.date_time_cl_CUV_1 = self.date_time_erase_CUV_1_e + self.duration_2_minutes  # опечатывание ЦУВ-1
+        # self.date_time_cl_CUV_2 = self.date_time_cl_CUV_1 + self.duration_1_minutes  # опечатывание ЦУВ-2
+        # self.date_time_CPO_INPUT_b = self.input_date_time_ckt  # проверка ЦПО аппаратов, ввод ключей
+        # self.date_time_CPO_INPUT_e = self.date_time_in_rdt2  # проверка ЦПО аппаратов, ввод ключей
+        # self.date_time_erase_RDT_b = self.date_time_erase_rdt1  # стирание RDT
+        # self.date_time_erase_RDT_e = self.date_time_erase_rdt2  # стирание RDT
+        # self.date_time_cl_cap_input_b = self.date_time_cl_cap_input  # опечатывание крышки ввод аппарата №1
+        # self.date_time_cl_cap_input_e = self.date_time_cl_cap_input  # опечатывание крышки ввод последнего аппарата
+        # self.date_time_cl_MUVK = self.date_time_cl_cap_input + self.duration_3_minutes  # опечатывание МУВК
+        # self.date_time_op_box_CUV_2 = self.date_time_cl_MUVK + self.duration_2_minutes  # вскрытие пенала ЦУВ-2
+        # self.date_time_del_CUV_2 = self.date_time_cl_CUV_2 + self.duration_3_minutes  # уничтожение ЦУВ-2
+        # self.date_time_erase_RDT_old_b = 'дата время начала стирания выведенных из обращения RDT'  # начало стирания выведенных из обращения RDT
+        # self.date_time_erase_RDT_old_e = 'дата время окончания стирания выведенных из обращения RDT'  # начало стирания выведенных из обращения RDT
+        # self.date_time_cl_cap_input_dev1 = self.date_time_cl_cap_input  # опечатывания разъёма ввод аппарата после стирания RDT
+        # доделать переменные и функции класса technical_jornal для набора нескольких аппаратов!!!
+        if n == 1:
+            self.date_time_op_MUVK = self.date_time_begin - self.duration_2_minutes  # вскрытие фуляра МУВК
+            self.date_time_op_cap_input_1_device = self.date_time_begin # вскрытие крышки ввод 1-го аппарата
+            self.date_time_op_CUV_1 = self.date_time_begin + self.duration_2_minutes  # вскрытие упаковки ЦУВ-1
+            self.date_time_op_CUV_2 = self.date_time_op_CUV_1 + self.duration_2_minutes  # вскрытие упаковки ЦУВ-2
+            self.date_time_check_CPO_MUVK_b = self.date_time_op_CUV_2 + self.duration_2_minutes  # проверка ЦПО МУВК начало
+            self.date_time_check_CPO_MUVK_e = self.date_time_check_CPO_MUVK_b + self.duration_4_minutes  # проверка ЦПО МУВК конец
+            self.date_time_erase_CUV_1_b = self.date_time_check_CPO_MUVK_e + self.duration_1_minutes  # стирание ЦУВ-1 начало
+            self.date_time_erase_CUV_1_e = self.date_time_erase_CUV_1_b + self.duration_5_minutes  # стирание ЦУВ-1 конец
+            self.date_time_cl_CUV_1 = self.date_time_erase_CUV_1_e + self.duration_2_minutes  # опечатывание ЦУВ-1
+            self.date_time_cl_CUV_2 = self.date_time_cl_CUV_1 + self.duration_1_minutes  # опечатывание ЦУВ-2
+            self.date_time_CPO_INPUT_b = self.input_date_time_ckt  # проверка ЦПО аппаратов, ввод ключей
+            self.date_time_CPO_INPUT_e = self.date_time_in_rdt2  # проверка ЦПО аппаратов, ввод ключей
+            self.date_time_erase_RDT_b = self.date_time_erase_rdt1  # стирание RDT1 начало
+            self.date_time_erase_RDT_e = self.date_time_erase_rdt2  # стирание RDT2 конец
+            self.date_time_cl_cap_input_b = self.date_time_cl_cap_input  # опечатывание крышки ввод аппарата №1
+            self.date_time_cl_cap_input_e = self.date_time_cl_cap_input  # опечатывание крышки ввод последнего аппарата
+            self.date_time_cl_MUVK = self.date_time_cl_cap_input + self.duration_3_minutes  # опечатывание МУВК
+            # если аппарат только один
+            self.date_time_op_cap_input_2_device = self.date_time_begin # вскрытие крышки ввод 1-го аппарата
+        if n == 2:
+            self.date_time_op_cap_input_2_device = self.date_time_begin # вскрытие крышки ввод 2-го аппарата
+        if n == quantity_device:
+            self.date_time_op_cap_input_n_device = self.date_time_begin  # вскрытие крышки ввод n-го аппарата
+            self.date_time_CPO_INPUT_e = self.date_time_in_rdt2  # проверка ЦПО аппаратов, ввод ключей
+            self.date_time_erase_RDT_e = self.date_time_erase_rdt2  # стирание RDT2 конец
+            self.date_time_cl_cap_input_e = self.date_time_cl_cap_input  # опечатывание крышки ввод последнего аппарата
+            self.date_time_cl_MUVK = self.date_time_cl_cap_input + self.duration_3_minutes  # опечатывание МУВК
+        self.date_time_op_box_CUV_2 = self.del_date_time - self.duration_2_minutes  # вскрытие пенала ЦУВ-2
+        self.date_time_del_CUV_2 = self.del_date_time  # уничтожение ЦУВ-2
         self.date_time_erase_RDT_old_b = 'дата время начала стирания выведенных из обращения RDT'  # начало стирания выведенных из обращения RDT
         self.date_time_erase_RDT_old_e = 'дата время окончания стирания выведенных из обращения RDT'  # начало стирания выведенных из обращения RDT
         self.date_time_cl_cap_input_dev1 = self.date_time_cl_cap_input  # опечатывания разъёма ввод аппарата после стирания RDT
@@ -219,39 +268,36 @@ class DataJornal():
 
 class JornalRDT(DataJornal):
 
-    def __init__(self, type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
+    def __init__(self, n, quantity_device, type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
                  FIO_2part, FIO_chief, FIO_carry_KD, stamp_numer_one_old, stamp_numer_two_old, stamp_numer_one,
                  stamp_numer_two, stamp_numer_one_old_MUVK, stamp_numer_two_old_MUVK, stamp_numer_one_r_ckt_old,
-                 stamp_numer_one_r, stamp_numer_two_r):
+                 stamp_numer_one_r, stamp_numer_two_r, ser_number_rdt_1_old, number_com_rdt_1_old, fac_number_rdt_1_old,
+                           fac_number_rdt_2_old, ser_number_rdt_1, number_com_rdt_1, fac_number_rdt_1, fac_number_rdt_2, del_date_time):
 
         """ Конструктор класса JornalDEK"""
 
-        super().__init__(type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
+        super().__init__(n, quantity_device, type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
                  FIO_2part, FIO_chief, FIO_carry_KD, stamp_numer_one_old, stamp_numer_two_old, stamp_numer_one,
                  stamp_numer_two, stamp_numer_one_old_MUVK, stamp_numer_two_old_MUVK, stamp_numer_one_r_ckt_old,
-                 stamp_numer_one_r, stamp_numer_two_r)
+                 stamp_numer_one_r, stamp_numer_two_r, del_date_time)
 
         # RDT
         if self.type_work == 'ОН':
             # cmd
             # старые
-            self.ser_number_rdt_1_old = '№' + input('Введите номер старой серии rdt: ') + ', з.0' +\
-                                        input('Введите номер старой зоны rdt: ')
-            self.number_com_rdt_1_old = '№' + input('Введите номер старого комплекта rdt: ') + ', кл.' +\
-                                        input('Введите номер старого ключа rdt: ') + ', э.ед.'
-            self.fac_number_rdt_1_old = 'зав. №' + input('Введите заводской номер старого rdt1: ')
-            self.ser_number_rdt_2_old = self.ser_number_rdt_1_old
-            self.number_com_rdt_2_old = self.number_com_rdt_1_old
-            self.fac_number_rdt_2_old = 'зав. №' + input('Введите заводской номер старого rdt2: ')
+            self.ser_number_rdt_1_old = ser_number_rdt_1_old
+            self.number_com_rdt_1_old = number_com_rdt_1_old
+            self.fac_number_rdt_1_old = fac_number_rdt_1_old
+            self.ser_number_rdt_2_old = ser_number_rdt_1_old
+            self.number_com_rdt_2_old = number_com_rdt_1_old
+            self.fac_number_rdt_2_old = fac_number_rdt_2_old
             # новые
-            self.ser_number_rdt_1 = '№' + input('Введите номер новой серии rdt: ') + ', з.0' +\
-                                        input('Введите номер новой зоны rdt: ')
-            self.number_com_rdt_1 = '№' + input('Введите номер нового комплекта rdt: ') + ', кл.' +\
-                                        input('Введите номер нового ключа rdt: ') + ', э.ед.'
-            self.fac_number_rdt_1 = 'зав. №' + input('Введите заводской номер нового rdt1: ')
-            self.ser_number_rdt_2 = self.ser_number_rdt_1
-            self.number_com_rdt_2 = self.number_com_rdt_1
-            self.fac_number_rdt_2 = 'зав. №' + input('Введите заводской номер нового rdt2: ')
+            self.ser_number_rdt_1 = ser_number_rdt_1
+            self.number_com_rdt_1 = number_com_rdt_1
+            self.fac_number_rdt_1 = fac_number_rdt_1
+            self.ser_number_rdt_2 = ser_number_rdt_1
+            self.number_com_rdt_2 = number_com_rdt_1
+            self.fac_number_rdt_2 = fac_number_rdt_2
         else:
             # test
             # старые
@@ -1000,24 +1046,24 @@ class JornalDEK(DataJornal):
 
 class JornalCKT(DataJornal):
 
-    def __init__(self, type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
+    def __init__(self, n, quantity_device, type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
                  FIO_2part, FIO_chief, FIO_carry_KD, stamp_numer_one_old, stamp_numer_two_old, stamp_numer_one,
                  stamp_numer_two, stamp_numer_one_old_MUVK, stamp_numer_two_old_MUVK, stamp_numer_one_r_ckt_old,
-                 stamp_numer_one_r, stamp_numer_two_r):
+                 stamp_numer_one_r, stamp_numer_two_r, ser_number_ckt_old, number_tape_ckt_old, del_date_time):
 
         """Конструктор класса JornalCKT"""
 
-        super().__init__(type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
+        super().__init__(n, quantity_device, type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
                  FIO_2part, FIO_chief, FIO_carry_KD, stamp_numer_one_old, stamp_numer_two_old, stamp_numer_one,
                  stamp_numer_two, stamp_numer_one_old_MUVK, stamp_numer_two_old_MUVK, stamp_numer_one_r_ckt_old,
-                 stamp_numer_one_r, stamp_numer_two_r)
+                 stamp_numer_one_r, stamp_numer_two_r, del_date_time)
 
         # CKT данные
         if self.type_work == 'ОН':
             # cmd
             # старый ЦКТ
-            self.ser_number_ckt_old = input('Введите номер ckt старый: ')
-            self.number_tape_ckt_old = input('Введите номер ленты ckt старый: ')
+            self.ser_number_ckt_old = ser_number_ckt_old
+            self.number_tape_ckt_old = number_tape_ckt_old
             # новый ЦКТ
             # self.ser_number_ckt_new = '№' + input('Введите номер ckt новый: ') + ', э.ед.'
             # self.number_tape_ckt_new = input('Введите номер ленты ckt новый: ')
@@ -1116,23 +1162,23 @@ class JornalCKT(DataJornal):
 
 class TechnicalJornal(DataJornal):
 
-    def __init__(self, type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
+    def __init__(self, n, quantity_device, type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
                  FIO_2part, FIO_chief, FIO_carry_KD, stamp_numer_one_old, stamp_numer_two_old, stamp_numer_one,
                  stamp_numer_two, stamp_numer_one_old_MUVK, stamp_numer_two_old_MUVK, stamp_numer_one_r_ckt_old,
-                 stamp_numer_one_r, stamp_numer_two_r):
+                 stamp_numer_one_r, stamp_numer_two_r, ser_number_CUV_1_2, fac_number_CUV_1, del_date_time):
 
         """ Конструктор класса TechnicalJornal"""
-        super().__init__(type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
+        super().__init__(n, quantity_device, type_dt, type_work, date_time_begin, number_device, str_number_device, number_MUVK, FIO_1part,
                  FIO_2part, FIO_chief, FIO_carry_KD, stamp_numer_one_old, stamp_numer_two_old, stamp_numer_one,
                  stamp_numer_two, stamp_numer_one_old_MUVK, stamp_numer_two_old_MUVK, stamp_numer_one_r_ckt_old,
-                 stamp_numer_one_r, stamp_numer_two_r)
+                 stamp_numer_one_r, stamp_numer_two_r, del_date_time)
 
         # номера и серии ключей
         # CUV
         if self.type_work == 'ОН':
             # cmd
-            self.ser_number_CUV_1_2 = input('Введите номер серии ЦУВ-1,2: ')
-            self.fac_number_CUV_1 = 'зав. №' + input('Введите заводской номер ЦУВ-1: ')
+            self.ser_number_CUV_1_2 = ser_number_CUV_1_2
+            self.fac_number_CUV_1 = fac_number_CUV_1
         else:
             # test
             self.ser_number_CUV_1_2 = 'номер серии ЦУВ-1,2'
@@ -1203,6 +1249,7 @@ class TechnicalJornal(DataJornal):
             'write_erase_RDT_old': list_in_technical[44][1],  # стирание выведенных из обращения RDT
             'date_time_cl_cap_input_dev1': self.date_time_cl_cap_input_dev1, # опечатывания разъёма ввод аппарата после стирания RDT
             'write_cl_cap_input_dev1': list_in_technical[47][1], # опечатывания разъёма ввод аппарата после стирания RDT
+            'del_date_time' : self.del_date_time # уничтожение ключей и таблиц блокнотов
         }
 
         return dict_out_technical
@@ -1213,7 +1260,21 @@ class TechnicalJornal(DataJornal):
         dict_out_technical = self.create_dict_technical() # словарь технического журнала
         list_in_technical = self.read_file_jornal('technical')  # входной список технического журнала
         list_out_technical = []  # выходной список технического журналя
-
+        # переопределение значений словаря technical_jornal
+        if self.n == 1:
+            dict_out_technical['date_time_op_cap_input_1_device'] = self.date_time_begin # вскрытие 1-го аппарата
+        if self.n == 2:
+            dict_out_technical['date_time_op_cap_input_2_device'] = self.date_time_begin # вскрытие 2-го аппарата
+        if self.n == self.quantity_device:
+            dict_out_technical['date_time_op_cap_input_n_device'] = self.date_time_begin # вкрытие n-го аппарата
+        if self.n == 1:
+            dict_out_technical['date_time_CPO_INPUT_b'] = self.date_time_CPO_INPUT_b # проверка ЦПО аппаратов, ввод ключей
+        if self.n == self.quantity_device:
+            dict_out_technical['date_time_CPO_INPUT_e'] = self.date_time_CPO_INPUT_e
+        if self.n == 1:
+            dict_out_technical['date_time_cl_cap_input_b'] = self.date_time_cl_cap_input_b # опечатывание крышки ввод аппарата №1
+        if self.n == self.quantity_device:
+            dict_out_technical['date_time_cl_cap_input_e'] = self.date_time_cl_cap_input_e # опечатывание крышки ввод n-го аппарата
 
         # Условие для формирования технического журнала при очередном наборе
         if self.type_work == 'ОН':

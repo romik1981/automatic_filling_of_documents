@@ -1257,7 +1257,7 @@ while n <= quantity_device:
             date_time_cl_cap_input_e = date_time_cl_cap_input  # опечатывание крышки ввод последнего аппарата
             date_time_cl_MUVK = date_time_cl_cap_input + duration_3_minutes  # опечатывание МУВК
             # если аппарат только один
-            date_time_op_cap_input_2_device = date_time_begin # вскрытие крышки ввод 2-го аппарата
+            date_time_op_cap_input_2_device = date_time_begin # вскрытие крышки ввод 1-го аппарата
         if n == 2:
             date_time_op_cap_input_2_device = date_time_begin # вскрытие крышки ввод 2-го аппарата
         if n == quantity_device:
